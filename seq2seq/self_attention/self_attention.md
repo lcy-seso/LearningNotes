@@ -3,10 +3,10 @@
 ---
 # background: attention
 
-- $H_{n\times d}=(\bold{h}_1, \bold{h}_2, ..., \bold{h}_n)$ is sentence encoding usually given by LSTM or GRU
-    - n is number of words
-    - d is the dimension of LSTM 
-- $a_{n\times 1}=\text{softmax}(\bold{W}_{s2}tanh(\bold{W}_{s1}H))$ is attention weight
+- $H_{n\times d}=(\mathbf{h}_1, \mathbf{h}_2, ..., \mathbf{h}_n)$ is sentence encoding usually given by LSTM or GRU
+    - $n$ is number of words
+    - $d$ is the dimension of LSTM 
+- $a_{n\times 1}=\text{softmax}(\mathbf{W}_{s2} \tanh(\mathbf {W}_{s1}H))$ is attention weight
 - $m_{1 \times d}=\text{sum}(a \cdot H)$ is the vector representation of the input sentence
 
 ---
