@@ -35,4 +35,12 @@ $$ \begin{align}\begin{split} \frac{dL}{d{\mathbf s}_n} &= \frac{dL}{d{\mathbf x
 - Notice that **applying these rules in reverse will have the same complexity as the original “forward propagation”**.
 ---
 
-# What is automatic reverse model auto differentiation?
+# automatic differentiation?
+- to compute the gradient, autograd first has to **record every transformation that was applied to the input** as it was turned into the output of your function.
+- autograd wraps functions so that when they're called, they add themselves to a list of operations performed.
+- After the function is evaluated, autograd has a list of all operations that were performed and which nodes they depended on.
+- This is the computational graph of the function evaluation.
+- To compute the derivative, we simply apply the rules of differentiation to each node in the graph.
+---
+
+# What is reverse model auto differentiation?
