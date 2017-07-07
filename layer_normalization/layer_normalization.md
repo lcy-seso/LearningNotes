@@ -4,7 +4,7 @@
 2. layer normalization dose not need to save the mean and std, and the training and testing process are the same.
 3. It seems that many codes can be resued between batch normalization and layer normalizaiton.
 
-## forward
+## Forward Pass
 - $x_i$ is the vector representation of the summed inputs to the neurons in a layer
 $$\mathbf{x} = \mathbf{W}^T\mathbf{h}$$
 - $H$ is number of neurons in the layer
@@ -30,7 +30,7 @@ $$\begin{split}
 - all the hidden units in a layer share the same normalization terms
 - different training sample have different normalization terms
 
-## backward
+## Backward Pass
 - the backward pass computes two things:
      1. partial derivatives of loss function with regard to learnable parameters: $\frac{\partial \mathcal{L}}{\partial \gamma}$ and $\frac{\partial \mathcal{L}}{\partial \beta}$
      2. partial derivatives of the loss function with regard to input: $\frac{\partial \mathcal{L}}{\partial \mathbf{x}}$
