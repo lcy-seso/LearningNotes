@@ -1,8 +1,8 @@
-> Layer Normalizaiton is just the "transpose of batch normalizaion".
+> Layer Normalization is just the "transpose of batch normalization".
 
 1. transpose the input, and set the factor of moving average of mean and std to 0. Then the calculations in this layer is the same as batch norm.
 2. layer normalization dose not need to save the mean and std, and the training and testing process are the same.
-3. It seems that many codes can be resued between batch normalization and layer normalizaiton.
+3. It seems that many codes can be reused between batch normalization and layer normalization.
 
 ## Forward Pass
 - $x_i$ is the vector representation of the summed inputs to the neurons in a layer
@@ -12,15 +12,15 @@ $$\mathbf{x} = \mathbf{W}^T\mathbf{h}$$
 - in mini-batch training, $\mathbf{x}$ is a matrix whose size is: $m \times H$
 
 - In the forward pass, first compute the layer normalization statistics over the hidden units in the same layer:
-$$\begin{split}
-&\mu &= \frac{1}{H}\sum_{i=1}^{H} x_i \\
-&\sigma^2 &= \frac{1}{H}\sum_{i=1}^H(x_i - \mu)^2
+$$\begin{split} \\
+&\mu = \frac{1}{H}\sum_{i=1}^{H} x_i \\
+&\sigma^2 = \frac{1}{H}\sum_{i=1}^H(x_i - \mu)^2 \\
 \end{split}$$
 
 - normalize the output:
-$$\begin{split}
-&\mathbf{\hat x} &= \frac{\mathbf{x} - \mu}{\sqrt{\sigma^2 + \epsilon}} \\
-&\mathbf{y} &= \gamma \odot \mathbf{\hat{x}} + \beta
+$$\begin{split} \\
+&\mathbf{\hat x} = \frac{\mathbf{x} - \mu}{\sqrt{\sigma^2 + \epsilon}} \\
+&\mathbf{y} = \gamma \odot \mathbf{\hat{x}} + \beta \\
 \end{split}$$
 
 **Note that both $\mu$ and $\sigma^2$ are matrix and they have the same size as $\mathbf{\hat{x}}_{m \times H}$**
@@ -36,12 +36,14 @@ $$\begin{split}
      2. partial derivatives of the loss function with regard to input: $\frac{\partial \mathcal{L}}{\partial \mathbf{x}}$
 
 ### 1. partial derivatives of $\mathcal{\mathcal{L}}$ with respect to learnable parameters:
-$$\begin{eqnarray*}
-&\frac{\partial \mathcal{L}}{\partial \mathbf{\gamma}} &= \sum_{i=1}^{m} \frac{\partial \mathcal{L}}{\partial y_i} \odot \mathbf{\hat{x_i}} \tag{1}\\
-&\frac{\partial \mathcal{L}}{\partial \mathbf{\beta}} &= \sum_{i=1}^{m} \frac{\partial \mathcal{L}}{\partial y_i} \tag{2}
-\end{eqnarray*}$$
+$$
+\begin{eqnarray*} \\
+& \frac{\partial \mathcal{L}}{\partial \mathbf{\gamma}} & = \sum_{i=1}^{m} \frac{\partial \mathcal{L}}{\partial y_i} \odot \mathbf{\hat{x_i}} \tag{1}\\
+& \frac{\partial \mathcal{L}}{\partial \mathbf{\beta}} & = \sum_{i=1}^{m} \frac{\partial \mathcal{L}}{\partial y_i} \tag{2} \\
+\end{eqnarray*}
+$$
 
-### 2. partial derivative of $\mathcal{L}$ with respect to input $\mathbf{x}$:
+### 2. partiasl derivative of $\mathcal{L}$ with respect to input $\mathbf{x}$:
 - $\mathcal{L}$ can be regarded as a function of $\mathcal{L}(\mathbf{\hat{x}}, \sigma^2, \mu)$
 - $\mathbf{\hat{x}}$, $\sigma^2$, and $\mu$ are all functions of $\mathbf{x}$
 - according to the chain rule, we can obtain the following formular:
@@ -56,8 +58,7 @@ $$
 #### 1. the first part:
 $$\begin{split}
 &\frac{\partial \mathcal{L}}{\partial \mathbf{\hat{x}}} &= \frac{\partial \mathcal{L}}{\partial y} \odot \gamma \\
-&\frac{\partial \mathbf{\hat x}}{\partial \mathbf{x}} &= (\sigma^2 + \epsilon)^{-\frac{1}{2}}
-\end{split}$$
+&\frac{\partial \mathbf{\hat x}}{\partial \mathbf{x}} &= (\sigma^2 + \epsilon)^{-\frac{1}{2}}\end{split}$$
 
 #### 2. the second part:
 
@@ -69,8 +70,7 @@ $$\frac{\partial \mathbf{\hat{x}}}{\partial \mu} =  -(\sigma^2 + \epsilon)^{-\fr
 $$\begin{split}
 \frac{\partial \sigma^2}{\partial \mu} &= \frac{-2}{H} \sum_{i=1}^{H}(x_i - \mu) \\
 &=\frac{-2}{H}(\sum_{i=1}^{H}x_i - \sum_{i=1}^{H} \mu) \\
-&=0
-\end{split} \tag{6}$$
+&=0\end{split} \tag{6}$$
 
 - substitude $(5)$, $(6)$ into $(4)$:
 $$\begin{split}
@@ -94,8 +94,7 @@ $$\frac{\partial \mu}{\partial \mathbf{x}} = \mathbf{\frac{1}{H}}
 #### 3. the third part
 $$\begin{split}
 \frac{\partial \mathcal{L}}{\partial \sigma_i^2} &= \frac{\partial \mathcal{L}}{\partial \mathbf{\hat{x}}}\frac{\partial \mathbf{\hat{x}}}{\partial \sigma_i^2} \\
- &=-\frac{1}{2}(\sigma_i^2+\epsilon)^{\frac{3}{2}} \sum_{j=1}^{H}&\frac{\partial \mathcal L}{\partial x_j}(x_j - \mu)
-\end{split} \tag{9}$$
+ &=-\frac{1}{2}(\sigma_i^2+\epsilon)^{\frac{3}{2}} \sum_{j=1}^{H}&\frac{\partial \mathcal L}{\partial x_j}(x_j - \mu)\end{split} \tag{9}$$
 
 - $\frac{\partial \mathcal{L}}{\partial \sigma^2}$ is a matrix as shown below, and equation ($9$) is a row of this matrix.
 $$\left(
