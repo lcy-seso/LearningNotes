@@ -9,7 +9,7 @@
 - English-to-French, best single model
     - BLEU 41.0
     - training only for 3.5 days on 8 GPUs
-- Generalize well both on large and limited data 
+- Generalize well both on large and limited data
 
 ---
 ## important related works (part I)
@@ -43,7 +43,7 @@
 ---
 
 ## encoder
-- stack $N$ = 6 block (== a layer) as shown below
+- stack $N$ = 6 block (a layer) as shown below
 - every layer has two sub-layers
     1. **multi-head** self-attention
     2. simple **position-wise** fully connected feed-forward network
@@ -66,10 +66,11 @@
 
 ---
 ## attention
-- attention function is to map a query and a set of key-value paris to an output, where the query, keys, valuts and the outputs are all vectors.	
+- attention function is to map a query and a set of key-value paris to an output, where the query, keys, valuts and the outputs are all vectors.
     - query: decoder state at a certain time-step
     - keys:
     - values: encoder vectors
     - outputs: weighted sum of values
 ---
 ### Scaled Dot-Product Attention
+
