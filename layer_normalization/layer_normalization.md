@@ -94,7 +94,7 @@ $$\frac{\partial \mu}{\partial \mathbf{x}} = \mathbf{\frac{1}{H}}
 #### 3. the third part
 $$\begin{split}
 \frac{\partial \mathcal{L}}{\partial \sigma_i^2} &= \frac{\partial \mathcal{L}}{\partial \mathbf{\hat{x}}}\frac{\partial \mathbf{\hat{x}}}{\partial \sigma_i^2} \\
- &=-\frac{1}{2}(\sigma_i^2+\epsilon)^{\frac{3}{2}} \sum_{j=1}^{H}&\frac{\partial \mathcal L}{\partial x_j}(x_j - \mu)\end{split} \tag{9}$$
+ &=-\frac{1}{2}(\sigma_i^2+\epsilon)^{-\frac{3}{2}} \sum_{j=1}^{H}&\frac{\partial \mathcal L}{\partial \hat{x_j}}(x_j - \mu)\end{split} \tag{9}$$
 
 - $\frac{\partial \mathcal{L}}{\partial \sigma^2}$ is a matrix as shown below, and equation ($9$) is a row of this matrix.
 $$\left(
@@ -117,3 +117,12 @@ $$\left(
 \frac{\partial \sigma_H^2}{\partial x_{m,1}} & ... & \frac{\partial \sigma_H^2}{\partial x_{m,H}} \\
 \end{array}
 \right)$$
+
+#### Add all these 3 parts together
+
+$$
+\begin{split}
+\frac{\partial \mathcal{L}}{\partial \mathbf{x}} &&= \frac{\partial \mathcal{L}}{\partial \hat{\mathbf{x}}} (\sigma^2 + \epsilon)^{-\frac{1}{2}} - \frac{\partial \mathcal{L}}{\partial \hat{\mathbf{x}}}(\sigma^2 + \epsilon)^{-\frac{1}{2}}\frac{1}{H}\sum_{j=1}^{H}\frac{\partial \mathcal{L}}{\partial \hat{x_j}} - \frac{1}{2}(\sigma^2 + \epsilon)^{-\frac{3}{2}}(\mathbf{x}\ - \mu)\sum_{j=1}^{H}\frac{\mathcal{\partial L}}{\hat{\partial x_j}}(x_j - \mu) \\
+&&= \frac{(\sigma^2 + \epsilon)^{-\frac{1}{2}}}{H}\left[H\frac{\mathcal{\partial L}}{\partial \mathbf{\hat{x}}} - \sum_{j=1}^{H}\frac{\partial \mathcal{L}}{\partial \hat{x_j}}- \hat{\mathbf{x}} \sum_{j=1}^{H}\frac{\partial \mathcal{L}}{\partial \hat{x_j}}x_j  \right]
+\end{split}
+$$
