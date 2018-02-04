@@ -1,4 +1,5 @@
 <!-- $theme: gaia -->
+<!-- page_number: true -->
 
 # Paddle Fluid 开发者指南
 
@@ -66,7 +67,7 @@
 ---
 
 <!-- *template: invert -->
-#### 在Fluid程序实例中，区分编译时和运行时
+#### 让我们在Fluid程序实例中，区分编译时和运行时
 
 ---
 ### Fluid 编译时
@@ -82,16 +83,6 @@
   cost = fluid.layers.square_error_cost(input=y_predict, label=y)
   avg_cost = fluid.layers.mean(x=cost)
   ```
-  |用户定义前向计算|
-  |:--:|
-  |![100% center](images/graph_construction_example_forward.png)|
-
-</font>
-
----
-### Fluid 编译时
-
-<font size=5>
 
 - ==**添加反向、正则、优化**==
   ```python
@@ -99,16 +90,26 @@
   sgd_optimizer = fluid.optimizer.SGD(learning_rate)
   sgd_optimizer.minimize(avg_cost)
   ```
-  
-  |添加反向operator|添加优化operator|
-  |--|--|
-  |![100% center](images/graph_construction_example_forward_backward.png)|![80% center](images/graph_construction_example_all.png)
-  
 </font>
 
 ---
 
-### Fluid 运行时（一）
+### `Program` vs. 计算图
+
+<font size=5>
+
+- 在科学计算领域，计算图是一种描述计算的经典方式。下图展示了从前向计算图（蓝色）开始，通过添加反向（红色）和优化算法相关（绿色）操作，构建出整个计算图的过程：
+
+  ![60% center](images/graph_construction_example_all.png)
+  
+- Fluid ==使用`Program`而不是计算图==来描述模型和优化过程。`Program`由`Block`、`Operator`和`Variable`构成，相关概念会在后文详细展开。
+- 编译时 Fluid 接受前向计算（这里可以先简单的理解为是一段有序的计算流）`Program`，为这段前向计算按照：前向 :arrow_right: 反向 :arrow_right: 梯度 clip :arrow_right: 正则 :arrow_right: 优化 的顺序，添加相关 `Operator`和`Variable`到`Program`到完整的计算。
+
+</font>
+
+---
+
+### Fluid 运行时
 
 <font size=5>
 
@@ -126,28 +127,13 @@
   feeder = fluid.DataFeeder(place=place,feed_list=[x, y])
   ```
 
-- ==**创建执行器（Executor），执行 `startup_program`**==
+- ==创建执行器（Executor），执行初始化 `Program`和训练`Program`==
 
   ```python
   exe = fluid.Executor(place)
   exe.run(fluid.default_startup_program())
-  ```
-
-</font>
-
----
-
-### Fluid 运行时（二）
-
-<font size=5>
-
-- ==**执行训练程序**==
-
-  ```python
   PASS_NUM = 100
   for pass_id in range(PASS_NUM):
-      fluid.io.save_persistables(exe, "./fit_a_line.model/")
-      fluid.io.load_persistables(exe, "./fit_a_line.model/")
       for data in train_reader():
           avg_loss_value, = exe.run(fluid.default_main_program(),
                                     feed=feeder.feed(data),
@@ -158,7 +144,7 @@
 
 ---
 
-### 框架做什么？用户做什么？
+### 总结：框架做什么？用户做什么？
 <br>
 
 <font size=5>
@@ -189,7 +175,6 @@
 ---
 
 ### <p align="center">总结：运行时</p>
-
 <font size=5>
 
 <span style="background-color:#C7C7E2;">**执行规划好的计算**</span>
@@ -303,11 +288,6 @@
 
 </font>
 
----
-### Transplier
-
-![80% center](images/transpiler.png)
-
 --- 
 
 ### 编译时概念 ：==**[Transpiler](https://github.com/PaddlePaddle/Paddle/blob/develop/doc/design/fluid_compiler.md)**==
@@ -321,9 +301,14 @@
         1. trainer进程执行的`ProgramDesc`
         1. parameter server执行的`ProgramDesc`
 
-1. ==WIP==: 接受一段`ProgramDesc`，生成可直接被`gcc`, `nvcc`, `icc`等编译的代码，编译后得到可执行文件
+1. ==**WIP**==: 接受一段`ProgramDesc`，生成可直接被`gcc`, `nvcc`, `icc`等编译的代码，编译后得到可执行文件
 
 </font>
+
+---
+### Transplier
+
+![70% center](images/transpiler.png)
 
 ---
 
@@ -336,7 +321,7 @@
 - `default_startup_program`：创建可学习参数，对参数进行初始化
 - `default_main_program`：由用户定义的模型，包括了前向、反向、优化及所有必要的计算
 
-- - 打印可读的`ProgramDesc`
+- 打印可读的 `Program`
   ```python
   from paddle.v2.fluid import debuger
   print debuger.pprint_program_codes(framework.default_main_program().desc)
@@ -348,7 +333,7 @@
 
 <font size=5>
 
-|varible in block 0|varible in block 0|
+|variable in block 0|variable in block 0|
 |:--:|:--:|
 |![73%](images/program_desc1.png)|![75%](images/program_desc2.png)|
 
@@ -382,10 +367,13 @@
 #### Tensor 和 LoD(Level-of-Detail) Tensor
 <font size=5>
 
-- Fluid中输入输出数据统一使用Tensor（n-dimension array）表示
-- 一个mini-batch数据是一个Tensor
-- Fluid中RNN 处理变长序列时无需padding，得益于 `LoDTensor`表示
-  <br>
+- Tensor 是$n$-dimensional arry的推广，LoDTensor是在Tensor基础上附加了序列信息
+- Fluid中输入、输出，网络中的可学习参数全部统一使用LoDTensor（n-dimension array）表示
+- 一个mini-batch输入数据是一个LoDTensor
+  - 在Fluid中，RNN 处理变长序列无需padding，得益于 `LoDTensor`表示
+  - 可以简单将 LoD 理解为：`std::vector<std::vector<int>>`
+  - 对非序列数据，LoD 信息为空
+
   |                       | TensorFlow | PaddlePaddle |
   |-----------------------|------------|--------------|
   | RNN                   | Support    | Support      |
@@ -393,16 +381,14 @@
   | padding zeros         | Must       | No need      |
   | blob data type        | Tensor     | LoDTensor    |
 
-- LoDTensor用于表示序列，是在Tensor的基础上附加了序列在一个batch中的起始偏移
-- 可以简单地将 LoD 存储结构理解为一个：`std::vector<std::vector<int>>`
-
 </font>
 
 ---
-#### LoD 信息
+#### LoD 信息实例
+
 <font size=4>
 
-![13% center](images/sequence_data.png)
+![43% center](images/LoDTensor.png)
 
 - 图(a)的LoD 信息
   ```cpp
@@ -415,8 +401,17 @@
 </font>
 
 ---
-### Tensor vs. Varoable vs. Scope
-![center](images/scope_variable_tensor.png)
+#### Tensor, Variable, Scope 之间的关系
+
+![40% center](images/scope_variable_tensor.png)
+
+<font size=5>
+
+1. `Block` 是一个实现层的概念，不在应用层暴露给用户。目前用户无法自行创建并利用`Block`，用户能够感知的只有`Program`这个概念。
+1. 逻辑上，可以将 `Block` 类比为编程语言中的大括号：定义了一段作用域，其中运行一段代码
+1. `Executor`会为每一个`Block`创建一个`Scope`，`Block`是可嵌套的，因此`Scope`也是可嵌套的
+
+</font>
 
 ---
 ### Executor
@@ -434,7 +429,7 @@
 
 ![50% center](images/operator1.png)
 
-- operator 无状态，核心是实现compute方法
+- operator 无状态，Operator的核心是==Run==方法
 - 一个operator可以注册多个kernel
 - operator 可以无 kernel：while_op 、ifelse op
 
@@ -487,8 +482,8 @@
     size_t operator()(const platform::CUDAPlace& gpu) const;
   };
   ```
-- 模板参数 Place 指示内存分配发生的设备
-- 实现时，需要为每一种支持的Place，提供以上三个接口的特化实现
+- 模板参数 `Place` 指示内存分配发生的设备
+- 实现时，需特化支持的 `Place`， 提供以上三个接口的实现
 
 </font>
 
@@ -664,7 +659,7 @@ class GPUAllocator : public SystemAllocator {
     ![40% center](images/place.png)
 
 - DeviceContext
-    - 不同的Place会对应一个相应的DeviceContext，用与组织管理与设备相关的信息
+    - 不同的Place会对应一个相应的DeviceContext，用于组织管理与设备相关的信息
       - 例如，GpuDeviceContext中会管理Cuda stream
     - 目前实现中一些特殊的库也会对应有自己的DeviceContext：例如：
       ```cpp
@@ -680,18 +675,40 @@ class GPUAllocator : public SystemAllocator {
 
 <font size=5>
 
-- step 2: 增加KernelType，为相应的KernelType注册Kernel对象，<span style="background-color:#DAB1D5;">由用户实现注册给框架</span>
-  - 可以按照：
+- step 2: 增加KernelType，为相应的KernelType注册Kernel对象，<span style="background-color:#DAB1D5;">由用户实现注册给框架</span> 可以按照：
     1. Place 执行设备
     1. DataType 执行数据类型 FP32/FP64/INT32/INT64
     1. Memory layout： 运行时 Tensor 在内存中的排布格式 NCHW、 NHWC
+    1. 使用的库
  
-     为同一个operator注册多个 Kernel
+    来区分Kernel，为同一个operator注册多个 Kernel。
 
-- step 3: 运行时的 KernelType 推断和Kernel切换，<span style="background-color:#DAB1D5;">按需要添加Kernel推断和Kernel切换规则</span>
-    - CPUPlace :arrow_right: GPUPlace ：跨设备内存复制
-    - FP32 :arrow_right: FP16 ：精度转换
-    - NCHW :arrow_right: nChw8c ：Layout转换
+    ```cpp
+    struct OpKernelType {
+      proto::DataType data_type_;
+      DataLayout data_layout_;
+      platform::Place place_;
+      LibraryType library_type_;
+    }
+    ```
+
+</font>
+
+---
+
+### 多设备支持（三）
+
+<font size=5>
+
+step 3: 运行时的 KernelType 推断和Kernel切换，<span style="background-color:#DAB1D5;">按需要修改Kernel推断和Kernel切换规则</span>
+- Expected Kernel：期待调用的Kernel：由（1）`Place`和计算精度决定；或（2）用户在配置中显示指定使用的计算库，如`cudnn`、`mkldnn`等。
+- Actual Kernel：运行时从`Operator`的输入（`Variable`）可以推断出实际需要的`KernelType`
+- 当Expected Kernel和Actual Kernel不一致的时候，框架会插入`data_transformer`或者`data_layerout_transform`等，保证Expected Kernel可以执行，包括：
+   - CPUPlace :arrow_right: GPUPlace ：跨设备内存复制
+   - NCHW :arrow_right: nChw8c ：Layout转换
+   - FP32 :arrow_right: FP16 ：精度转换 _**尚未支持**_
+   - ……
+- 以上过程实现在OperatorWithKernel类的Run方法中 [:arrow_right:](https://github.com/PaddlePaddle/Paddle/blob/develop/paddle/framework/operator.cc#L497)
 
 </font>
 
@@ -887,7 +904,9 @@ void Run(const framework::Scope &scope,
 </p>
 
 <font size=5>
+
 - 执行到第5~7个batch时，batch size将会缩小
+
 </font>
 
 ---
@@ -987,26 +1006,41 @@ https://github.com/PaddlePaddle/Paddle/blob/develop/doc/howto/dev/new_op_kernel_
 
 <font size=5>
 
-- Docker编译PaddlePaddle源码: [:arrow_right:](http://www.paddlepaddle.org/docs/develop/documentation/zh/howto/dev/build_cn.html)
+Docker编译PaddlePaddle源码: [:arrow_right:](http://www.paddlepaddle.org/docs/develop/documentation/zh/howto/dev/build_cn.html)
     
-- PaddlePaddle 在 Dockerhub 地址：
-    https://hub.docker.com/r/paddlepaddle/paddle/tags/
+PaddlePaddle 在 Dockerhub 地址：[:arrow_right:](
+    https://hub.docker.com/r/paddlepaddle/paddle/tags/)
    
-- 获取PaddlePaddle的Docker镜像
-  ```bash
-  docker pull paddlepaddle/paddle:latest-dev
-  ```
-- 在Docker中编译源码：
-  1. 启动 docker container
+1. 获取PaddlePaddle的Docker镜像
+    ```bash
+    docker pull paddlepaddle/paddle:latest-dev
+    ```
 
-  <font size=5>
+1. 启动 docker container
 
-  ```bash
-  docker run -it -v $PWD/Paddle:/paddle paddlepaddle/paddle:latest-dev /bin/bash
-  ```
-  </font>
+    ```bash
+    docker run -it -v $PWD/Paddle:/paddle paddlepaddle/paddle:latest-dev /bin/bash
+    ```
 
-  2. 进入docker container后，从源码编译，请参考文档 [:arrow_right:]( http://www.paddlepaddle.org/docs/develop/documentation/zh/getstarted/build_and_install/build_from_source_cn.html)
+1. 进入docker container后，从源码编译，请参考文档 [:arrow_right:]( http://www.paddlepaddle.org/docs/develop/documentation/zh/getstarted/build_and_install/build_from_source_cn.html)
+  
+</font>
+
+---
+
+### 一些说明
+
+<font size=5>
+
+1. PaddlePaddle的Docker镜像为了减小体积，默认没有安装vim，可以在容器中执行`apt-get install -y vim`来安装vim。
+1. 开发推荐使用tag为`latest-dev`的镜像，其中打包了所有编译依赖。`latest`及`lastest-gpu`是production镜像，主要用于运行PaddlePaddle程序。
+1. 在Docker中运行GPU程序，推荐使用nvidia-docker，[否则需要将CUDA库和设备挂载到Docker容器内](http://www.paddlepaddle.org/docs/develop/documentation/zh/getstarted/build_and_install/docker_install_cn.html#dockergpu)。
+   <font size=4>
+   
+   ```bash
+   nvidia-docker run -it -v $PWD/Paddle:/paddle paddlepaddle/paddle:latest-dev /bin/bash
+   ```
+   </font>
 
 
 </font>
@@ -1066,7 +1100,7 @@ https://github.com/PaddlePaddle/Paddle/blob/develop/doc/howto/dev/new_op_kernel_
 
  内容            | 定义位置
 --------------  | :----------------------
-OpProtoMake定义  | `.cc`文件，<span style="background-color:#DAB1D5;">Backward Op不需要OpProtoMake</span>
+OpProtoMake定义  | `.cc`文件，<span style="background-color:#DAB1D5;">Backward Op不需要OpProtoMaker</span>
 Op定义           | `.cc`文件
 Kernel实现       | <span style="background-color:#DAB1D5;">CPU、CUDA共享Kernel实现在`.h`文件中</span>，否则，CPU 实现在`.cc`文件中，CUDA 实现在`.cu`文件中。
 注册Op           | Op注册实现在`.cc`文件；Kernel注册CPU实现在`.cc`文件中，CUDA实现在`.cu`文件中
@@ -1170,8 +1204,7 @@ class ClipOp : public framework::OperatorWithKernel {
 1. `InferShape`目前支持两种实现方式，<span style="background-color:#DAB1D5;">二者最后都会生成一个functor注册给OpInfo结构体。</span>
     1. 继承framework::InferShapeBase，实现为一个functor（参考 [mul_op](https://github.com/PaddlePaddle/Paddle/blob/develop/paddle/operators/mul_op.cc#L22)）
     1. override InferShape函数（参考 [clip_op](https://github.com/PaddlePaddle/Paddle/blob/develop/paddle/operators/clip_op.cc#L24)）
-    
-   
+
 1. 什么是`functor` ?
    
    - 类或结构体仅重载了`()`，一般是可被多个kernel复用的计算函数。
@@ -1192,7 +1225,7 @@ class ClipOp : public framework::OperatorWithKernel {
         ```
         </font>
     
-    - 在 clip_op 内也可会看到将一段计算函数抽象为functor的用法： [:arrow_right:](https://github.com/PaddlePaddle/Paddle/blob/develop/paddle/operators/clip_op.h#L27)。
+    - 在 clip_op 内也会看到将一段计算函数抽象为functor的使用法： [:arrow_right:](https://github.com/PaddlePaddle/Paddle/blob/develop/paddle/operators/clip_op.h#L27)。
     
 </font>
 
@@ -1249,7 +1282,7 @@ class ClipKernel : public framework::OpKernel<T> {
 
 <font size=5>
 
-- ==**反向Op没有`ProtoMaker`**==，其定义与实现方式前向Op完全一致，不再赘述
+- ==**反向Op没有`ProtoMaker`**==，除此之外定义与实现方式前向Op完全一致，不再赘述
 - 这里仅对反向Op的输入输出进行说明：
     1. 反向Op的输入
         - 前向Op的输出
@@ -1307,7 +1340,7 @@ class ClipKernel : public framework::OpKernel<T> {
   ```
   make mul_op
   ```
-  - 但需注意，运行单元测试需要编辑整个工程
+  - <span style="background-color:#e1c4c4;">需注意，运行单元测试需要编译整个工程</span>
 
 - 如果遵循前文的文件命名规则，构建过程中，会自动为新增的op添加Python端绑定，并链接到生成的lib库中
 
@@ -1364,8 +1397,212 @@ class ClipKernel : public framework::OpKernel<T> {
 - 注册Op时的类型名，需要和该Op的名字一样。<span style="background-color:#e1c4c4;">不允许在`A_op.cc`里面，注册`REGISTER_OP(B, ...)`</span>，会导致单元测试出错。
 - 如果Op<span style="background-color:#e1c4c4;">没有实现CUDA Kernel，不要创建空的`*_op.cu`</span>，会导致单元测试出错。
 - 如果多个Op依赖一些共用的函数，可以创建非`*_op.*`格式的文件来存放，如`gather.h`文件。
+
 </font>
   
+---
+
+<!-- *template: invert -->
+### ==10.== 使用相关问题
+
+---
+
+### 定义前向计算
+
+<font size=5>
+
+- 当在python端执行时：
+    ```python
+    import paddle.v2.fluid as fluid
+    ```
+    [`framework.py`](https://github.com/PaddlePaddle/Paddle/blob/develop/python/paddle/v2/fluid/framework.py#L1040)定义了两个全局`Program`:
+    ```python
+    # program is a global instance.
+    _main_program_ = Program()
+    _startup_program_ = Program()
+    ```
+
+- 前向定义的过程就是不断往`mian_program`中添加Op和Variable
+- 如果需要执行一个新的`mian_program`时，可以调用调用：
+    ```python
+    def switch_main_program(program):
+        """
+        Switch the main program to a new program.
+        This funtion returns the previous main program.
+        """
+        ……
+    ```
+</font>
+
+---
+
+### 自定义参数的初始化
+
+<font size=5>
+
+- 调用`fluid.ParamAttr(……)`接口，自定义参数的初始化
+
+  ```python
+  w_param_attrs = ParamAttr(name=None,
+      initializer=UniformInitializer(low=-1.0, high=1.0, seed=0),
+      learning_rate=1.0,
+      regularizer=L1Decay(1.0),
+      trainable=True,
+      clip=GradientClipByValue(-1.0, 1.0),
+  )
+  y_predict = fluid.layers.fc(input=x, size=1, param_attr=w_param_attrs)
+  ```
+
+- 补充问题：如何创建 `Variable`
+  ```python
+  cur_program = Program()
+  cur_block = cur_program.current_block()
+  new_var = cur_block.create_var(name="X", shape=[-1, 16, 16], dtype="float32")
+  ```
+
+</font>
+
+---
+
+### 添加反向Op
+
+<font size=5>
+
+- 调用`fluid.backward.append_backward(X)`（`X`是一个Variable），来为一段前向`ProgramDesc`添加反Op
+
+    ```python
+    data = fluid.layers.data(name="data", shape=(2,3,4))
+    out = fluid.layers.fc(input=data,size=128,act=None)
+    loss = fluid.layers.reduce_sum(out)
+    fluid.backward.append_backward(loss=loss)
+    ```
+
+- 添加优化相关的Op
+    ```python
+    sgd_optimizer = fluid.optimizer.SGD(learning_rate=0.001)
+    sgd_optimizer.minimize(loss)
+    ```
+
+- 可以随时调用`print(fluid.default_main_program())`来输出当前的`main_program`
+
+- 当构建完成整个`Program`后，调用下面的接口执行内存优化：
+  ```python
+  fluid.memory_optimize(fluid.default_main_program())
+  ```
+  - _<span style="background-color:#e1c4c4;">注：内存优化目前仍在持续开发中，有可能不够稳定。</span>_
+
+</font>
+
+---
+
+### 总结：编译时执行流程
+
+<font size=5>
+
+- 用户定义前向计算
+- 添加反向Op到`default_main_program`
+- 添加 gradient clipping Op 到
+- 添加 regularization Op 到`default_main_program`
+- 为指定的优化算法，添加相关的状态 variable of optimizer 到`default_startup_program`
+    - 状态相关 variable是指如学习率, 历史 momentum, 二阶momentum等
+- 添加初始化 variable 的Op 到 `default_startup_program`
+- 为整个网络最后一个op，添加设置其接受到的梯度的Op到`default_main_program`
+- 进行内存优化规划
+
+</font>
+
+---
+
+### Feed 数据 (一)：通过 feed 字典
+
+<font size=5>
+
+- 执行executor的run方法时，指定feed字典，feed op 会将指定的数据放到`x`和`y`两个Variable中
+  ```python
+  y_data = np.random.randint(0, 8, [1]).astype("int32")
+  y_tensor = core.Tensor()
+  y_tensor.set(y_data, place)
+  
+  x_data = np.random.uniform(0.1, 1, [11, 8]).astype("float32")
+  x_tensor = core.Tensor()
+  x_tensor.set(x_data, place)
+  ……
+  cost = exe.run(
+      fluid.default_main_program(),
+      feed={'x': x_tensor,
+            'y': y_tensor},
+      fetchlist=[avg_cost])
+  ```
+
+- 这种方法较为底层，一般用于单测中
+
+</font>
+
+---
+
+### Feed 数据 (二)：使用 DataFeeder接口
+
+<font size=5>
+
+- 编写一个data_reader函数，data_reader是一个Python generator
+
+  ```python
+  def demo_reader():
+      def random_generator():
+          yield np.random.uniform(0.1, 1, [4]), np.random.randint(0, 1, [1])
+      return random_generator
+  ```
+- 在训练任务中使用 DataFeeder 接口
+  ```python
+  cost = exe.run(
+      fluid.default_main_program(),
+      feed={'x': x_tensor,
+            'y': y_tensor},
+      fetchlist=[avg_cost])
+
+  train_reader = paddle.batch(
+      paddle.reader.shuffle(demo_reader(), buf_size=500), batch_size=4)
+  feeder = fluid.DataFeeder(place=place, feed_list=[x, y])
+  for data in train_reader():
+      cost = exe.run(
+          fluid.default_main_program(),
+          feed=feeder.feed(data),
+          fetch_list=[cost])
+  ```
+
+</font>
+
+---
+
+### 常见问题
+
+<font size=5>
+
+- 如何使用 evaluator ? [:arrow_right:](https://github.com/PaddlePaddle/Paddle/blob/develop/python/paddle/v2/fluid/tests/book/test_label_semantic_roles.py#L168)
+
+    ```python
+    accuracy = fluid.evaluator.Accuracy(input=predict, label=label)
+    for pass_id in range(PASS_NUM):
+        accuracy.reset()
+        for data in train_reader():
+            loss, acc = exe.run(fluid.default_main_program(),
+                                feed=feeder.feed(data),
+                                fetch_list=[avg_cost] + accuracy.metrics)
+             pass_acc = accuracy.eval(exe)
+             # acc 当前一个batch 的 accuracy
+             # pass_acc 当前batch 的 accuracy
+         pass_total_acc = accuracy.eval(exe)  # 整个pass的accuracy
+    ```
+
+- 如何在训练中测试？[:arrow_right:](https://github.com/dzhwinter/benchmark/blob/master/fluid/vgg16.py#L144)
+- 如何保存训练好的模型？[:arrow_right:](https://github.com/PaddlePaddle/Paddle/blob/develop/python/paddle/v2/fluid/tests/book/test_recognize_digits.py#L143)
+- 如何加载训练好的模型进行预测？[:arrow_right:](https://github.com/PaddlePaddle/Paddle/blob/develop/python/paddle/v2/fluid/tests/book/test_recognize_digits.py#L154)
+- 如何在同一个训练任务中定义多个Program，并交替运行？ [:arrow_right:](https://github.com/PaddlePaddle/Paddle/blob/develop/python/paddle/v2/fluid/tests/demo/fc_gan.py)
+- 如何profile？Fluid 实现了profile 工具，可以直接调用。请参考示例 [:arrow_right:](https://github.com/PaddlePaddle/Paddle/blob/develop/python/paddle/v2/fluid/tests/test_profiler.py)
+
+
+</font>
+
 ---
 
 <!-- template: gaia -->
