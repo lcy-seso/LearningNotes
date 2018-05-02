@@ -5,6 +5,11 @@
 
 ---
 <!-- *template: invert -->
+
+# 请大家加入Hi群：1600022
+
+---
+<!-- *template: invert -->
 ### ==1==. 为什么需要 PaddlePaddle Fluid？
 
 ---
@@ -31,7 +36,7 @@
 ||<small>一组连续执行的layers</small>|<small>variable和operator构成的计算图</small>|<small>不再有模型的概念</small>|
 |:--|:--|:--|:--|
 |<small>2013|<small>Caffe，Theano, Torch, PaddlePaddle</small>||
-|<small>2015||<small>Caffe, Theano, Torch, PaddlePaddle</small>s|
+|<small>2015||<small>TensorFlow, MxNet, Caffe2, ONNX, n-graph</small>|
 |<small>2016|||<small>PyTorch, TensorFlow Eager Execution, <font color=#483D8B>**==PaddlePaddle Fluid==**|
 
 </font>
@@ -1068,6 +1073,23 @@ PaddlePaddle 在 Dockerhub 地址：[:arrow_right:](
 
 ---
 
+### 如何贡献
+
+<font size=5>
+
+1. 开始开发之前请先建立issue。
+    - 让其它同学知道某项工作已经有人在进行，以避免多人开发同一功能的情况。
+1. 提交PR必须关联相关的issue。做法请参考：[:arrow_right:](https://help.github.com/articles/closing-issues-using-keywords/)
+    - 目的：为了在提交的版本中留有记录描述这个PR是为了开发什么样的功能，为了解决什么样的问题。
+    - 当PR被merge后，关联的issue会被自动关闭。
+1. PR review 中，reviewer的每条comment都必须回复。
+    - 如修改完可直接回复：Done。
+    - 目的：review comment 中可能会有（1）询问类型的问题；（2）可以在下一个PR修改的问题；（3）comment意见不合理等。需要明确回复，以便reviewer和其他人有历史可查，便于区分是否已经进行修改，或者准备下一个PR修改，或者意见不合理可以不用进行修改。
+
+</font>
+
+---
+
 <!-- *template: invert -->
 ### ==10.== 添加新的 Operator
 
@@ -1326,7 +1348,7 @@ class ClipKernel : public framework::OpKernel<T> {
     </font>
 1. 按照同样方法，在`.cu`文件中注册GPU Kernel
    -  <span style="background-color:#e1c4c4;">如果CUDA Kernel的实现基于Eigen，需在 `.cu`的开始加上宏定义 `#define EIGEN_USE_GPU` </span>
-        
+
 </font>
 
 ---
