@@ -43,11 +43,8 @@ difficult, and networks may diverge especially during the initial phase.
 
 ### lARS
 
-<p align="center">
-<img src="images/f1.png" width=75%>
-<br>The LARS algorithm.
-</p>
-
+![](images/f1.png)
+The LARS algorithm.
 
 ### Some notes
 - **LR warm-up**: training starts with small LR, and then LR is gradually increased to
@@ -57,6 +54,6 @@ the target.
 update $\lVert \lambda * \nabla L(\omega_t)\rVert$can become larger than $\omega$, and this can cause the divergence. This makes the initial phase of training highly sensitive to the weight initialization and to initial LR.
 - The paper found that the ratio the L2-norm of weights and gradients $\lVert \omega \rVert/\lVert \nabla L(\omega) \rVert$  varies significantly between weights and biases, and between different layers.
 - The ratio is high during the initial phase, and it is rapidly decrease after few epochs.
-<p align="center">
-<img src="images/f2.png" width=75%>
-</p>
+
+
+![](images/f2.png)
