@@ -1,6 +1,6 @@
-## [Large Batch Training of Convolutional Networks](https://arxiv.org/abs/1708.03888)
+# [Large Batch Training of Convolutional Networks](https://arxiv.org/abs/1708.03888)
 
-### Background
+## Background
 
 - Increasing the global batch while keeping the same number of epochs means that you have fewer
 iterations to update weights.
@@ -26,7 +26,7 @@ difficult, and networks may diverge especially during the initial phase.
     - BN improves model convergence for large LR
     - for B=8K the accuracy gap was decreased from 14% to 2.2%.
 
-### Motivation
+## Motivation
 
 - propose a way to analyze the training stability with large LRs: **measure the ratio between the norm of the layer weights and norm of gradients update**
 
@@ -41,12 +41,13 @@ difficult, and networks may diverge especially during the initial phase.
 
 - With LARS, Alexnet-BN and Resnet-50 trained with B=32K without accuracy loss.
 
-### lARS
+## LARS
 
 ![](images/f1.png)
 The LARS algorithm.
 
-### Some notes
+## Some key points
+
 - **LR warm-up**: training starts with small LR, and then LR is gradually increased to
 the target.
 - BN makes it possible to use larger learning rates.
@@ -54,6 +55,5 @@ the target.
 update $\lVert \lambda * \nabla L(\omega_t)\rVert$can become larger than $\omega$, and this can cause the divergence. This makes the initial phase of training highly sensitive to the weight initialization and to initial LR.
 - The paper found that the ratio the L2-norm of weights and gradients $\lVert \omega \rVert/\lVert \nabla L(\omega) \rVert$  varies significantly between weights and biases, and between different layers.
 - The ratio is high during the initial phase, and it is rapidly decrease after few epochs.
-
 
 ![](images/f2.png)

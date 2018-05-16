@@ -22,9 +22,9 @@
 
 ## Some background information
 
-- What is a flat minimizer $\bar{\mathbf{x}}$ and a sharp minimizer $\hat{\mathbf{x}}$?
-  - **flat minimizer  $\bar{\mathbf{x}}$**: the function varies slowly in a relatively large neighborhood of $\bar{\mathbf{x}}$.
-  - **sharp minimizer  $\hat {\mathbf{x}}$**: the function increases rapidly in a small neighborhood of $\hat{\mathbf{x}}$.
+- What is a flat minimizer and a sharp minimizer?
+  - **flat minimizer $\mathbf{x}^*$**: the function varies slowly in a relatively large neighborhood of $\mathbf{x}^*$.
+  - **sharp minimizer $\mathbf{x}^*$**: the function increases rapidly in a small neighborhood of $\mathbf{x}^*$.
 
 - Many theoretial properties of SGD in small batch regime are known:
   1. converge to minimizers of strongly-convex functions and to stationary points for non-convex functions[[1](#References)].
@@ -41,9 +41,10 @@
 - sharpness of a minimizer can be characterized by the magnitude of the eigenvalues of $\bigtriangledown^2f(x)$
   - however, the computatioin cost is prohibitive.
 - a computationally feasible metric: exploring a small neighborhood of a solution and computing the largest value that the function $f$ can attain in that neighborhood.
-  - [pseudo-inverse](https://en.wikipedia.org/wiki/Generalized_inverse)
 
-![](images/sharpness_metric.png)
+  ![](images/sharpness_metric.png)
+
+    - [pseudo-inverse](https://en.wikipedia.org/wiki/Generalized_inverse)
 
 ### Comparison of the sharpness of the minimizers
 
@@ -72,7 +73,7 @@
 
   ![](images/warmup_experiments.png)
 
-  > the small batch method has ended its exploration phase and discovered a flat minimizer, the large batch method is then able to converge toward it, leading to good testing accuracy.
+  > the small batch method has ended its exploration phase and discovered a flat minimizer, the large batch method is then able to converge toward it, leading to a good testing accuracy.
 
 ## References
 
