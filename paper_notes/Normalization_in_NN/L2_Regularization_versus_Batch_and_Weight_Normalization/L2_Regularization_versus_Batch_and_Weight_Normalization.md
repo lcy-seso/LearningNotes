@@ -1,0 +1,1 @@
+- weight scale invariance in normalization method

@@ -1,1 +1,0 @@
-- [layer normalization](layer_normalization.pdf)
