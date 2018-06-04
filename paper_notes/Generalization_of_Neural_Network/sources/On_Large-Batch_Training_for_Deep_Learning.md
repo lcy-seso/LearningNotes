@@ -14,7 +14,7 @@
 
   - large-batch methods tend to converge to sharp minimizers of the training and testing fucntions.
     - the sharp minimizers are characterized by _**a significant number of large positive eigenvalues**_ in $\bigtriangledown^2f(x)$.
-    - sharp minimizers tend to generalize well.
+    - flat minimizers tend to generalize well.
   - small-batch methods consistently converge to flat minimizers.
     - flat minimizers charaterized by _**having numerous small eigenvalues of $\bigtriangledown^2f(x)$**_.
 - The loss function landscape of deep neural networks is such that large-batch methods are attracted to region with sharp minimizers and are unable to escape basins of attraction of these minimizers.
