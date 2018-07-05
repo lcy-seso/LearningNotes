@@ -56,3 +56,18 @@ In the case of the Hessian, the eigenvectors and eigenvalues have the following 
     - If the eigenvalue is larger, there is a larger curvature, and if it positive, the curvature will be positive, and vice-versa.
 
 - **the larger the eigenvalue, the faster the convergence from the direction of its corresponding eigenvector**.
+
+---
+
+## Saddle Points [[1](#References)]
+
+* It is believed that for many problems including learning deep nets, almost all local minimum have very similar function value to the global optimum, and hence finding a local minimum is good enough.
+    * A problem has such a property is inherently non-convex: _**permutation symmetry**_ (??)
+* There are exponentially many globally optimal solutions that are all permutations of the same solution.
+* Saddle points arise naturally on the paths that connect these isolated local minima.
+* _**Saddle points are very unstable: if we put a ball on a saddle point, then slightly perturb it, the ball is likely to fall!**_
+* People believed the _**inherent noise helps in convergence**_ because it pushes the current point away from saddle points. It’s not a bug, it’s a feature!
+
+## References
+
+1. [Escaping from Saddle Points](http://www.offconvex.org/2016/03/22/saddlepoints/)
