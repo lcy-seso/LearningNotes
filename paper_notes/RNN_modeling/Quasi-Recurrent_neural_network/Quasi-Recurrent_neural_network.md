@@ -66,14 +66,14 @@ $$ \mathbf{h}_t = \mathbf{o}_t \odot \mathbf{c}_t$$
     * _**how to fix**_
       * for the $l$-th decoder QRNN layer, outputs of its convolution functions is added with a linearly projected copy of the $l$-th encoder's last encoder state:
 
-        $$ \mathbf{Z}^l = \text{tanh}(\mathbf{W}_z^l \ast \mathbf{X}^l + \mathbf{V}_z^l\tilde{\mathbf{h}}_T^l)$$
-        $$ \mathbf{F}^l = \text{tanh}(\mathbf{W}_f^l \ast \mathbf{X}^l + \mathbf{V}_f^l\tilde{\mathbf{h}}_T^l)$$
-        $$ \mathbf{O}^l = \text{tanh}(\mathbf{W}_o^l \ast \mathbf{X}^l + \mathbf{V}_o^l\tilde{\mathbf{h}}_T^l)$$
+        $$ \mathbf{Z}^l = \text{tanh}(\mathbf{W}_z^l \ast \mathbf{X}^l + \mathbf{V}_z^l \tilde{\mathbf{h}}_T^l)$$
+        $$ \mathbf{F}^l = \text{tanh}(\mathbf{W}_f^l \ast \mathbf{X}^l + \mathbf{V}_f^l \tilde{\mathbf{h}}_T^l)$$
+        $$ \mathbf{O}^l = \text{tanh}(\mathbf{W}_o^l \ast \mathbf{X}^l + \mathbf{V}_o^l \tilde{\mathbf{h}}_T^l)$$
 
     * attention, in the below equations, $L$ is the last layer.
 
       $$\alpha_{st} = \text{softmax} (\mathbf{c}_t^L \cdot \tilde{\mathbf{h}}_s^L)$$
-      $$ \mathbf{k}_t = \sum_{\alpha}\alpha_{st}\mathbf{\tilde{h}}_s^L$$
+      $$ \mathbf{k}_t = \sum_{\alpha}\alpha_{st} \tilde{\mathbf{h}}_s^L$$
       $$\mathbf{h_t}^L = \mathbf{o}_t \odot (\mathbf{W}_k\mathbf{k}_t + \mathbf{W}_c\mathbf{c}_t^L)$$
 
       * use dot products of encoder hidden states with the decoder's last layer's _**un-gated**_ hidden states.

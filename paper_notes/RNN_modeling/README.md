@@ -1,0 +1,2 @@
+- [QRCNN](./Quasi-Recurrent_neural_network/Quasi-Recurrent_neural_network.pdf)
+- [SRU](./Training_RNNs_as_Fast_as_CNNs/Training_RNNs_as_Fast_as_CNNs.pdf)
