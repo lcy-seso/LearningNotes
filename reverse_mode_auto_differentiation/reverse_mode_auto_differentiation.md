@@ -2,11 +2,13 @@
 ---
 Some references (only list them here first):
 
+- [Reverse-mode automatic differentiation: a tutorial](https://rufflewind.com/2016-12-30/reverse-mode-automatic-differentiation)
+
 - [Automatic differentiation](https://en.wikipedia.org/wiki/Automatic_differentiation#Reverse_accumulation)
 - [TensorFlow](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/ops/gradients.py#L308)
 - [the question/answer in Corss Validated](https://stats.stackexchange.com/questions/224140/step-by-step-example-of-reverse-mode-automatic-differentiation)
 - a post
-    - [Automatic Differentiation: The most criminally underused tool in the potential machine learning toolbox?](https://justindomke.wordpress.com/2009/02/17/automatic-differentiation-the-most-criminally-underused-tool-in-the-potential-machine-learning-toolbox/) 
+    - [Automatic Differentiation: The most criminally underused tool in the potential machine learning toolbox?](https://justindomke.wordpress.com/2009/02/17/automatic-differentiation-the-most-criminally-underused-tool-in-the-potential-machine-learning-toolbox/)
     - [A Simple Explanation of Reverse Mode Automatic Differentiation](https://justindomke.wordpress.com/2009/03/24/a-simple-explanation-of-reverse-mode-automatic-differentiation/)
 - a web site: http://www.autodiff.org/
 
@@ -20,7 +22,7 @@ $$\begin{align}\begin{split}S_n&= W_n \mathbf{x}_{n-1} \\ \mathbf{x}_n &= \sigma
 - present input ${\mathbf x}_0$ and get output ${\mathbf x}_N$.
 - some loss function $L$ that says how much you like that particular ouput on that input.
 
---- 
+---
 - Backpropagation is an algorithm for calculating the derivatives of $L$ with respect to all the weight matrices $W_n$.
 - Backpropagation is a special case of reverse-mode automatic differentiation.
 
@@ -42,5 +44,3 @@ $$ \begin{align}\begin{split} \frac{dL}{d{\mathbf s}_n} &= \frac{dL}{d{\mathbf x
 - This is the computational graph of the function evaluation.
 - To compute the derivative, we simply apply the rules of differentiation to each node in the graph.
 ---
-
-# What is reverse model auto differentiation?
