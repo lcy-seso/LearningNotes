@@ -29,7 +29,7 @@ Foundings in the paper:
 
 - Weight distance from initial training phrase <font color=#8080c0>increases logarithmically</font> with the number of training iterations (weight updates): $\parallel \mathbf{w}_t - \mathbf{w}_0\parallel \sim \text{log}(t)$.
 - A very similar logarithmic graph is observed for all batch sizes, however:
-  1. Each batch size seems to have a different slop, indicating a somewhat **differnet different diffusion rate for different batch sizes**.
+  1. Each batch size seems to have a different slop, indicating a somewhat **differnet diffusion rate for different batch sizes**.
   1. Weight distance reached at the end of the initial learning phrase are significantly different for different batch sizes.
 
 The findings lead to the flowing informal argument:

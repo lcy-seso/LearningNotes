@@ -15,3 +15,4 @@
 - [Large batch training of convolutional networks](rendered/Large_Batch_Training_of_Convolutional_Networks.pdf)
 - Devarakonda A, Naumov M, Garland M. AdaBatch: Adaptive Batch Sizes for Training Deep Neural Networks[J]. arXiv preprint arXiv:1712.02029, 2017.
 - Masters D, Luschi C. Revisiting Small Batch Training for Deep Neural Networks[J]. arXiv preprint arXiv:1804.07612, 2018.
+- [Highly Scalable Deep Learning Training System with Mixed-Precision: Training ImageNet in Four Minutes](rendered/Highly_Scalable_Deep_Learning_Training_System_with_Mixed-Precision.pdf)
