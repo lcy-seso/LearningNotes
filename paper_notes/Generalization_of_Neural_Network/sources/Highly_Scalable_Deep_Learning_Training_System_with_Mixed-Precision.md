@@ -36,7 +36,7 @@ _**Solution**_
 
 1. the operations in forward and backward propagation are performed in FP16.
 1. weights and gradients are cast to single-precision (FP32) format before applying LARS
-1. after applying LARS, weights and gradients are cast back to FP16.
+1. after applying LARS, weights, and gradients are cast back to FP16.
 
 ![](images/mixed_precision_with_LARS.png)
 
@@ -64,13 +64,13 @@ objective: _**maximize the throughput as well as reduce the latency**_.
 
 * Hybrid all-reduce
   * challenges
-    * tensor fusion increase the throughput but also increase latency.
+    * tensor fusion increases the throughput but also increase latency.
     * hierarchical all-reduce instead of ring-base all-reduce perform better for small tensor communication.
 
 ## Experimental Results
 
 1. For ResNet-50 training, LARS could improve the top-1 accuracy from 60.6% to 71.9%, but cannot reach the baseline accuracy yet. Eliminating weight decay on bias and batch normalization meets the baseline test accuracy.
-1. Using mixed-precision training can speedup single-node performance of ResNet-50 from 172 images/second to 218 images/second. (1.26)
+1. Using mixed-precision training can speedup the single-node performance of ResNet-50 from 172 images/second to 218 images/second. (1.26)
 1. scalability
 
 ![](images/scalability.png)

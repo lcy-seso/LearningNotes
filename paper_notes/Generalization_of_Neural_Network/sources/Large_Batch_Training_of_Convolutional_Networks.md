@@ -12,7 +12,7 @@ difficult, and networks may diverge especially during the initial phase.
 
     - "learning rate warm-up
 
-- apply linear scaling and warm-up scheme to train Alexnet on Imagenet
+- apply linear scaling and warm-up scheme to train AlexNet on Imagenet
 - *BUT* scaling stopped after B=2K since training diverged for large LRs.
 
     |batch size| accuracy|
@@ -39,7 +39,7 @@ difficult, and networks may diverge especially during the initial phase.
     1. uses a separate learning rate for each layer and not for each weight, which leads to better stability
     1. the magnitude of the update is controlled with respect to the weight norm for better control of training speed.
 
-- With LARS, Alexnet-BN and Resnet-50 trained with B=32K without accuracy loss.
+- With LARS, Alexnet-BN, and Resnet-50 trained with B=32K without accuracy loss.
 
 ## LARS
 
@@ -54,6 +54,6 @@ the target.
 - When $\lambda$ is large, the
 update $\lVert \lambda * \nabla L(\omega_t)\rVert$can become larger than $\omega$, and this can cause the divergence. This makes the initial phase of training highly sensitive to the weight initialization and to initial LR.
 - The paper found that the ratio the L2-norm of weights and gradients $\lVert \omega \rVert/\lVert \nabla L(\omega) \rVert$  varies significantly between weights and biases, and between different layers.
-- The ratio is high during the initial phase, and it is rapidly decrease after few epochs.
+- The ratio is high during the initial phase, and it rapidly decreases after a few epochs.
 
 ![](images/f2.png)

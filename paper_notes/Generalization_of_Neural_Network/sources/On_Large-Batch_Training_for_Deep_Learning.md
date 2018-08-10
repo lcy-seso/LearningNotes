@@ -1,23 +1,23 @@
 # [On large-batch training for deep learning: Generalization gap and sharp minima](https://arxiv.org/pdf/1609.04836.pdf)
 
-## Exsiting problems
+## Existing problems
 
 1. large batch methods over-fit the model.
 1. large batch methods are attracted to saddle points.
-1. large batch methods tend to zeeom-in on the mimimzer closest to the initial point.
+1. large batch methods tend to zoom-in on the minimizer closest to the initial point.
 1. small batch and large batch methods converge to qualitatively different minimizers with different properties.
 
-## Conclusions/Founding in this parper
+## Conclusions/Founding in this paper
 
-- The generalization gap is not due to over-fitting or over-training.  
+- The generalization gap is not due to over-fitting or over-training.
 - Due to the _**inherent noise**_ in the gradient estimation:
 
-  - large-batch methods tend to converge to sharp minimizers of the training and testing fucntions.
+  - large-batch methods tend to converge to sharp minimizers of the training and testing functions.
     - the sharp minimizers are characterized by _**a significant number of large positive eigenvalues**_ in $\bigtriangledown^2f(x)$.
     - flat minimizers tend to generalize well.
   - small-batch methods consistently converge to flat minimizers.
-    - flat minimizers charaterized by _**having numerous small eigenvalues of $\bigtriangledown^2f(x)$**_.
-- The loss function landscape of deep neural networks is such that large-batch methods are attracted to region with sharp minimizers and are unable to escape basins of attraction of these minimizers.
+    - flat minimizers characterized by _**having numerous small eigenvalues of $\bigtriangledown^2f(x)$**_.
+- The loss function landscape of deep neural networks is such that large-batch methods are attracted to the region with sharp minimizers and are unable to escape basins of attraction of these minimizers.
 - **using a large-batch method that is warm-start with a small-batch method**.
 
 ## Some background information
@@ -31,15 +31,15 @@
   1. saddle-point avoidance[[2](#References)].
   1. robustness to input data[[3](#References)].
 
-- The loss funcion of deep learning models is frauthg with many local minimizers, and many of these minimizers correspond to a similar loss function value.
+- The loss function of deep learning models is fraught with many local minimizers, and many of these minimizers correspond to a similar loss function value.
   - both flat and sharp minimizer have very similar loss function values.
 
 ## Experimental Study
 
-### How to measure sharpness of a minimizer
+### How to measure the sharpness of a minimizer
 
-- sharpness of a minimizer can be characterized by the magnitude of the eigenvalues of $\bigtriangledown^2f(x)$
-  - however, the computatioin cost is prohibitive.
+- the sharpness of a minimizer can be characterized by the magnitude of the eigenvalues of $\bigtriangledown^2f(x)$
+  - however, the computation cost is prohibitive.
 - a computationally feasible metric: exploring a small neighborhood of a solution and computing the largest value that the function $f$ can attain in that neighborhood.
 
   ![](images/sharpness_metric.png)
@@ -59,17 +59,17 @@
     ![](images/sharpness_of_minimizers_2.png)
 
 - sharp minimizers identified in the experiments **do not resemble a cone**
-  - sampling the loss function in neighborhood
+  - sampling the loss function in the neighborhood
   - the loss function rises steeply only along a small dimensional subspace.
 
 ### minimizers and the starting point
 
 - experimental method:
-  1. train the network using Adam with batch size of 256 (small batch size), then we get 100 solutions.
+  1. train the network using Adam with a batch size of 256 (small batch size), then we get 100 solutions.
   1. use these 100 solutions as start points and train the network use a larget batch size.
-- foundings
-  1. when warm-stared with only a few intial epochs, the larget batch method dose not yield a generalization imporvement.
-  1. after certain number of epochs of warm-starting, the accuracy improves and sharpness of the large-batch iterations drop.
+- founding
+  1. when warm-stared with only a few initial epochs, the larget batch method does not yield a generalization improvement.
+  1. after a certain number of epochs of warm-starting, the accuracy improves and sharpness of the large-batch iterations drop.
 
   ![](images/warmup_experiments.png)
 

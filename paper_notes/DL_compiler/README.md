@@ -1,2 +1,2 @@
 - [TVM](rendered/TVM.pdf)
-- [Swift for TensorFlow](rendered/swift_for_tf.pdf)
+- [Swift for TensorFlow](rendered/swift_for_tensorflow.pdf)
