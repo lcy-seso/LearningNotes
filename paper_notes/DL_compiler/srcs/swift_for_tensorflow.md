@@ -18,7 +18,7 @@
 1. Provide the best possible user experience for machine learning researchers, developers and production engineers.
 1. Provide usable access to high-performance computation.
 1. Eliminate the compromises that have historically forced developers to choose between performance or usability.
-1. Provide a simple, predictable, and reliable programming model that is easy to intuitively understandable, and the compiler can reinforce with warnings, other diagnostics and potentially optimization techniques.
+1. Provide a simple, predictable, and reliable programming model that is easy to intuitively understandable, and the compiler can reinforce with warnings, other diagnostics and potential optimization techniques.
 
 _**New things could be achieved if we could enhance the compiler and language**_.
 
@@ -26,7 +26,6 @@ _**New things could be achieved if we could enhance the compiler and language**_
 * Have the compiler do the job of building a TensorFlow graph.
 * Performance benefits of graph abstractions.
 * Allow other compiler analysis to automatically detect bugs (like shape mismatches) in user code without even running it.
-
 * The project goal is to improve the usability of TensorFlow
 * Graph execution: performance.
 * Improved usability at the _**every level of the stack**_.
