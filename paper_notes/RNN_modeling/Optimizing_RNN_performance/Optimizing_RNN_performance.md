@@ -100,6 +100,56 @@ The problem persist RNN used in DeepSpeech2 address is a bit different from the 
 
 This is a very special senario that small mini-batch training has obvious advantage. In some other senario, large batch training is more advantagous.
 
+# [Optimizing Performance of Recurrent Neural Networks on GPUs](https://arxiv.org/pdf/1604.01946.pdf)
+
+To get the best performance out of Recurrent Neural Networks you often have to expose much more parallelism than direct implementation of the equations provides. Three stages optimizations:
+
+1. Optimizing a single cell
+1. Optimizing a single layer
+1. Optimizing the entire network
+
+<p align="center">
+<image src="images/starting_point.png" width=55%>
+<br> Fig. starting point for optimization.
+</p>
+
+## Single cell
+
+1. streamed matrix multiplications
+    * the matrix multiplication performed by RNNs often have insufficient parallelism for optimal performance on the GPU.
+    * current state-of-art GEMM kernels are implemented with each CUDA block computing a rectangular tile of the output.
+      * dimensions of this tile is typically from 32 to 128
+      * it is desireable to <span style="background-color:#ACD6FF;">_**have multiple blocks per SM**_</span> to maximise latency hiding.
+    * use CUDA stream to inform the hardware the matrix multiplications are independent
+1. fuse elementwise operation
+   * reduces data transfers to and from global memory.
+
+<p align="center">
+<image src="images/single_cell_optimization.png" width=45%>
+<br> Fig. After single pass optimization.
+</p>
+
+## Single layer
+
+1. pre-transposing the weight matrix lead to noticeable performace improvments.
+    * This is based on the fact that: in BLAS APIs, some of the four combinations of transpose/not-transposed run slightly faster or slower than others.
+1. combining input GEMMs.
+    * there is a trade-off: combining input GEMMs gives more parallelism in that operation, but also prevents overlap with the recurrent GEMMs.
+    * the best strategy here depends a lot on the RNN hyperparameters.
+    * combining two input GEMMs works best in this case.
+    * batch inputs is actually found to be detrimental in many cases for minibatch size other than 32.
+
+<p align="center">
+<image src="images/single_layer_optimization.png" width=70%>
+</p>
+
+## Multiple layers
+
+<p align="center">
+<image src="images/multiple_layer_optimization.png" width=70%>
+</p>
+
+
 # References
 
 1. [Learning both Weights and Connections for Efficient Neural Networks](https://arxiv.org/pdf/1506.02626v2.pdf) : This paper has a nice accounting of the flops in the various layers of image style convnets.
