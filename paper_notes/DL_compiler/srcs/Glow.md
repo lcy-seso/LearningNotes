@@ -50,7 +50,9 @@ _**Node lowering**_
 
 ### An example of IR format function
 
-![](images/low-level-glow-ir.png)
+<p align="center">
+<img src="images/low-level-glow-ir.png" width=50%>
+</p>
 
 * A function in IR format has two parts:
   1. declare
