@@ -44,3 +44,5 @@
 1. [Automatic differentiation for machine learning in Julia](https://int8.io/automatic-differentiation-machine-learning-julia/)
 1. [Multivariable Dual Numbers & Automatic Differentiation](https://blog.demofox.org/2017/02/20/multivariable-dual-numbers-automatic-differentiation/)
 1. [Forward-Mode Automatic Differentiation in Julia](https://arxiv.org/pdf/1607.07892.pdf)
+1. [A simple explanation of reverse-mode automatic differentiation]( https://justindomke.wordpress.com/2009/03/24/a-simple-explanation-of-reverse-mode-automatic-differentiation/)
+1. [Reverse-mode automatic differentiation: a tutorial](https://rufflewind.com/2016-12-30/reverse-mode-automatic-differentiation) 
