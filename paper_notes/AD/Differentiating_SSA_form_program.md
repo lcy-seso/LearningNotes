@@ -1,10 +1,10 @@
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-	- [Goals](#goals)
-	- [Background](#background)
-		- [Problem setting && Notation](#problem-setting-notation)
-			- [Notation](#notation)
-			- [Function call Tracing: dynamic vs. static approaches](#function-call-tracing-dynamic-vs-static-approaches)
+- [Goals](#goals)
+- [Background](#background)
+	- [Problem setting && Notation](#problem-setting-notation)
+		- [Notation](#notation)
+		- [Function call Tracing: dynamic vs. static approaches](#function-call-tracing-dynamic-vs-static-approaches)
 
 <!-- /TOC -->
 
@@ -67,6 +67,10 @@ end
 
 - The limitations of the static approach <span style="background-color:#ACD6FF;">are not fundamental to AD</span>, but instead are <span style="background-color:#ACD6FF;">limitations of the symbolic form or the language we are differentiate -- the Wengert list</font>.
 
+## Solution in this paper: Generalising Wengert List
+
+
 ## References
 
 1. [The Tapenade Automatic Differentiation tool: principles, model, and speciﬁcation](https://hal.inria.fr/hal-00913983/document)
+1. [Differentiable Programming](http://www.cs.nuim.ie/~gunes/files/Baydin-MSR-Slides-20160201.pdf)

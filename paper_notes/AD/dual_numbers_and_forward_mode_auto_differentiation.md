@@ -1,8 +1,87 @@
-# Forward Mode Auto Differentiation
+<!-- $theme: gaia -->
+
+# Auto Differentiation
+---
+
+## What is Forward-Mode AD ?
+
+<font size=5>
+
+Let's see an example:
+
+$$ z = x * y + sin(x)$$
+    
+* <font size=t> _In the example above, both $x$, $y$, and $z$ are scalar._ </font>
+
+* First, think about how a _computer_ would evaluate $z$ via a sequence of primitive operations.
+
+  $1. x = ?$
+  $2. y = ?$
+  $3. a = x * y$
+  $4. b = sin(x)$
+  $5. z = a + b$
+
+</font>
+
+---
+
+## What is Forward-Mode AD ?
+
+<font size=5>
+
+* Let's differentiate each equation with respect to some yet-to-be-given variable $t$
+
+    $1. \frac{\partial x}{\partial t} = ?$
+    $2. \frac{\partial y}{\partial t} = ?$
+    $3. \frac{\partial a}{\partial t} = y *\frac{\partial x}{\partial t} + x * \frac{\partial y}{\partial t}$
+    $4. \frac{\partial b}{\partial t} = cos(x) * \frac{\partial x}{\partial t}$
+    $5. \frac{\partial z}{\partial t} = \frac{\partial a}{\partial t} + \frac{\partial b}{\partial t}$
+
+* Let's transform the above equations by using differential variables: $\{\text{d}x, \text{d}y, ...\}$, which stands for $\{\frac{\partial x}{\partial t}, \frac{\partial y}{\partial t}, ...\}$, then we can get:
+    $1. \text{dx} = ?$
+    $2. \text{dy} = ?$
+    $3. \text{da} = y * \text{d}x + x * \text{d}y$
+    $4. \text{db} = cos(x) * \text{d}x$
+    $5. \text{dz} = \text{da} + \text{db}$
+
+</font>
+
+---
+
+* ## What is Forward-Mode AD ?
+
+---
+
+<font size=5>
+
+* Let's substitute $t = x$, then we can get:
+
+    $1. \text{dx} = 1$
+    $2. \text{dy} = 0$
+    $3. \text{da} = y$
+    $4. \text{db} = cos(x)$
+    $5. \text{dz} = \text{da} + \text{db}$
+* Let's substitute $t = y$, then we can get:
+
+    $1. \text{dx} = 0$
+    $2. \text{dy} = 1$
+    $3. \text{da} = x$
+    $4. \text{db} = 0$
+    $5. \text{dz} = \text{da} + \text{db}$
+
+* The above process is the forward mode AD.
+
+</font>
+
+---
+
+## Dual number and forward-mode Auto Differentiation
 
 1. Forward mode automatic differentiation is accomplished by <span style="background-color:#ACD6FF;">_**augmenting the algebra of real numbers**_</span> and obtaining a new arithmetic.
 
 1. With the help of dual number operations on numbers, it is possible to <span style="background-color:#ACD6FF;">_**calculate the value of $f(x)$ while also calculating $f'(x)$ at the same time**_</span>.
+
+---
 
 ## Dual Numbers
 
