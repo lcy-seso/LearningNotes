@@ -31,8 +31,9 @@ _**Types are regular objects existing at runtime!**_
 
 ## Nominal and Structural Type
 
-Most statically-typed production languages, including AdaLanguage, CeePlusPlus, JavaLanguage, and CsharpLanguage, are (for the most part) nominally typed. Many of the statically-typed FunctionalProgrammingLanguages, such as HaskellLanguage and the numerous variants of ML, are structurally typed. C++ is an interesting hybrid, actually.
-
+- Most statically-typed production languages, including Ada, C++, Java, and C#, are (for the most part) nominally typed.
+- Many of the statically-typed functional programming languages, such as Haskell and the numerous variants of ML, are structurally typed.
+- C++ is actually an interesting hybrid.
 
 ## References
 
