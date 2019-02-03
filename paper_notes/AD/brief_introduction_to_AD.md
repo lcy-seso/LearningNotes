@@ -76,9 +76,11 @@ First, let's think about how a *computer* would evaluate $z$ via a sequence of p
 
 ### Dual Number and Forward-Mode AD Implementation
 
-Forward mode automatic differentiation is accomplished by [***augmenting the algebra of real numbers***]{style="background-color:#ACD6FF;"} and obtaining a new arithmetic. - An additional component is added to every number which will [***represent the derivative of a function at the number***]{style="background-color:#ACD6FF;"} - And all arithmetic operators are extended for the augmented algebra.
+Forward mode automatic differentiation is accomplished by <span style="background-color:#ACD6FF;">***augmenting the algebra of real numbers***</span> and obtaining a new arithmetic.
+- An additional component is added to every number which will <span style="background-color:#ACD6FF;">***represent the derivative of a function at the number***</span>.
+- And all arithmetic operators are extended for the augmented algebra.
 
-With the help of dual number operations on numbers, it is possible to [***calculate the value of $f(x)$ while also calculating $f'(x)$ at the same time***]{style="background-color:#ACD6FF;"}.
+With the help of dual number operations on numbers, it is possible to <span style="background-color:#ACD6FF;">***calculate the value of $f(x)$ while also calculating $f'(x)$ at the same time***</span>.
 
 #### Definition of Dual Number
 
