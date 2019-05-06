@@ -1,9 +1,22 @@
-Let's take this example, and do gradient computation by hand:
-$z = 4xy + 3x\text{sin}4y$
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-## The primal program
+- [An Example of Tape-based Reverse Mode AD](#an-example-of-tape-based-reverse-mode-ad)
+	- [The First-order Derivatives of a Scalar-function](#the-first-order-derivatives-of-a-scalar-function)
+		- [The primal program](#the-primal-program)
+		- [The adjoint program](#the-adjoint-program)
+	- [High-order Derivatives of a Multi-variable Function](#high-order-derivatives-of-a-multi-variable-function)
 
-|No.|tape node|explanation|
+<!-- /TOC -->
+
+# An Example of Tape-based Reverse Mode AD
+
+We will use $z = 4xy + 3x\text{sin}4y$ as an example which is a scalar function with two variables, and mimic the execution of the Tape-based reverse AD by hand to compute gradients.
+
+## The First-order Derivatives of a Scalar-function
+
+### The primal program
+
+|No.|Tape node|Explanation|
 |--|--|--|
 |1|$\text{@1} = ?$ |$x$, this node should be marked as a root|
 |2| $\text{@2} = ?$ |$y$, this node should be marked as a root
@@ -20,13 +33,13 @@ $z = 4xy + 3x\text{sin}4y$
 <br> Fig.1 the expression graph
 </p>
 
-## The adjoint program
+### The adjoint program
 
 Given the primal program, generate the adjoint program. Let's denote $\frac{\partial l}{\partial \text{@x}} \triangleq \bigtriangledown\text{@x}$, where $l$ is the loss function.
 
 The adjoint program:
 
-|No.|tape node|explanation|
+|No.|Tape node|Explanation|
 |--|--|--|
 |9|$\bigtriangledown\text{@9} = ?$|Initialization. This is the seed set to 1.
 |9|$\bigtriangledown\text{@4} = \bigtriangledown\text{@9}$|$+$ is a binary operation, gradients for the first operand|
@@ -46,3 +59,29 @@ We finally obtain:
 
 1. $\bigtriangledown\text{@1} = 4y + 3\text{sin}(4y)$
 1. $\bigtriangledown\text{@2} = 4x + 12x \text{cos}(4y)$
+
+```julia
+mutable struct TapeNode{T}
+  result::T
+  operation::Callable
+  parentidx::Vector{UInt32}
+end
+
+mutable struct Tape
+    nodes::Vector{TapeNode}
+    parentidx::Vector{UInt32}
+    inputidx::Vector{UInt32}
+    outputidx::Vector{UInt32}
+end
+
+const Program = Vector{Tape}
+```
+
+## High-order Derivatives of a Multi-variable Function
+
+`gradient(program::Program)`
+
+* **Input**
+    The Tape representation of $n-1$ order gradient, which contains:
+    *
+* **Output**

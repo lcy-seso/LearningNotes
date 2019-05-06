@@ -6,9 +6,6 @@
 ---
 <!-- *template: invert -->
 
-# 请大家加入Hi群：1600022
-
----
 <!-- *template: invert -->
 ### ==1==. 为什么需要 PaddlePaddle Fluid？
 
