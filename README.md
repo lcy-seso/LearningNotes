@@ -1,3 +1,1 @@
-My learning notes.
-
-Please check each individual directory for more details.
+Some of My learning notes.
