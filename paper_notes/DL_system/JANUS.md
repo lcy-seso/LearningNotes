@@ -1,34 +1,10 @@
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
-
-- [JANUS: Fast and Flexible Deep Learning via Symbolic Graph Execution of Imperative Programs](#janus-fast-and-flexible-deep-learning-via-symbolic-graph-execution-of-imperative-programs)
-	- [My Takeaways and some thoughts](#my-takeaways-and-some-thoughts)
-	- [Overall](#overall)
-		- [Problem proposed](#problem-proposed)
-		- [Goal](#goal)
-		- [_**Solution**_](#solution)
-		- [Evaluation Methods in this Paper](#evaluation-methods-in-this-paper)
-	- [Related Works](#related-works)
-	- [Detail](#detail)
-		- [Chanllenges](#chanllenges)
-		- [Proposed Solutions](#proposed-solutions)
-			- [Overview](#overview)
-			- [Symbolic Graph Generation Details](#symbolic-graph-generation-details)
-				- [Dynamic Control Flow](#dynamic-control-flow)
-				- [Speculative graph generation](#speculative-graph-generation)
-			- [Dynamic Type](#dynamic-type)
-			- [Speculative graph generation](#speculative-graph-generation)
-				- [For expressions types of whose returned value cannot be inferred](#for-expressions-types-of-whose-returned-value-cannot-be-inferred)
-				- [Specialize shapes of Tensor before constructing the graph.](#specialize-shapes-of-tensor-before-constructing-the-graph)
-			- [Impure Functions](#impure-functions)
-	- [Reference](#reference)
-
-<!-- /TOC -->
+[TOC]
 
 # JANUS: Fast and Flexible Deep Learning via Symbolic Graph Execution of Imperative Programs
 
 [link](https://arxiv.org/pdf/1812.01329.pdf)
 
-## My Takeaways and some thoughts
+## My Takeaways and Some Thoughts
 
 1. <span style="background-color:#DB7093;">Unlike a language's JIT</span>, it is not necessary to optimize the host language execution, but only the computation workload.
 1. What is speculative optimization doing in PL research? It seems that we can borrow wisdom from this area to strike a balance between usability and efficiency.
@@ -44,7 +20,7 @@
 
 ## Overall
 
-### Problem proposed
+### Problem Proposed
 
 Diverged efforts for optimizing performance and improving usability.
 
@@ -55,7 +31,7 @@ Diverged efforts for optimizing performance and improving usability.
 
 Achieve the best of both worlds.
 
-### _**Solution**_
+### Solution
 
 * Receive an imperative DL program as input and create symbolic graphs with _**<span style="background-color:            #DB7093;">speculative program context assumptions</span>**_.
     * makes environment assumptions on the program context <span style="background-color:#ACD6FF;">??</span>
@@ -94,9 +70,7 @@ Achieve the best of both worlds.
     1. Impure functions/mutation
         * _**In this problem, almost all the work prefer functional style**_ (see [1], and many others).
 
-### Proposed Solutions
-
-#### Overview
+### Proposed Approach
 
 * **Input**
     The DL program is assumed to be written using the API and programming model of an existing imperative DL model.
@@ -157,7 +131,6 @@ Solution: _**Profiler**_ observes the types of expressions during executions.
 
 * Does not mutate global states in place on the fly. Create local copies of global states, and mutates only the local copies during symbolic graph execution.
     - <span style="background-color:#DB7093;">Mybe we can try to make the best use of Julia's or a PL's scope constrain?</span>?
-
 
 ## Reference
 
