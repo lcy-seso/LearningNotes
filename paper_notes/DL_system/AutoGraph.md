@@ -24,10 +24,10 @@ _**Approaches and Key insights**_
 
 # My Takeaways
 
-1. Learn some new terminologies: staged programming, and LMS. These techniques are also used in Swift for TF. They are worth further reading.
+1. Learn some new terminologies: _**STAGED programming**_, and LMS. These techniques are also used in Swift for TF. They are worth further reading.
     - Quoted from the paper:
     > 1. Providing easier deferred execution using staged programming or multiple dispatch has a long history.
-    > 1. Notable examples include Lightweight Modular Staging's type-based deferred execution model.
+    > 1. Notable examples include (1) Lightweight Modular Staging's type-based deferred execution model; (2) the paired use of Lua and Terra to stage high-performance numerical code; (3) Julia's multiple dispatch system.
 1. The workflow chosen by this paper is:
     1. Allow users to express complex _**ML programs**_(DL programs actually) using a general purpose programming language, Python, to write imperative style programs;
     1. _**Lower**_ Python codes into some optimized IRs (that can be run as fast as some hand-written alternatives)
@@ -43,3 +43,5 @@ A notable difference between work in this paper and PyTorch's Torch Script frame
 Some random keywords:
 
 1. [LMS](https://scala-lms.github.io/): Lightweight Modular Staging (LMS) is a runtime code generation approach.
+1. [A Language and Compiler View on Differentiable Programming](https://openreview.net/forum?id=SJxJtYkPG)
+1. [A Taxonomy of meta-programming systems](http://web.cecs.pdx.edu/~sheard/staged.html)
