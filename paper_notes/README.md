@@ -5,9 +5,11 @@
 |No.|Title|Key word|
 |--|--|--|
 |2. |[Dryad: Distributed Data-Parallel Programs from Sequential Building Blocks](https://www.microsoft.com/en-us/research/wp-content/uploads/2007/03/eurosys07.pdf)||
-|2. |[Swift: A language for distributed parallel scripting](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.720.8476&rep=rep1&type=pdf)|Parallel programming, scripting|
-|3. |[Distributed Data-Parallel Computing Using a High-Level Programming Language](http://michaelisard.com/pubs/sigmod09.pdf)|Concurrent Programming|
-|4.|[TensorFlow Eager: A multi-stage, Python-embedded DSL for machine learning](https://www.sysml.cc/doc/2019/88.pdf)||
+|3. |[Swift: A language for distributed parallel scripting](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.720.8476&rep=rep1&type=pdf)|Parallel programming, scripting|
+|4. |[Distributed Data-Parallel Computing Using a High-Level Programming Language](http://michaelisard.com/pubs/sigmod09.pdf)|Concurrent Programming|
+|5.|[TensorFlow Eager: A multi-stage, Python-embedded DSL for machine learning](https://www.sysml.cc/doc/2019/88.pdf)||
+|6.|[Ray: A Distributed Framework for Emerging AI Applications](https://arxiv.org/pdf/1712.05889.pdf)   |   |
+|7.|[Real-Time Machine Learning: The Missing Pieces](https://arxiv.org/pdf/1703.03924.pdf)|   |
 
 ## Done
 
