@@ -7,7 +7,7 @@
 ## My Takeaways and Some Thoughts
 
 1. <span style="background-color:#DB7093;">_**Unlike a language's JIT**_</span>, it is not necessary to optimize the host language execution, but only the computation workload.
-1. What is speculative optimization doing in PL research? It seems that we can borrow wisdom from this area to strike a balance between usability and efficiency.
+1. What is <span style="background-color:#DB7093;">_**speculative optimization**_</span> doing in PL research? It seems that we can borrow wisdom from this area to strike a balance between usability and efficiency.
 1. Not all dynamic semantics of a dynamic imperative language can be successfully converted into a symbolic data flow program.
 1. Work in this paper prototyped on Python and TensorFlow. Dynamic language like Julia has a more sophisticated type system, thus more friendly for optimization. So, suppose we just reproduce this work in Julia, what new things will be achieved?
 1. It goes back to the principle: optimization based on specialization to the extreme. Making aggressive assumptions by execution.
