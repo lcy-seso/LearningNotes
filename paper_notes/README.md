@@ -1,20 +1,12 @@
 # Reading List (from 2019/05/28)
 
-## To be read:
-
-|No.|Title|Key word|
-|--|--|--|
-|2. |[Dryad: Distributed Data-Parallel Programs from Sequential Building Blocks](https://www.microsoft.com/en-us/research/wp-content/uploads/2007/03/eurosys07.pdf)||
-|3. |[Swift: A language for distributed parallel scripting](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.720.8476&rep=rep1&type=pdf)|Parallel programming, scripting|
-|4. |[Distributed Data-Parallel Computing Using a High-Level Programming Language](http://michaelisard.com/pubs/sigmod09.pdf)|Concurrent Programming|
-|5.|[TensorFlow Eager: A multi-stage, Python-embedded DSL for machine learning](https://www.sysml.cc/doc/2019/88.pdf)||
-|6.|[Ray: A Distributed Framework for Emerging AI Applications](https://arxiv.org/pdf/1712.05889.pdf)   |   |
-|7.|[Real-Time Machine Learning: The Missing Pieces](https://arxiv.org/pdf/1703.03924.pdf)|   |
-
-## Done
-
-|No.|Title|Date|My Notes|Recommendation<br>(personal bais based on current interests 1~5)|
-|--|--|--|--|--|
-|1.|[JANUS: Fast and Flexible Deep Learning via Symbolic Graph Execution of Imperative Programs](https://arxiv.org/pdf/1812.01329.pdf)|2019/05/28|[note](https://github.com/lcy-seso/learning_notes/blob/master/paper_notes/DL_system/JANUS.md)|2|
-|2.|[Pydron: semi-automatic parallelization for multi-core and the cloud](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.1018.8549&rep=rep1&type=pdf)|2019/05/29|[note](https://github.com/lcy-seso/learning_notes/blob/master/paper_notes/DL_system/Pydron.md)|4|
-|3.|[AutoGraph: Imperative-style Coding with Graph-based Performance](https://arxiv.org/abs/1810.08061)|2019/06/12|[note](https://github.com/lcy-seso/learning_notes/blob/master/paper_notes/DL_system/AutoGraph.md)|4|
+1. [Dryad: Distributed Data-Parallel Programs from Sequential Building Blocks](https://www.microsoft.com/en-us/research/wp-content/uploads/2007/03/eurosys07.pdf)
+1. [Swift: A language for distributed parallel scripting](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.720.8476&rep=rep1&type=pdf)
+1. [Distributed Data-Parallel Computing Using a High-Level Programming Language](http://michaelisard.com/pubs/sigmod09.pdf)
+1. [TensorFlow Eager: A multi-stage, Python-embedded DSL for machine learning](https://www.sysml.cc/doc/2019/88.pdf)
+1. [Ray: A Distributed Framework for Emerging AI Applications](https://arxiv.org/pdf/1712.05889.pdf)
+1. [Real-Time Machine Learning: The Missing Pieces](https://arxiv.org/pdf/1703.03924.pdf)
+1. [Beyond Data and Model Parallelism for Deep Neural Networks](https://arxiv.org/pdf/1807.05358.pdf)
+1. ~~[JANUS: Fast and Flexible Deep Learning via Symbolic Graph Execution of Imperative Programs](https://arxiv.org/pdf/1812.01329.pdf)~~
+1. ~~[Pydron: semi-automatic parallelization for multi-core and the cloud](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.1018.8549&rep=rep1&type=pdf)~~
+1. ~~[AutoGraph: Imperative-style Coding with Graph-based Performance](https://arxiv.org/abs/1810.08061)~~
