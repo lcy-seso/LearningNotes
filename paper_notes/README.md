@@ -10,3 +10,5 @@
 1. ~~[JANUS: Fast and Flexible Deep Learning via Symbolic Graph Execution of Imperative Programs](https://arxiv.org/pdf/1812.01329.pdf)~~
 1. ~~[Pydron: semi-automatic parallelization for multi-core and the cloud](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.1018.8549&rep=rep1&type=pdf)~~
 1. ~~[AutoGraph: Imperative-style Coding with Graph-based Performance](https://arxiv.org/abs/1810.08061)~~
+1. ~~[Chainer: a Next-Generation Open Source Framework for Deep Learning](http://learningsys.org/papers/LearningSys_2015_paper_33.pdf)~~
+1. [Beyond Data and Model Parallelism for Deep Neural Networks](https://arxiv.org/pdf/1807.05358.pdf)

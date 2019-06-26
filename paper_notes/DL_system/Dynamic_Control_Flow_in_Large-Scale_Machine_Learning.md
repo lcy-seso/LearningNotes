@@ -1,6 +1,8 @@
+# [Dynamic Control Flow in Large-Scale Machine Learning](https://arxiv.org/pdf/1805.01772.pdf)
+
 ## Objectives and Goals
 
-> The author claims that after analyzing 11.7 million of uniqe computation graphs in Google, it is found that 65% of them contains some kind of conditional computation, and 5% contain one or more loops.
+> The  author claims that after analyzing 11.7 million of uniqe computation graphs in Google, it is found that 65% of them contains some kind of conditional computation, and 5% contain one or more loops.
 
 Confilcting design objectives for the underlying system
 
@@ -25,5 +27,3 @@ Two design choices:
 * The _**out-of-graph**_ approach
   * rely on control-flow features of the host language or static unrolling.
   * In heterogeneous environment, communication and syschronization with the client process can be costly.
-
-## Design and Implementation
