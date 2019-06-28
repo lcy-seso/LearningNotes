@@ -59,6 +59,8 @@ Fig. Basic primitives of the dataflow graph.
 |4.|switch actor|directs data values. <br>Passes one of its input tokens to the output based on the value of the control token.|
 |5.|copy|identity operators that duplicate input tokens.|
 
+_**[Not Finished Yet]**_
+
 # Reference
 
 1. [Tensorflow Conditionals and While Loops](http://mlexplore.org/2018/03/27/tensorflow-conditionals-and-while-loops/)
