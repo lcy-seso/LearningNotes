@@ -11,3 +11,5 @@
 1. ~~[Pydron: semi-automatic parallelization for multi-core and the cloud](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.1018.8549&rep=rep1&type=pdf)~~
 1. ~~[AutoGraph: Imperative-style Coding with Graph-based Performance](https://arxiv.org/abs/1810.08061)~~
 1. ~~[Chainer: a Next-Generation Open Source Framework for Deep Learning](http://learningsys.org/papers/LearningSys_2015_paper_33.pdf)~~
+1. [A Computational Model for TensorFlow An Introduction](http://delivery.acm.org/10.1145/3090000/3088527/pldiws17mapl-maplmainid2.pdf?ip=167.220.233.20&id=3088527&acc=OA&key=9625D833D637755D%2E9625D833D637755D%2E49016EFF332EB890%2E5945DC2EABF3343C&__acm__=1562031967_4d8123a98b3ee56720dba691f1840eed)
+1. [Timely Dataflow: A model](https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/43546.pdf)
