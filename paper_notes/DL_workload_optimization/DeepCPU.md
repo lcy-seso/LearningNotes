@@ -1,16 +1,19 @@
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+# [DeepCPU Serving RNN-based Deep Learning Models 10x Faster](https://www.usenix.org/system/files/conference/atc18/atc18-zhang-minjia.pdf)
 
-- [DeepCPU Serving RNN-based Deep Learning Models 10x Faster](#deepcpu-serving-rnn-based-deep-learning-models-10x-faster)
-	- [Problem to address](#problem-to-address)
-	- [Key techniques](#key-techniques)
-	- [Takeaways](#takeaways)
-- [References](#references)
+## Takeaways
 
-<!-- /TOC -->
+1. I learned the concepts of the Roofline model and data reuse.
+    > _**Data reuse at a particular level of the memory hierarchy is a measure of the number of computational ops that can be executed per data load/store at that level of the memory hierarchy.**_
 
-# DeepCPU Serving RNN-based Deep Learning Models 10x Faster
+1. GEMM works poorly for small MMs. [This work](https://github.com/lcy-seso/LearningNotes/blob/master/paper_notes/DL_workload_optimization/Optimizing_RNN_performance/Optimizing_RNN_performance.md#investigating-performance-of-gpu-blas-libraries) also makes the same claim, and in most cases, no one hopes to implement GEMM himself, so we need MM fusion.
+1. A methodology for optimization work
+    1. An important start of optimization is to define a concise search space.
+    1. Reduce the search space.
+1. Some facts:
+    1. partition/merge/in-place memory access seems to be useful semantics to be supported at the back-end.
+    1. The computation of RNN is dominated by MMs.
+    1. RNN's computation is intrinsically sequential, but if we split the computation into more fine-grained granularities (no details are defined at the moment), or stack more RNN cells, there is still a large space for parallelism execution. And, parallelism boots compute capacity but may also increase data movement. This is a soft scheduling space.
 
-[link](https://www.usenix.org/system/files/conference/atc18/atc18-zhang-minjia.pdf)
 
 ## Problem to address
 
@@ -32,20 +35,6 @@ Find an optimized implementation for RNN execution that _**maximizes data reuse*
     - moves computation to where weights are stored to maximize data reuse across multiple steps of RNN execution.
     - This idea seems to be similar to [[1](#References)].
 1. other techniques, MM fusion, reuse-aware parallelism decision.
-
-## Takeaways
-
-1. I learned the concepts of the Roofline model and data reuse.
-    > _**Data reuse at a particular level of the memory hierarchy is a measure of the number of computational ops that can be executed per data load/store at that level of the memory hierarchy.**_
-
-1. GEMM works poorly for small MMs. [This work](https://github.com/lcy-seso/LearningNotes/blob/master/paper_notes/DL_workload_optimization/Optimizing_RNN_performance/Optimizing_RNN_performance.md#investigating-performance-of-gpu-blas-libraries) also makes the same claim, and in most cases, no one hopes to implement GEMM himself, so we need MM fusion.
-1. A methodology for optimization work
-    1. An important start of optimization is to define a concise search space.
-    1. Reduce the search space.
-1. Some facts:
-    1. partition/merge/in-place memory access seems to be useful semantics to be supported at the back-end.
-    1. The computation of RNN is dominated by MMs.
-    1. RNN's computation is intrinsically sequential, but if we split the computation into more fine-grained granularities (no details are defined at the moment), or stack more RNN cells, there is still a large space for parallelism execution. And, parallelism boots compute capacity but may also increase data movement. This is a soft scheduling space.
 
 # References
 
