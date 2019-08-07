@@ -44,6 +44,6 @@ Learn the hierarchical multiscale structure from temporal data _**without explic
 # References
 
 1. [Hierarchical Multiscale Recurrent Neural Networks](https://arxiv.org/pdf/1609.01704.pdf)
-1. This paper uses the straight-through estimator to train neural networks with discrete variables. This paper points to two references using this methods:
+1. This paper uses the <span style="background-color:#B3D9D9">_**straight-through estimator**_</span> to train neural networks with discrete variables. This paper points to two references using this methods:
     - [Binarized neural networks: Training deep neural networks with weights and activations constrained to+ 1 or-1](https://arxiv.org/abs/1602.02830)
     - [Strategic attentive writer for learning macro-actions](https://pdfs.semanticscholar.org/c3dd/2bf141c1371398e29ad37ced18bee34e1766.pdf)
