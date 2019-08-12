@@ -13,12 +13,13 @@
 - [ ] [Fast-Slow Recurrent Neural Networks](https://arxiv.org/abs/1705.08639)
 - [x] [Dilated Recurrent Neural Networks](https://arxiv.org/abs/1710.02224) (NIPS 2017)
     - codes: https://github.com/code-terminator/DilatedRNN
-- [ ] [Grid Long Short Term Memory](https://arxiv.org/abs/1507.01526)
+- [x] [Grid Long Short Term Memory](https://arxiv.org/abs/1507.01526)
 - [x] [Hierarchical Multiscale Recurrent Neural Networks](https://arxiv.org/abs/1609.01704)
 - [ ] [Zoneout Regularizing RNNs by Randomly Preserving Hidden Activations](https://arxiv.org/abs/1606.01305)
-- [ ] [Recent Advances in Recurrent Neural Networks](https://arxiv.org/abs/1801.01078)
+- [ ] [Recent Advances in Recurrent NMulti-Dimensional Recurrent Neural Networkseural Networks](https://arxiv.org/abs/1801.01078)
 - [ ] [Gated Feedback Recurrent Neural Networks](https://arxiv.org/abs/1502.02367)
 - [ ] [Phased LSTM: accelerating recurrent network training for long or event-based sequences](https://papers.nips.cc/paper/6310-phased-lstm-accelerating-recurrent-network-training-for-long-or-event-based-sequences.pdf)
+- [ ] [Multi-dimensional recurrent neural networks](https://arxiv.org/pdf/0705.2011.pdf)
 
 ## Training RNN
 
