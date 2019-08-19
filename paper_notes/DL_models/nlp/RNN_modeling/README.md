@@ -1,10 +1,11 @@
 # My Notes
 
 - [Optimizing RNN performance](Optimizing_RNN_performance/Optimizing_RNN_performance.pdf)
-- [QRCNN](./Quasi-Recurrent_neural_network/Quasi-Recurrent_neural_network.pdf)
-- [SRU](./Training_RNNs_as_Fast_as_CNNs/Training_RNNs_as_Fast_as_CNNs.pdf)
+- [QRCNN](Quasi-Recurrent_neural_network/Quasi-Recurrent_neural_network.pdf)
+- [SRU](Training_RNNs_as_Fast_as_CNNs/Training_RNNs_as_Fast_as_CNNs.pdf)
 - [JANET](The_Unreasonable_Effectiveness_of_the_Forget_Gate/The_Unreasonable_Effectiveness_of_the_Forget_Gate.pdf)
 - [ClockworkRNN](A_Clockwork_RNN.md)
+- [ON-LSTM](ON-LSTM/ON-LSTM.pdf)
 
 # Reading List
 
@@ -20,6 +21,7 @@
 - [ ] [Gated Feedback Recurrent Neural Networks](https://arxiv.org/abs/1502.02367)
 - [ ] [Phased LSTM: accelerating recurrent network training for long or event-based sequences](https://papers.nips.cc/paper/6310-phased-lstm-accelerating-recurrent-network-training-for-long-or-event-based-sequences.pdf)
 - [ ] [Multi-dimensional recurrent neural networks](https://arxiv.org/pdf/0705.2011.pdf)
+- [x] [Ordered Neurons: Integrating Tree Structures into Recurrent Neural Networks](https://openreview.net/pdf?id=B1l6qiR5F7)
 
 ## Training RNN
 

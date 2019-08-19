@@ -1,3 +1,17 @@
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+- [Clockwork RNN](#clockwork-rnn)
+	- [Simple RNN](#simple-rNN)
+	- [Clockwork RNN](#clockwork-rnn)
+      - [Why Clockwork RNN](#why-clockwork-rnn)
+      - [Computation Details](#computation-details)
+        - [1. Partition hidden layer into sub-modules](#1-partition-hidden-layer-into-sub-modules)
+        - [2. Assign different clock period to different modules](#2-aassign-different-clock-period-to-different-modules)
+        - [3. For unactive modules, directly copy their values in previous time step to current time steps](#3-for-unactive-modules-directly-copy-their-values-in-previous-time-step-to-current-time-steps)
+- [References](#references)
+
+<!-- /TOC -->
+
 # Clockwork RNN
 
 Recurrent neural networks(RNN) are a class of connectionist models that process internal state due to recurrent feed-back connections, making them suitable for sequence modeling. RNN can be regarded as a mathematical model for describing the dynamics of a nonlinear system, hidden states of which are supposed to contain sufficient information to predict the future evolution of the system.
