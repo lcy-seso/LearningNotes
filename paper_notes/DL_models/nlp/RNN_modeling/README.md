@@ -20,7 +20,7 @@
 - [ ] [Recent Advances in Recurrent NMulti-Dimensional Recurrent Neural Networkseural Networks](https://arxiv.org/abs/1801.01078)
 - [ ] [Gated Feedback Recurrent Neural Networks](https://arxiv.org/abs/1502.02367)
 - [ ] [Phased LSTM: accelerating recurrent network training for long or event-based sequences](https://papers.nips.cc/paper/6310-phased-lstm-accelerating-recurrent-network-training-for-long-or-event-based-sequences.pdf)
-- [ ] [Multi-dimensional recurrent neural networks](https://arxiv.org/pdf/0705.2011.pdf)
+- [x] [Multi-dimensional recurrent neural networks](https://arxiv.org/pdf/0705.2011.pdf)
 - [x] [Ordered Neurons: Integrating Tree Structures into Recurrent Neural Networks](https://openreview.net/pdf?id=B1l6qiR5F7)
 
 ## Training RNN

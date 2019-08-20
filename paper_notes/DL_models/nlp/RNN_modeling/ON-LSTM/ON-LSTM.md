@@ -48,32 +48,32 @@ The differentiation between high-ranking and low-ranking neurons is learned in a
 
 Recap standard LSTM equations:
 
-$$f_t = \sigma (W_f\mathbf{x}_t + U_f\mathbf{h}_{t-1} + b_f) \tag{1}$$
-$$i_t = \sigma (W_i\mathbf{x}_t + U_i\mathbf{h}_{t-1} + b_i) \tag{2}$$
-$$o_t = \sigma (W_o\mathbf{x}_t + U_o\mathbf{h}_{t-1} + b_o) \tag{3}$$
-$$\hat{c}_t = tanh(W_c\mathbf{x}_t + U_c\mathbf{h}_{t-1} + b_c) \tag{4}$$
-$$h_t = o_t \circ tanh(c_t) \tag{5}$$
+$$\mathbf{f}_t = \sigma (W_f\mathbf{x}_t + U_f\mathbf{h}_{t-1} + \mathbf{b}_f) \tag{1}$$
+$$\mathbf{i}_t = \sigma (W_i\mathbf{x}_t + U_i\mathbf{h}_{t-1} + \mathbf{b}_i) \tag{2}$$
+$$\mathbf{o}_t = \sigma (W_o\mathbf{x}_t + U_o\mathbf{h}_{t-1} + \mathbf{b}_o) \tag{3}$$
+$$\mathbf{\hat{c}}_t = \text{tanh}(W_c\mathbf{x}_t + U_c\mathbf{h}_{t-1} + \mathbf{b}_c) \tag{4}$$
+$$\mathbf{h}_t = \mathbf{o}_t \circ \text{tanh}(\mathbf{c}_t) \tag{5}$$
 
 - Standard LSTM:
-    - $c_t = f_t \odot c_{t-1} + i_t \odot \tilde{c}_t$.
-    - forget gate $f_t$ controls erasing on cell states
-    - input data $i_t$ controls writing on cell states
+    - $\mathbf{c}_t = \mathbf{f}_t \odot \mathbf{c}_{t-1} + \mathbf{i}_t \odot \mathbf{\hat{c}}_t$.
+    - forget gate $\mathbf{f}_t$ controls erasing on cell states
+    - input data $\mathbf{i}_t$ controls writing on cell states
     - cell states act indepently on each neurons.
 - Modifications _**ON-LSTM**_ maded to standard LSTM:
-    - replace the update function for the cell state $c_t$.
+    - replace the update function for the cell state $\mathbf{c}_t$.
     - make input and forget gate for each neuron dependent on others
 
 #### 2.1 active function `cumax`
 
 The `cumax` activation function: $\hat{g}$ which is the cumulative sum of softmax.
 
-$$\hat{g} = \text{cumsum(softmax(...))}$$
+$$\mathbf{\hat{g}} = \text{cumsum(softmax(...))}$$
 
-1. $g = [0,...,0,1,..., 1]$ is a binary gate that splits the cell into two segments: the 0-segment and the 1-segment. As a result, the model can apply different update rules on the two segments.
-1. $\hat{g}$ is the expectation of the binary gate $g$.
+1. $\mathbf{g} = [0,...,0,1,..., 1]$ is a binary gate that splits the cell into two segments: the 0-segment and the 1-segment. As a result, the model can apply different update rules on the two segments.
+1. $\mathbf{\hat{g}}$ is the expectation of the binary gate $g$.
 
-    - ideally, $g$ should take the form of a discrete variable, but computing gradients when a discrete variable is included in the computation graph is not trivial.
-    - $\hat{g}$ hare is a continuous relaxation.
+    - ideally, $\mathbf{g}$ should take the form of a discrete variable, but computing gradients when a discrete variable is included in the computation graph is not trivial.
+    - $\mathbf{\hat{g}}s$ hare is a continuous relaxation.
 
 #### 2.2 structured gating
 
