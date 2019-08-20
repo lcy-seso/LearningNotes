@@ -21,12 +21,13 @@ Learn the hierarchical multiscale structure from temporal data ***without explic
 
 1.  [**key**] <span style="background-color:#ACD6FF;">[Introduce ***a parametrized binary boundary detector***]</span> at each layer.
     -   turned on only at the time steps where a segment of the corresponding abstraction level is completely processed.
-2.  Implement three operations: **UPDATE**, **COPY**, **FLUSH**.
+1.  Implement three operations: **UPDATE**, **COPY**, **FLUSH**.
     -   **UPDATE**: similar to update rule of the LSTM.
     -   **COPY**: ***simply copies*** cell and hidden states of the previous time step which is unlike the ***leaky integration*** in LSTM/GRU.
     -   **FLUSH**: executed when a boundary is detected, where it first ejects the summarized representation of the current segment to the upper layer and then reinitializes the states to start processing the next segment.
-3.  Use ***straight-through estimator*** to train this model to learn how to select a proper operation at each time step and to detect the boundaries.
+1.  Use ***straight-through estimator*** to train this model to learn how to select a proper operation at each time step and to detect the boundaries.
     -   "selecting one of the three operations" is a discrete variable.
+1. Straight-through estimator is an very easy-to-implement solution to incorperate _**a binary stochastic variable**_ into the neural network. It seems that some research work generalize this method into binary vector to quantize NN.
 
 ## Model
 
@@ -92,11 +93,22 @@ HM-RNN based on LSTM cell.
     - $\mathbf{g}$ is a cell proposal vector.
     - $\mathbf{i}$, $\mathbf{f}$, $\mathbf{o}$ are the input/forget/output gate.
 
+### Calculate the gradient for boundary detector
+
+1. Straight-through estimator
+    - forward pass uses the step function to activate $z_t^l$
+    - backward pass uses [hardsigmoid](https://stackoverflow.com/questions/35411194/how-is-hard-sigmoid-defined) function as the biased estimator of the outgoing gradient.
+    $$\sigma(x) = \text{max}(0, \text{min}(1, (\alpha x + 1)/2))$$
+
+1. Slope annealing
+    - start from slope $\alpha = 1$.
+    - slowly increase the slope until it reaches a threshold. In the paper, the annealing function task-specific.
+
 ## Some claims made (and learned) from this paper
 
 1.  However, because ***non-stationarity is prevalent in temporal data***, and that many entities of abstraction such as words and sentences are in variable length, we claim that ***it is important for an RNN to dynamically adapt its timescales*** to the particulars of the input entities of various length.
 2.  It has been a challenge for an RNN to discover the latent hierarchical structure in temporal data without explicit boundary information.
-3.  Although the LSTM has a *** self-loop for the gradients that helps to capture the long-term dependencies*** by mitigating the vanishing gradient problem, in practice, it is still limited to a few hundred-time steps due to the leaky integration by which the contents to memorize for a long-term is gradually diluted at every time step.
+3.  Although the LSTM has a ***self-loop for the gradients that helps to capture the long-term dependencies*** by mitigating the vanishing gradient problem, in practice, it is still limited to a few hundred-time steps due to the leaky integration by which the contents to memorize for a long-term is gradually diluted at every time step.
 
 # References
 
@@ -107,8 +119,4 @@ HM-RNN based on LSTM cell.
     -   [Binarized neural networks: Training deep neural networks with weights and activations constrained to+ 1 or-1](https://arxiv.org/abs/1602.02830)
     -   [Strategic attentive writer for learning macro-actions](https://pdfs.semanticscholar.org/c3dd/2bf141c1371398e29ad37ced18bee34e1766.pdf)
     - [Estimating or Propagating Gradients Through Stochastic Neurons for Conditional Computation](https://arxiv.org/pdf/1308.3432.pdf)
-1. [Hard-sigmoid](https://stackoverflow.com/questions/35411194/how-is-hard-sigmoid-defined)
-
-    > $\sigma$ is the “hard sigmoid” function: $$\sigma(x) = \text{max}(0, \text{min}(1, (\alpha x + 1)/2))$$
-
 1. [Notes on Hierarchical Multiscale Recurrent Neural Networks](https://medium.com/jim-fleming/notes-on-hierarchical-multiscale-recurrent-neural-networks-7362532f3b64)
