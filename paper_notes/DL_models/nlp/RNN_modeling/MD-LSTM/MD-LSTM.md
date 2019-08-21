@@ -5,6 +5,7 @@
 Applied RNN to multi-dimensional data rather than sequence.
 
 ## Approach
+
 ---
 
 Recap standard LSTM first
@@ -22,7 +23,7 @@ $$\mathbf{h}_t = \mathbf{o}_t \circ \text{tanh}(\mathbf{c}_t) \tag{6}$$
 1. During the forward pass, at each point in the data sequence, the hidden layer of the network receives both an external input and its activations from one step back along all dimensions.
 
     <p align="center">
-    <img src="images/multi-dimensioanl-rnn.png" width=75%><br>
+    <img src="../images/multi-dimensioanl-rnn.png" width=75%><br>
     Fig1. Figure 1 and 2 from the paper.
     </p>
 
@@ -34,7 +35,7 @@ $$\mathbf{h}_t = \mathbf{o}_t \circ \text{tanh}(\mathbf{c}_t) \tag{6}$$
     - Bi-direction contains two separate hidden layers that process the input sequence in the forward and reverse directions. - The two hidden layers are connected to a single output layer to provide the network both past and future context.
 
     <p align="center">
-    <img src="images/multi-dimensional-multi-directional-context.png" width=75%><br>
+    <img src="../images/multi-dimensional-multi-directional-context.png" width=75%><br>
     Fig2. Figure 4 and 5 from the paper.
     </p>
 
@@ -55,7 +56,7 @@ Quoted from the paper:
 My Note:
 
 1. Each direction calculates its own forget gate. For example, the input data is arranged as a $N$ dimensional grid, then, $N$ forget gate is calculated.
-1. All inputs in the $t$-th iteration calculate a single input, output gate, and a single cell candidate. 
+1. All inputs in the $t$-th iteration calculate a single input, output gate, and a single cell candidate.
 
 # References
 

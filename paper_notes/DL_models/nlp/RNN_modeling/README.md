@@ -6,6 +6,7 @@
 - [JANET](The_Unreasonable_Effectiveness_of_the_Forget_Gate/The_Unreasonable_Effectiveness_of_the_Forget_Gate.pdf)
 - [ClockworkRNN](A_Clockwork_RNN.md)
 - [ON-LSTM](ON-LSTM/ON-LSTM.pdf)
+- [HM-LSTM](HM-LSTM/Hierarchical_multiscale_RNN.md)
 
 # Reading List
 
@@ -15,6 +16,7 @@
 - [x] [Dilated Recurrent Neural Networks](https://arxiv.org/abs/1710.02224) (NIPS 2017)
     - codes: https://github.com/code-terminator/DilatedRNN
 - [x] [Grid Long Short Term Memory](https://arxiv.org/abs/1507.01526)
+- [x] [A Clockwork RNN](https://arxiv.org/abs/1402.3511)
 - [x] [Hierarchical Multiscale Recurrent Neural Networks](https://arxiv.org/abs/1609.01704)
 - [ ] [Zoneout Regularizing RNNs by Randomly Preserving Hidden Activations](https://arxiv.org/abs/1606.01305)
 - [ ] [Recent Advances in Recurrent NMulti-Dimensional Recurrent Neural Networkseural Networks](https://arxiv.org/abs/1801.01078)
