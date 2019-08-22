@@ -41,6 +41,7 @@ This paper proposes to design a better architecture _**equipped with an inductiv
 |contains long-term or global information that lasts for several time steps to the entire sentence|encodes local information that lasts only one or a few time steps.
 
 The differentiation between high-ranking and low-ranking neurons is learned in a completely data-driven fashion by controlling the update frequency of single neurons
+
 1. to erase (or update) high-ranking neurons, the model _**should first erase (or update) all lower-ranking neurons**_.
 1. low-ranking neurons are always updated more frequently than high-ranking neurons others, and order is pre-determined as part of the model architecture.
 
@@ -73,14 +74,14 @@ $$\mathbf{\hat{g}} = \text{cumsum(softmax(...))}$$
 1. $\mathbf{\hat{g}}$ is the expectation of the binary gate $g$.
 
     - ideally, $\mathbf{g}$ should take the form of a discrete variable, but computing gradients when a discrete variable is included in the computation graph is not trivial.
-    - $\mathbf{\hat{g}}s$ hare is a continuous relaxation.
+    - $\mathbf{\hat{g}}$ here is a continuous relaxation.
 
 #### 2.2 structured gating
 
 1. Introduces two new gates: _master forget gate_ $\tilde{f}_t$ and _master input gate_ $\tilde{i}_t$
 
     $$\tilde{f}_t = \text{cumax}(W_{\tilde{f}}x_t + U_{\tilde{f}}h_{t-1} + b_{\tilde{f}}) \tag{6}$$
-    $$\tilde{i}_t = 1-\text{cumax}(W_{\tilde{i}}x_t + U_{\tilde{i}}h_{t-1} + b_{\tilde{f}}) \tag{7}$$
+    $$\tilde{i}_t = 1-\text{cumax}(W_{\tilde{i}}x_t + U_{\tilde{i}}h_{t-1} + b_{\tilde{i}}) \tag{7}$$
 
     |$\tilde{f}_t$|$\tilde{i}_t$|
     |:--|:--|

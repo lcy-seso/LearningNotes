@@ -1,4 +1,11 @@
 <!-- $theme: gaia -->
+<!-- *template: invert -->
+
+# ==RNN Variants==
+
+###### Cao Ying
+
+---
 
 <!-- *template: invert -->
 
@@ -411,21 +418,21 @@ $\alpha$ above is a standard nonlinear transfer function or identity mapping.
 
 ---
 
-
-
----
-
-
 <font size=5>
 
 # HM-RNN (I)
 
-1.  [**key**] <span style="background-color:#ACD6FF;">Introduce ***a parametrized binary boundary detector***</span> at each layer.
+## Key points of the model
 
+<font size=4>
+
+1.  <span style="background-color:#ACD6FF;">Introduce ***a parametrized binary boundary detector $z_t^i$***</span> at ==**each layer**==.
     - turned on only at the time steps where a segment of the corresponding abstraction level is completely processed.
-    - ***straight-through estimator*** is used to calculate gradient of this boundary detector.
+    - boundary state is a discrete variable.
+    - ***straight-through estimator*** is used to calculate gradient of the boundary detector.
+1. One of three operations: **UPDATE**, **COPY**, and **FLUSH** is choosen according to $z_t^{l-1}$ and $z_{t-1}^l$
 
-    - boundary state of the current timestep $t$ at layer $l$ is determined by the boundary state at left and below.
+</font>
 
 <p align="center">
 <img src="../images/boundary_state.png" width=60%>
@@ -436,18 +443,7 @@ $\alpha$ above is a standard nonlinear transfer function or identity mapping.
 
 <font size=5>
 
-# HM-RNN (II)
-
-2.  Implement three operations: **UPDATE**, **COPY**, **FLUSH**.
-    -   **UPDATE**: similar to update rule of the LSTM.
-    -   **COPY**: ***simply copies*** cell and hidden states of the previous time step which is unlike the ***leaky integration*** in LSTM/GRU.
-    -   **FLUSH**: executed when a boundary is detected, where it first ejects the summarized representation of the current segment to the upper layer and then reinitializes the states to start processing the next segment.
-
----
-
-<font size=5>
-
-## HM-RNN (III): boundary detector and selected action
+### HM-RNN: boundary detector and action selection
 
 
 | $z_{t-1}^l$ <br>left| $z_{t}^{l-1}$<br>buttom | The Selected Operation ||
@@ -457,6 +453,42 @@ $\alpha$ above is a standard nonlinear transfer function or identity mapping.
 |      1      |       0       |       **FLUSH**        |left state reaches to a boundary.|
 |      1      |       1       |       **FLUSH**        |left state reaches to a boundary.|
 
+
+<font size=4>
+
+- **UPDATE**: similar to update rule of the LSTM, but executed _**SPARSELY**_.
+- **COPY**: ***simply copies***. Upper layer keeps its state unchanged until it receives the summarized input from the lower layer.
+- **FLUSH**: executed when a boundary is detected
+    - it first ejects the summarized representation of the current segment to the upper layer
+    - then reinitializes the states to start processing the next segment.
+
+</font>
+</font>
+
+---
+
+<font size=5>
+
+### HM-LSTM: equations
+
+1. pre-activation
+
+    <p align="center">
+    <img src="../images/HM-LSTM-pre-activation.png" width=80%>
+    </p>
+
+1. cell update
+
+    <p align="center">
+    <img src="../images/hm-lstm-cell-update.png" width=65%>
+    </p>
+
+1. output hidden
+
+    <p align="center">
+    <img src="../images/hm-lstm-output-hidden.png" width=40%>
+    </p>
+
 </font>
 
 ---
@@ -464,6 +496,8 @@ $\alpha$ above is a standard nonlinear transfer function or identity mapping.
 <font size=5>
 
 ### STE (Straight-through estimator)
+
+<font size=4>
 
 1. Straight-through estimator.
     - forward pass uses the step function to activate $z_t^l$
@@ -473,3 +507,153 @@ $\alpha$ above is a standard nonlinear transfer function or identity mapping.
 1. Slope annealing.
     - start from slope $\alpha = 1$.
     - slowly increase the slope until it reaches a threshold. In the paper, the annealing function task-specific.
+    
+    <p align="center">
+    <img src="../images/hardsigmoid.png" width=45%>
+    </p>
+
+</font>
+</font>
+
+---
+
+<font size=5>
+
+## ON-LSTM (ICLR 2019 the best paper award)
+
+## The problem to address in this paper
+
+1. natural language is hierarchically structured.
+1. design a better architecture _**equipped with an inductive bias towards learning such latent tree structures**_.
+
+</font>
+
+---
+
+<font size=5>
+
+## ON-LSTM: Key ideas
+
+Neurons are split into high-ranking and low-ranking neurons.
+
+|low-ranking neurons|high-ranking neurons|
+|:--|:--|
+|contains long-term or global information that lasts for several time steps to the entire sentence|encodes local information that lasts only one or a few time steps.
+
+The differentiation between high-ranking and low-ranking neurons is learned in a ==completely data-driven== fashion by controlling the update frequency of single neurons.
+
+1. to erase (or update) high-ranking neurons, the model _**should first erase (or update) all lower-ranking neurons**_.
+1. low-ranking neurons are _**always**_ updated more frequently than high-ranking neurons others, and order is pre-determined as part of the model architecture.
+
+</font>
+
+---
+
+<font size=5>
+
+## Recap LSTM
+
+$$\mathbf{f}_t = \sigma (W_f\mathbf{x}_t + U_f\mathbf{h}_{t-1} + \mathbf{b}_f) $$
+$$\mathbf{i}_t = \sigma (W_i\mathbf{x}_t + U_i\mathbf{h}_{t-1} + \mathbf{b}_i) $$
+$$\mathbf{o}_t = \sigma (W_o\mathbf{x}_t + U_o\mathbf{h}_{t-1} + \mathbf{b}_o) $$
+$$\mathbf{\hat{c}}_t = \text{tanh}(W_c\mathbf{x}_t + U_c\mathbf{h}_{t-1} + \mathbf{b}_c) $$
+$$\mathbf{h}_t = \mathbf{o}_t \circ \text{tanh}(\mathbf{c}_t) $$
+
+==Modificatioins made to standard LSTM==
+
+1. make input and forget gate for each neuron dependent on others
+1. replace the update function for the cell state $\mathbf{c}_t$.
+
+</font>
+
+---
+
+<font size=5>
+
+## ON-LSTM: cumax as gate activation
+
+The `cumax` activation function: $\hat{g}$ which is the cumulative sum of softmax.
+
+$$\mathbf{\hat{g}} = \text{cumsum(softmax(...))}$$
+
+
+### Note for `cumax`
+
+1. $\mathbf{g} = [0,...,0,1,..., 1]$ is a binary gate that splits the cell into two segments: the 0-segment and the 1-segment. As a result, the model can apply different update rules on the two segments.
+1. $\mathbf{\hat{g}}$ is the expectation of the binary gate $\mathbf{\hat{g}} = \mathbb{E}[\mathbb{g}]$.
+
+    - <span style="background-color:#ACD6FF;">ideally, $\mathbf{g}$ should take the form of a _**discrete**_ variable</span>, but computing gradients when a discrete variable is included in the computation graph is not trivial.
+    - $\mathbf{\hat{g}}$ here is a continuous relaxation.
+
+</font>
+
+---
+
+<font size=5>
+
+## ON-LSTM: structured gating
+
+Master forget and input gate
+
+$$\tilde{f}_t = \text{cumax}(W_{\tilde{f}}x_t + U_{\tilde{f}}h_{t-1} + b_{\tilde{f}})$$
+$$\tilde{i}_t = 1-\text{cumax}(W_{\tilde{i}}x_t + U_{\tilde{i}}h_{t-1} + b_{\tilde{i}})$$
+
+|$\tilde{f}_t$|$\tilde{i}_t$|
+|:--|:--|
+|controls the erasing behavior|controls the writing behavior|
+|monotonically increasing|monotonically decreasing|
+
+<font size=4>
+
+_**NOTES for master gates**_
+
+1. master gates only focus on coarse-grained control.
+1. it is computationally expensive and unnecessary to model them with the same dimensions as the hidden states.
+1. the paper sets $\tilde{f}_t$ and $\tilde{t}_t$ to bo $D_m = \frac{D}{C}$ where $C$ is the chunk size factor.
+1. each dimension of the master gates are repeated $C$ times before the element-wise multiplication with LSTM's original forget gates $f_t$ and input gates $i_t$.
+
+</font>
+</font>
+
+---
+
+<font size=5>
+
+## ON-LSTM: cell update
+
+update rules for $c_t$ based on master gates
+
+$$\omega_t = \tilde{f}_t\circ \tilde{i}_t $$
+$$\hat{f}_t = f_t \circ \omega_t + (\tilde{f}_t - \omega_t) = \tilde{f}_t \circ (f_t \circ \tilde{i}_t + 1 - \tilde{i}_t) $$
+$$\hat{i}_t = i_t \circ \omega_t + (\tilde{i}_t - \omega_t) = \tilde{i}_t \circ (i_t \circ \tilde{f}_t + 1 - \tilde{f}_t) $$
+$$c_t = \hat{f}_t \circ c_{t-1} + \hat{i}_t \circ \hat{c}_t $$
+
+$\omega_t$ represents the overlap of $\tilde{f}_t$ and $\tilde{i}_t$
+
+</font>
+
+---
+
+<!-- *template: invert -->
+
+<font size=5>
+
+# ==Summary==
+
+
+1. RNNs can model data produced by context-free grammars and context-sensitive grammars.
+1. Gate is necessary to modulate gradient flow.
+1. In practice, RNN models are all stacked to form deep RNN network. The depth seldom accesses 10 layers.
+
+<font size=4>
+
+|RNN Variants|Key Lessons|
+|:--:|:--|
+|Dilated LSTM|skip connection|
+|CW-RNN|split hidden into modules, and modules are updated sparsely|
+|MM RNN/Grid LSTM|Recurrent computation to high order tensor|
+|Hierarchical Multiscale Recurrent Neural Networks|sparsely updated cell|
+|ON-LSTM|split cell into low and high rank parts whose updating frequency are differentiated|
+
+</font>
+</font>

@@ -1,45 +1,23 @@
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
-- [Hierarchical Multiscale Recurrent Neural Networks](#hierarchical-multiscale-recurrent-neural-networks)
-  - [Takeaways](#takeaways)
-  - [Problem proposed in this paper](#problem-proposed-in-this-paper)
-  - [Approach](#approach)
-  - [Model](#model)
-    - [HM-RNN based on LSTM update rule](#hm-rnn-based-on-lstm-update-rule)
-  - [Some claims made in this paper](#some-claims-made-in-this-paper)
-- [References](#references)
-
-<!-- /TOC -->
 # Hierarchical Multiscale Recurrent Neural Networks
-
-## Takeaways
 
 ## Problem proposed in this paper
 
 Learn the hierarchical multiscale structure from temporal data ***without explicit boundary information***.
 
-## Approach
+## Key ideas
 
-1.  [**key**] <span style="background-color:#ACD6FF;">[Introduce ***a parametrized binary boundary detector***]</span> at each layer.
-    -   turned on only at the time steps where a segment of the corresponding abstraction level is completely processed.
-1.  Implement three operations: **UPDATE**, **COPY**, **FLUSH**.
-    -   **UPDATE**: similar to update rule of the LSTM.
-    -   **COPY**: ***simply copies*** cell and hidden states of the previous time step which is unlike the ***leaky integration*** in LSTM/GRU.
-    -   **FLUSH**: executed when a boundary is detected, where it first ejects the summarized representation of the current segment to the upper layer and then reinitializes the states to start processing the next segment.
-1.  Use ***straight-through estimator*** to train this model to learn how to select a proper operation at each time step and to detect the boundaries.
-    -   "selecting one of the three operations" is a discrete variable.
-1. Straight-through estimator is an very easy-to-implement solution to incorperate _**a binary stochastic variable**_ into the neural network. It seems that some research work generalize this method into binary vector to quantize NN.
+1. <span style="background-color:#ACD6FF;">Introduce ***a parametrized binary boundary detector***</span> at each layer.
+    - turned on only at the time steps where a segment of the corresponding abstraction level is completely processed.
+    - **avoids “soft” gating which leads to “curse of updating every timestep”.**
+1. select one of the three operations below according to boundary state $z_t^{l-1}$ and $z_{t-1}^l$ depicted in the below picture.
 
-## Model
-
-1.  A parametrized boundary detector in each layer of a stacked RNN which outputs a boundary state $z_{t}^l$.
-    -   Uses parameterized binary boundary detectors at each layer. **Avoids “soft” gating which leads to “curse of updating every timestep”.**
-    -   Whenever the boundary detector is turned on at a time step of layer $l$, the model considers this to be the end of a segment corresponding to the latent abstraction level of layer $l$.
-2.  Each layer selects **one** of **UPDATE**, **COPY**, **FLUSH** using the boundary states at each time step:
-
-    The computation of RNN is a grid. The selection of boundary state of the current timestep $t$ at layer $l$ is determined by the boundary state at left and below.
     <p align="center">
     <img src="../images/boundary_state.png" width=60%>
     </p>
+
+    - **UPDATE**: similar to update rule of the LSTM.
+    - **COPY**: ***simply copies*** cell and hidden states of the previous time step which is unlike the ***leaky integration*** in LSTM/GRU.
+    - **FLUSH**: executed when a boundary is detected, where it first ejects the summarized representation of the current segment to the upper layer and then reinitializes the states to start processing the next segment.
 
     | $z_{t-1}^l$ <br>left| $z_{t}^{l-1}$<br>buttom | The Selected Operation ||
     |:-----------:|:-------------:|:----------------------:|:-:|
@@ -48,52 +26,54 @@ Learn the hierarchical multiscale structure from temporal data ***without explic
     |      1      |       0       |       **FLUSH**        |left state reaches to a boundary.|
     |      1      |       1       |       **FLUSH**        |left state reaches to a boundary.|
 
-### HM-RNN based on LSTM update rule
+1. boundary state is a discrete variable.***straight-through estimator*** is used to calculate its gradient.
+    - the straight-through estimator is a very easy-to-implement solution to incorporate _**a binary stochastic variable**_ into the neural network. It seems that some research work generalizes this method into a binary vector to quantize NN.
 
-Recap LSTM's equation first:
+## HM-LSTM: computation details
+
+### 0. Recap LSTM's equation first:
 
 <p align="center">
 <img src="../images/LSTM_equation.png" width=50%>
 </p>
 
----
+HM-RNN is based on LSTM cell.
 
-HM-RNN based on LSTM cell.
+### 1. compute pre-activation
 
-1. compute pre-activation
-    <p align="center">
-    <img src="../images/HM-LSTM-pre-activation.png" width=65%>
-    </p>
+<p align="center">
+<img src="../images/HM-LSTM-pre-activation.png" width=65%>
+</p>
 
-1. cell update
+### 2. cell update
 
-    $$
-    \begin{equation}
-    \mathbf{c}_t^l = \left\{\begin{array}
-    \mathbf{f}_t^l \odot\mathbf{c}_{t-1}^l + \mathbf{i}_t^{l} \odot \mathbf{g}_t^{l}, & \text{if UPDATE}\\
-    \mathbf{c_{t-1}^{l}}, & \text{if COPY}\\
-    \mathbf{i}_t^{i}\odot\mathbf{g}_t^l,& \text{if FLUSH}
-    \end{array}
-    \right.
-    \end{equation}
-    $$
+$$
+\begin{equation}
+\mathbf{c}_t^l = \left\{\begin{array}
+\mathbf{f}_t^l \odot\mathbf{c}_{t-1}^l + \mathbf{i}_t^{l} \odot \mathbf{g}_t^{l}, & \text{if UPDATE}\\
+\mathbf{c_{t-1}^{l}}, & \text{if COPY}\\
+\mathbf{i}_t^{i}\odot\mathbf{g}_t^l,& \text{if FLUSH}
+\end{array}
+\right.
+\end{equation}
+$$
 
-1. hidden update
+### 3. hidden update
 
-    $$
-    \begin{equation}
-    \mathbf{h}_t^l = \left\{\begin{array}
-    \mathbf{h}_{t-1}^{l}, &\text{if COPY}\\
-    \mathbf{o}_{t}^l \odot \text{tanh}(\mathbf{c}_t^l), &\text{otherwise}
-    \end{array}
-    \right.
-    \end{equation}
-    $$
+$$
+\begin{equation}
+\mathbf{h}_t^l = \left\{\begin{array}
+\mathbf{h}_{t-1}^{l}, &\text{if COPY}\\
+\mathbf{o}_{t}^l \odot \text{tanh}(\mathbf{c}_t^l), &\text{otherwise}
+\end{array}
+\right.
+\end{equation}
+$$
 
-    - $\mathbf{g}$ is a cell proposal vector.
-    - $\mathbf{i}$, $\mathbf{f}$, $\mathbf{o}$ are the input/forget/output gate.
+- $\mathbf{g}$ is a cell proposal vector.
+- $\mathbf{i}$, $\mathbf{f}$, $\mathbf{o}$ are the input/forget/output gate.
 
-### Calculate the gradient for boundary detector
+## Calculate the gradient for boundary detector
 
 1. Straight-through estimator
     - forward pass uses the step function to activate $z_t^l$
