@@ -4,9 +4,10 @@
 - [QRCNN](Quasi-Recurrent_neural_network/Quasi-Recurrent_neural_network.pdf)
 - [SRU](Training_RNNs_as_Fast_as_CNNs/Training_RNNs_as_Fast_as_CNNs.pdf)
 - [JANET](The_Unreasonable_Effectiveness_of_the_Forget_Gate/The_Unreasonable_Effectiveness_of_the_Forget_Gate.pdf)
-- [ClockworkRNN](A_Clockwork_RNN.md)
+- [ClockworkRNN](CW-RNN/A_Clockwork_RNN.pdf)
 - [ON-LSTM](ON-LSTM/ON-LSTM.pdf)
-- [HM-LSTM](HM-LSTM/Hierarchical_multiscale_RNN.md)
+- [HM-LSTM](HM-LSTM/Hierarchical_multiscale_RNN.pdf)
+- [GridLSTM](GridLSTM/GridLSTM.pdf)
 
 # Reading List
 

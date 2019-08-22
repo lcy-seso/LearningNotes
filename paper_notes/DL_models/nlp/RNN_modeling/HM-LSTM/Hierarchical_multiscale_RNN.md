@@ -11,6 +11,8 @@
 <!-- /TOC -->
 # Hierarchical Multiscale Recurrent Neural Networks
 
+## Takeaways
+
 ## Problem proposed in this paper
 
 Learn the hierarchical multiscale structure from temporal data ***without explicit boundary information***.
@@ -19,13 +21,13 @@ Learn the hierarchical multiscale structure from temporal data ***without explic
 
 1.  [**key**] <span style="background-color:#ACD6FF;">[Introduce ***a parametrized binary boundary detector***]</span> at each layer.
     -   turned on only at the time steps where a segment of the corresponding abstraction level is completely processed.
-2.  Implement three operations: **UPDATE**, **COPY**, **FLUSH**.
+1.  Implement three operations: **UPDATE**, **COPY**, **FLUSH**.
     -   **UPDATE**: similar to update rule of the LSTM.
     -   **COPY**: ***simply copies*** cell and hidden states of the previous time step which is unlike the ***leaky integration*** in LSTM/GRU.
     -   **FLUSH**: executed when a boundary is detected, where it first ejects the summarized representation of the current segment to the upper layer and then reinitializes the states to start processing the next segment.
-3.  Use ***straight-through estimator*** to train this model to learn how to select a proper operation at each time step and to detect the boundaries.
+1.  Use ***straight-through estimator*** to train this model to learn how to select a proper operation at each time step and to detect the boundaries.
     -   "selecting one of the three operations" is a discrete variable.
-4. Straight-through estimator is an very easy-to-implement solution to incorperate _**a binary stochastic variable**_ into the neural network. It seems that some research work generalize this method into binary vector to quantize NN.
+1. Straight-through estimator is an very easy-to-implement solution to incorperate _**a binary stochastic variable**_ into the neural network. It seems that some research work generalize this method into binary vector to quantize NN.
 
 ## Model
 

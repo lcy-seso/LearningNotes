@@ -92,7 +92,7 @@
 RNNs form a long chain over which gradient flows.
 
 <p align="center">
-<img src="images/bp_through_shortcut.png" width = 55%>
+<img src="../../../../../text_generation_for_gitchat/pic/pic5.bp_through_shortcut.png" width = 55%>
 </p>
 
 
@@ -129,7 +129,7 @@ $$\mathbf{h}_t = \mathbf{o}_t \circ \text{tanh}(\mathbf{c}_t) $$
 1. In LSTM, history information flow along with the redline, and no non-linear squashing function is applied.
 
 <p align="center">
-<img src="images/lstm.png">
+<img src="../../../../../text_generation_for_gitchat/pic/pic6.lstm.png">
 </p>
 
 </font>
@@ -333,6 +333,75 @@ $$\mathbf{c}_t = \sum_{i}^{N}\mathbf{f}_t^i \circ \mathbf{c}^i_t + \mathbf{i}_t 
 
 <font size=5>
 
+# GridLSTM
+
+_**Inputs**_:
+
+1. a $N$-dimensioanl block receives $N$ hidden vectors: $\mathbf{h}_1, \mathbf{h}_2, ..., \mathbf{h}_N$ and,
+1. $N$ memory vectors $\mathbf{m}_1, \mathbf{m}_2, ..., \mathbf{m}_N$
+
+_**Compute**_:
+
+1. deploys cells along _**any**_ or _**all**_ of the dimensions including the depth of the network;
+1. _**concatenate**_ all input hiddens to form $\mathbf{H}=[\mathbf{h}_1, ..., \mathbf{h}_N]'$. <span style="background-color:#ACD6FF;">_**This is the difference from HM-LSTM**_.</span>
+1. compute $N$ LSTM transforms: $(\mathbf{h}_i, \mathbf{m}_i) = \text{LSTM}(\mathbf{H}, \mathbf{m}_i, \mathbf{W}_i)$ where $i = [1, ..., N]$, $W$ cancatenates $\mathbf{W}_i^i$, $\mathbf{W}_f^i$, $\mathbf{W}_o^i$, $\mathbf{W}_c^i$ in $\mathbb{R}^{d \times Nd}$.
+
+</font>
+
+---
+
+
+<font size=5>
+
+# GridLSTM
+
+<font size=4>
+
+### Priority Dimensions
+
+1. in general case, a $N$-dimensional block computes the transforms for all dimensions are _**in parallel.**_
+1. prioritize the dimension of the network. For dimensions other than prioritized dimensions, their output hidden vectors are computed first, and finally, the prioritized.
+    - for example, to prioritize the first dimension of the network, the block first computes the $N$ − 1 transforms for the other dimensions obtaining the output hidden vectors $\mathbf{h}_2', ..., \mathbf{h}_N$.
+
+### Non-LSTM dimensions
+
+Along some dimension, regular connection instead of LSTM is used.
+
+$$\mathbf{h}'_1 = \alpha(\mathbf{V} * \mathbf{H})$$
+
+$\alpha$ above is a standard nonlinear transfer function or identity mapping.
+
+</font>
+
+---
+
+<font size=5>
+
+# An example: a 3D GridLSTM
+
+<p align="center">
+<img src="../images/3D-GridLSTM.png">
+</p>
+
+</font>
+
+
+---
+
+<font size=5>
+
+# 3D GridLSTM for NMT
+
+<p align="center">
+<img src="../images/GridLSTM-NMT.png" width=45%> <br>Fig. GridLSTM for NMT.
+</p>
+
+</font>
+
+---
+
+<font size=5>
+
 ## Hierarchical Multiscale Recurrent Neural Networks (HM-RNN)
 
 - Problem to address:
@@ -341,6 +410,11 @@ $$\mathbf{c}_t = \sum_{i}^{N}\mathbf{f}_t^i \circ \mathbf{c}^i_t + \mathbf{i}_t 
 </font>
 
 ---
+
+
+
+---
+
 
 <font size=5>
 
