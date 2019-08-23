@@ -1,5 +1,8 @@
 # MLIR
 
+"flow-sensitive" type checking.
+
+
 # Reference
 
 1. [Multi-Level Intermediate Representation Overview](https://github.com/tensorflow/mlir#multi-level-intermediate-representation-overview)
