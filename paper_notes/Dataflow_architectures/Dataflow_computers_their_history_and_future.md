@@ -38,6 +38,7 @@ Quoted from the paper:
 ## Dataflow graph
 
 What is a dataflow graph?
+
 - Dataflow graphs can be viewed as the machine language for dataflow computers.
 - It is a directed graph.
 - In a dataflow graph:
@@ -59,7 +60,16 @@ Fig. Basic primitives of the dataflow graph.
 |4.|switch actor|directs data values. <br>Passes one of its input tokens to the output based on the value of the control token.|
 |5.|copy|identity operators that duplicate input tokens.|
 
-_**[Not Finished Yet]**_
+## Dataflow language
+
+### VAL
+
+1. relies on pure functional language semantics to exploit implicit concurrency.
+    - dataflow language use single assignment semantics, the implementation and the use of arrarys present unique challenges.
+
+### Id
+
+block-structured
 
 # Reference
 

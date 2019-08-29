@@ -8,7 +8,7 @@
 - [ON-LSTM](ON-LSTM/ON-LSTM.pdf)
 - [HM-LSTM](HM-LSTM/Hierarchical_multiscale_RNN.pdf)
 - [GridLSTM](GridLSTM/GridLSTM.pdf)
- 
+
 # Reading List
 
 ## RNN Cell
@@ -30,3 +30,4 @@
 
 - [ ] [A Primal-Dual Method for Training Recurrent Neural Networks Constrained by the Echo-State Property](https://arxiv.org/pdf/1311.6091.pdf)
 - [ ] [Training recurrent networks online without backtracking](https://arxiv.org/abs/1507.07680)
+- [ ] [Memory-Efficient Backpropagation Through Time](https://arxiv.org/abs/1606.03401)

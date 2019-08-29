@@ -12,8 +12,8 @@
 
 1. The original motivation for research into dataflow was the <span style="background-color:#ACD6FF;">_**exploitation of massive parallelism**_</span>.
     Dataflow architecture avoids the above two bottlenecks by using:
-    1. execution instructions as soon as their operands become available
-    1. local memory
+    1. execution instructions as soon as their operands become available.
+    1. local memory.
 
 1. A program in dataflow computer is a directed graph and that data flows between instructions, along its arcs.
 1. _**side-effect**_ and _**locality**_ cause troubles in compiling conventional imperative programming languages to run on dataflow hardware.
