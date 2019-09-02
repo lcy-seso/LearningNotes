@@ -51,6 +51,23 @@ Two design choices:
   * rely on control-flow features of the host language or static unrolling.
   * In a heterogeneous environment, communication and synchronization with the client process can be costly.
 
+## Programming Interface
+
+TF chooses the `in-graph` approach.
+
+1. The operators are embedded as functions in the host programming languages
+1. control-flow constructs are also operators
+    - the most basic ones:
+        1. `cond`
+        1. `while_loop`
+    - high-order functions
+        1. `map_fn`, `foldr`, `scan`
+        1. <span style="background-color:#ACD6FF;">_**the high-order functions are actually defined in terms of `while_loop`**_</span>
+
+1. Data structures are important tools for organizing dynamic computation.
+    - mutable variables, queues
+    - augment TF with a new type `TensorArrays` with _**random read/write**_ accesses
+
 # References
 
 1. [TensorFlow White Paper Notes](https://github.com/samjabrahams/tensorflow-white-paper-notes)
