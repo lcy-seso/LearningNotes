@@ -1,22 +1,23 @@
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
-
-- [Dataflow computers: their history and future](#dataflow-computers-their-history-and-future)
-    - [My Takeaways](#my-takeaways)
-    - [Overview](#overview)
-    - [Dataflow principles](#dataflow-principles)
-    - [Dataflow graph](#dataflow-graph)
-    - [References](#references)
-
-<!-- /TOC -->
-
 # [Dataflow computers: their history and future](https://csrl.cse.unt.edu/kavi/Research/encyclopedia-dataflow.pdf)
+
+## Terminology
+
+1. _**actor**_: a dataflow graph is a directed graph, $G(N, A)$, where nodes (also called _**actors**_) in $N$ represent instructions and arcs in $A$ represent data dependencies among the nodes.
+1. _**tokens**_: the operands are conveyed from one node to another in **data packets** called tokens.
+    - How to understand _data packets_ here?
+1. _**tag**_: in dynamic dataflow architecture, to _**distinguish between different instances of a node**_, and _**routing data**_ for different instantiations of the node, _**a tag**_ is associated with each token that identifies the context in which a particular token was generated.
 
 ## My Takeaways
 
 1. Below sentence is quoted from the paper:
-    >Concurrency in conventional systems is based on instruction level parallelism (ILP), data level parallelism (DLP), and/or thread level parallelism (TLP). These parallelisms are achieved using techniques such as _**deep pipelining**_, _**out-of-order execution**_, _**speculative execution**_, and _**multithreaded execution**_ of instructions with considerable hardware and software resources.
+    >Concurrency in conventional systems is based on instruction-level parallelism (ILP), data-level parallelism (DLP), and/or thread-level parallelism (TLP). These parallelisms are achieved using techniques such as _**deep pipelining**_, _**out-of-order execution**_, _**speculative execution**_, and _**multithreaded execution**_ of instructions with considerable hardware and software resources.
 
     From the description, _**deep pipelining**_, _**out-of-order execution**_, _**speculative execution**_, and _**multithreaded execution**_ are techniques to achieve efficiency through more parallelism and concurrency. I am not familiar with these techniques, but they are worth further reading.
+1. because recurrent NN is customized computations performed on list-like structures. `stream` is exactly a list-like data structure, and it gives me a feeling that SISAL has many designs to optimize `stream` computation. So, whether it is possible to steal some design idea from SISAL?
+1. Does this indicate that _**pure functional semantics**_ benefit inducing the full parallelism and concurrency, so is there a minimal set for these semantics that also benefits data processing system design?
+1. Maybe, we can steal knowledge or learn knowledge from _**dyanmic**_ dataflow architecture research which _**views arc as buffers! and route data**_
+1. Though TensorFlow's design has its root in dataflow architecture research, as my understanding, it is more like a static dataflow architecture, not a dynamic dataflow architecture.
+1. The computation process should be split into several functional unit so that they can be piplined.
 
 ## Overview
 
@@ -24,18 +25,18 @@ Quoted from the paper:
 
 >As we approach the technological limitations, concurrency will become the major path to increase the computational speed of computers.
 
-## Dataflow principles
+## Dataflow Principles
 
 ||Dataflow|Controlflow
 |--|--|--|
-|when instructions are enabled for execution|all the required operands are available|are executed sequentially under the control of a program counter|
+|execution mechanism|all the required operands are available| executed sequentially under the control of a program counter|
 
 - In the dataflow program, any two enabled instructions do not interfere with each other, thus can be executed in any order, or concurrently.
 - In a dataflow environment
     1. conventional concepts such as "variables" and "memory updating" are nonexistent;
     1. instead, objects are consumed by an actor that yields a result object that is passed to the next actors;
 
-## Dataflow graph
+## Dataflow Graph
 
 What is a dataflow graph?
 
@@ -60,16 +61,60 @@ Fig. Basic primitives of the dataflow graph.
 |4.|switch actor|directs data values. <br>Passes one of its input tokens to the output based on the value of the control token.|
 |5.|copy|identity operators that duplicate input tokens.|
 
-## Dataflow language
+## Dataflow Language
 
 ### VAL
 
-1. relies on pure functional language semantics to exploit implicit concurrency.
-    - dataflow language use single assignment semantics, the implementation and the use of arrarys present unique challenges.
+1. relies on _**pure functional language semantics**_ to exploit implicit concurrency.
+    - dataflow language use single assignment semantics, the implementation and the use of arrays present unique challenges.
+
+1. quoted from the paper:
+
+    > if one applies _**imperative semantics**_, both examples proceed sequentially.
+
+    - _What are the differences between "imperative semantics" and "functional semantics"?_
 
 ### Id
 
-block-structured
+- block-structured
+- expression-oriented
+- single assignment
+
+ld programs consist of side-effect-free expressions and expressions can be executed in any order or concurrently based on the availability of input data.
+
+### SISAL: _**Streams**_ and _**Iterations**_ in a Single Assignment Language
+
+Quoted from the paper:
+
+> Sisal 2.0 provided multitasking(or multithreading) to support dataflow parallelism on _**[conventional shared memory multiprocessor](https://link.springer.com/referenceworkentry/10.1007%2F978-0-387-09766-4_142)**_.
+
+- A stream is _**a sequence of values**_ produced _**in order**_ by one expression; thus it consists of homogeneous typed values, and is consumed in _**the same order**_ by one ore more other expressions.
+- Sisal can perform reduction operations _**concurrently using binary tree evaluations**_.
+
+## Dataflow Architecture
+
+### static dataflow architecture vs. dynamic dataflow architecture
+
+||STATIC dataflow architecture|DYNAMIC dataflow architecture|
+|:--|:--|:--|
+||permits at most _**one instance**_ of a node to be enabled for firing|permits simultaneous activation of several instances of a node during the run-time by _**viewing arcs as buffers that contains multiple data items**_.|
+|_**PROS**_|has a simplified inherent mechanism to detect enabled nodes|allows greater exploitation of parallelism|
+|_**CONS**_|limits performance|greater parallelism comes at the expense of the overhead in terms of the:<br> 1. generation of tags<br>2. larger data tokens<br>3. _**complexity of the matching tokens**_|
+
+### pure dataflow architectures
+
+<p align="center">
+<img src="images/static_dataflow_architecture.png" width=50%><br>Fig. The basic organization of the static dataﬂow model.
+</p>
+
+1. the memory section
+1. the processing section
+1. the distribution network
+1. the control network
+
+### macro dataflow architectures
+
+### hybrid dataflow architecture
 
 # Reference
 
