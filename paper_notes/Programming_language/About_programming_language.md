@@ -1,9 +1,9 @@
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Elements](#elements)
-	- [Syntax](#syntax)
-	- [Semantics](#semantics)
-		- [Type System](#type-system)
+    - [Syntax](#syntax)
+    - [Semantics](#semantics)
+        - [Type System](#type-system)
 - [Reference](#reference)
 
 <!-- /TOC -->
