@@ -18,6 +18,15 @@
 1. Maybe, we can steal knowledge or learn knowledge from _**dyanmic**_ dataflow architecture research which _**views arc as buffers! and route data**_
 1. Though TensorFlow's design has its root in dataflow architecture research, as my understanding, it is more like a static dataflow architecture, not a dynamic dataflow architecture.
 1. The computation process should be split into several functional unit so that they can be piplined.
+1. Below passage is quoted from the paper. It sounds fascinating for me, but to be honest, due to lacking enough knowledge, I cannot understand it. I think it worth further studying.
+
+    <p align="center">
+    <img src="images/paper-screenshot-1.png" width=50%><br>Fig. cited from the paper.
+    </p>
+
+1. Quoted some sentences from the paper that make me to think:
+    1. the amount of _**parallelism lost because of the sequential execution**_ of instructions within a thread is minimal.
+    1. _**thread level speculation**_ to _**improve**_ performance of _**imperative programs**_ is simplified in scheduled dataflow system.
 
 ## Overview
 
@@ -49,7 +58,7 @@ What is a dataflow graph?
 Below figure depicts the basic primitives of the dataflow graph.
 
 <p align="center">
-<img src="images/dataflow_graph_1.png" width=75%><br>
+<img src="images/dataflow-graph-1.png" width=75%><br>
 Fig. Basic primitives of the dataflow graph.
 </p>
 
@@ -103,20 +112,50 @@ Quoted from the paper:
 
 ### pure dataflow architectures
 
-<p align="center">
-<img src="images/static_dataflow_architecture.png" width=50%><br>Fig. The basic organization of the static dataﬂow model.
-</p>
+In pure dataflow model, _**no concept of a variable exists**_ and data is exchanged _**in the form of tokens**_ flowing between instructions.
 
-1. the memory section
-1. the processing section
-1. the distribution network
-1. the control network
+1. The _Static Dataflow Architecture_
 
-### macro dataflow architectures
+    <p align="center">
+    <img src="images/static-dataflow-architecture.png" width=50%>
+    <br>Fig. The basic organization of the static dataﬂow model.
+    </p>
 
-### hybrid dataflow architecture
+    It contains five functional units
+
+    1. the memory section
+    1. the processing section
+    1. the distribution network
+    1. the control network
+
+1. _Manchester Dyanmic Model_
+
+    <p align="center">
+    <img src="images/Manchester-dynamic-dataflow-machine.png" width=50%><br>Fig. The Manchester Dynamic dataﬂow Machine.
+    </p>
+
+    The manchester dynamic model is composed of five units organized as a pipeline ring:
+    1. _**switch unit**_
+    1. _**token queue**_
+        - a first-in-first-out buffer that stores temporarily tokens traversing on the data-flow graph arcs.
+    1. _**matching unit**_
+    1. _**node store**_
+    1. _**processing unit**_
+        - a micro-programmed, 2-stage pipeline unit
+
+1. Performance of the dynamic dataflow architecture significantly affacted by two factors:
+    1. the rate at which the matching unit operates.
+        - _solution_: ETS (explicit token store) and associative mathing
+
+    1. <span style="background-color:#ACD6FF;">_**the duration of the instruction cycle relative to its control-flow conunterpart**_</span>.
+        - I DO NOT UNDERSTAND THIS.
+
+### macro dataflow architectures??
+
+### hybrid dataflow architecture??
 
 # Reference
 
 1. [Tensorflow Conditionals and While Loops](http://mlexplore.org/2018/03/27/tensorflow-conditionals-and-while-loops/)
 1. [dataflow architecture](https://en.wikipedia.org/wiki/Dataflow_architecture)
+1. [ILP: instruction level parallel](https://en.wikipedia.org/wiki/Instruction-level_parallelism)
