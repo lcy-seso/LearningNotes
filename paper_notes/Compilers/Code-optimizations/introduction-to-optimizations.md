@@ -90,6 +90,9 @@ If the compiler knows the context:
 
 ### 1.2 Loop nest in LINPACK: the transformation process and challenges
 
+`dmxpy` routine: $y + x \times m$ where $x$ and $y$ are vectors and $m$ is a matrix.
+
+
 # Reference
 
 1. [operator strength reduction](https://www.cs.rice.edu/~keith/EMBED/OSR.pdf)
