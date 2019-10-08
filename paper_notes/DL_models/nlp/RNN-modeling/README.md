@@ -31,3 +31,4 @@
 - [ ] [A Primal-Dual Method for Training Recurrent Neural Networks Constrained by the Echo-State Property](https://arxiv.org/pdf/1311.6091.pdf)
 - [ ] [Training recurrent networks online without backtracking](https://arxiv.org/abs/1507.07680)
 - [ ] [Memory-Efficient Backpropagation Through Time](https://arxiv.org/abs/1606.03401)
+- [ ] [Training Deep Nets with Sublinear Memory Cost](https://arxiv.org/abs/1604.06174)

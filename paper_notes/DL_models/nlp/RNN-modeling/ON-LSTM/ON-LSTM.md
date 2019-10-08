@@ -1,13 +1,13 @@
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [ON-LSTM](#on-lstm)
-	- [My takeaways](#my-takeaways)
-	- [The problem to address in this paper](#the-problem-to-address-in-this-paper)
-	- [Approach: ON-LSTM](#approach-on-lstm)
-		- [1. Ordered Neurons](#1-ordered-neurons)
-		- [2. ON-LSTM](#2-on-lstm)
-			- [2.1 active function `cumax`](#21-active-function-cumax)
-			- [2.2 structured gating](#22-structured-gating)
+    - [My takeaways](#my-takeaways)
+    - [The problem to address in this paper](#the-problem-to-address-in-this-paper)
+    - [Approach: ON-LSTM](#approach-on-lstm)
+        - [1. Ordered Neurons](#1-ordered-neurons)
+        - [2. ON-LSTM](#2-on-lstm)
+            - [2.1 active function `cumax`](#21-active-function-cumax)
+            - [2.2 structured gating](#22-structured-gating)
 - [References](#references)
 
 <!-- /TOC -->

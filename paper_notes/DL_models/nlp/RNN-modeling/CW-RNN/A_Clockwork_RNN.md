@@ -1,8 +1,8 @@
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Clockwork RNN](#clockwork-rnn)
-	- [Simple RNN](#simple-rNN)
-	- [Clockwork RNN](#clockwork-rnn)
+    - [Simple RNN](#simple-rNN)
+    - [Clockwork RNN](#clockwork-rnn)
       - [Why Clockwork RNN](#why-clockwork-rnn)
       - [Computation Details](#computation-details)
         - [1. Partition hidden layer into sub-modules](#1-partition-hidden-layer-into-sub-modules)
@@ -60,14 +60,16 @@ Specifically:
     - $\bold{W}_H$ is a block-upper triangular, that is $\bold{\omega}_{i, j} = \bold{0}$ when $i \lt j$.
 
 Below figure shows the partition of $\bold{W}_H$ and $\bold{W}_{I}$ with $g = 4$.
-![](images/wh.png)
+
+![](../images/wh.png)
 
 #### 2. Assign different clock period to different modules
 
 After partition, each block-row is assigned a different time period $T_i$, $T_n \in \{ T_1, ..., T_g \}$. Clock period is an important time hyper-parameter that significantly affacts CW-RNN's learning performance. In [[1](#Reference)], the exponential series of periods are used. That is: $T_i = 2^{i - 1}$.
 
 Below figure shows when exponential series is chosen as the clock period and $g = 7$, at time step 1 ~ 64 (skip some time steps), which modules are active.
-![](images/active_modules.png)
+
+![](../images/active_modules.png)
 
 #### 3. For unactive modules, directly copy their values in previous time step to current time steps.
 
@@ -76,7 +78,8 @@ At each CW-RNN time step $t$:
 - Non-active modules are directly copied from the previous time step.
 
 Below figure shows how output vector is computed in CW-RNN with $g = 6$ at time step 6 ($t = 6$).
-![](images/CWRNN.png)
+
+![](../images/CWRNN.png)
 
 # Reference
 

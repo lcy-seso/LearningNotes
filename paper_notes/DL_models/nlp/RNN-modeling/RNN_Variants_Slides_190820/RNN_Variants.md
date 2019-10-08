@@ -253,7 +253,7 @@ Approach
 <p align="center">
 <img src="../images/CWRNN.png">
 </p>
- 
+
 </font>
 
 ---
@@ -279,7 +279,7 @@ How to choose clock period significantly affect clockwork RNN's learning perform
 - Models
     1. Replace the single recurrent connection found in standard RNNs with _**as many recurrent connections**_ as there are dimensions in the data.
     1. During the forward pass, at each point in the data sequence, the hidden layer of the network receives both an external input and its activations from one step back along all dimensions.
-    
+
 <p align="center">
 <img src="../images/multi-dimensioanl-rnn.png" width=75%><br>
 <font size=4>Fig1. Figure 1 and 2 from the paper.</font>
@@ -507,7 +507,7 @@ $\alpha$ above is a standard nonlinear transfer function or identity mapping.
 1. Slope annealing.
     - start from slope $\alpha = 1$.
     - slowly increase the slope until it reaches a threshold. In the paper, the annealing function task-specific.
-    
+
     <p align="center">
     <img src="../images/hardsigmoid.png" width=45%>
     </p>
