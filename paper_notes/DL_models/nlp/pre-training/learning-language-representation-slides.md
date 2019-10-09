@@ -1,10 +1,24 @@
 <!-- $theme: default -->
 
+# What you can cram into a single vector ?
+
+<p align="center">
+Ying Cao
+</p>
+
+---
+
+## NLP’s quest for learning language representations
+
+<p align="center">
+<img src="images/intro.png">
+</p>
+
 ---
 
 <font size=5>
 
-## Warm up
+## Backgroud (I)
 
 ### Transductive transfer learning vs. inductive transfer learning
 
@@ -23,7 +37,7 @@ For example, you are trying to classify whether an image has a flower in it or n
 
 <font size=5>
 
-## Warm up
+## Backgroud (II)
 
 1. _**Transductive Transfer Learning**_ (转导推理，aks. semi-supervised learning)
     - the other 98,000 images don't have labels, but they tell me something about the problem space.
@@ -37,20 +51,6 @@ For example, you are trying to classify whether an image has a flower in it or n
 </font>
 
 ---
-
-<font size=5>
-
-## Warm up
-
-### Transformer and Transformer decoder
-
-<p align="center">
-<img src="images/transformer-block.png">
-</p>
-
-- Transformer:
-
-</font>
 
 ---
 
