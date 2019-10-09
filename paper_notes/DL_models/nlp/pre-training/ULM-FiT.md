@@ -1,25 +1,3 @@
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
-
-- [ULM-FiT](#ulm-fit)
-    - [Problem setting](#problem-setting)
-    - [Problem to address](#problem-to-address)
-        - [Challenges](#challenges)
-    - [Approach](#approach)
-        - [1. General-domain LM pre-training: capture general features of the language in different layers](#1-general-domain-lm-pre-training-capture-general-features-of-the-language-in-different-layers)
-        - [2. Target task LM fine-tuning: learn task-specific features.](#2-target-task-lm-fine-tuning-learn-task-specific-features)
-            - [2.1 discriminative fine-tuning (Discr)](#21-discriminative-fine-tuning-discr)
-            - [2.2 slanted triangular learning rates](#22-slanted-triangular-learning-rates)
-        - [3. Target task classifier fine-tuning: preserve low-level representations and adapt high-level ones](#3-target-task-classifier-fine-tuning-preserve-low-level-representations-and-adapt-high-level-ones)
-            - [3.1 gradual unfreezing](#31-gradual-unfreezing)
-    - [Experimental study](#experimental-study)
-    - [Ablation Analysis](#ablation-analysis)
-- [Reference](#reference)
-- [Appendix](#appendix)
-        - [1. Transductive transfer learning vs. inductive transfer learning](#1-transductive-transfer-learning-vs-inductive-transfer-learning)
-        - [2. Why LM as the pre-training model for NLP?](#2-why-lm-as-the-pre-training-model-for-nlp)
-
-<!-- /TOC -->
-
 # ULM-FiT
 
 This paper:
@@ -136,7 +114,11 @@ Model:
 <img src="images/dataset-ULM-FiT.png" width=40%>
 </p>
 
-## Ablation Analysis
+Sidenote:
+
+textual entailment, question answering, sentiment anaylsis are all language understanding tasks.
+
+## Ablation analysis
 
 
 
@@ -161,7 +143,7 @@ For example, you are trying to classify whether an image has a flower in it or n
     - looks at the 2,000 labeled examples, builds a classifier on this.
 1. _**Active Learning**_ (主动学习)
     - when looking through the 98,000 examples, select a subset and request labels from an oracle.
-    - the algorithm might say of those 98,000, can you label this set of 50 images for me? That will help me build a better classifier."
+    - the algorithm might say of those 98,000, can you label this set of 50 images for me? That will help me build a better classifier.
 
 ### 2. Why LM as the pre-training model for NLP?
 
