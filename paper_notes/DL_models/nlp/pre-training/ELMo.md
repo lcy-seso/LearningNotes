@@ -76,6 +76,7 @@ This pre-trained model is trained for 10 epoches.
 
 1. [Exploring the Limits of Language Modeling](https://arxiv.org/abs/1602.02410?context=cs)
 1. [Byte pair encoding (BPE)](https://leimao.github.io/blog/Byte-Pair-Encoding/)
+1. ELMo (AllenNLP, 2018, NAACL 2018 the best paper award): [Deep contextualized word representations](https://arxiv.org/abs/1802.05365)
 
 ---
 

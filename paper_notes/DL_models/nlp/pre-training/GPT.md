@@ -50,9 +50,9 @@ Learn a universal representation that transfers with little adaptation to a wide
 
 ## Model Capacity
 
-1. 12-layer transformer decoder (with masked self-attention)
-    - 768 dimensional states, 12 heads
-    - FFN: 3072 dimensional states
+1. $L=12$, 12-layer transformer decoder (with masked self-attention) = $\text{BERT}_{base}$
+    - hidden size $H = 768$, heads $A = 12$
+    - FF/filter size = $4H = 3072$
 1. train for 100 epoches on minibatches of 64 randomly sampled, contiguous sequences of 512 tokens.
 
 ---

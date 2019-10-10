@@ -1,8 +1,8 @@
-# ULM-FiT
+# ULM-FiT (Universal Language Model Fine-tuning)
 
 This paper:
 
-1. proposes _**Universal Language Model Fine-tuning (ULMFiT)**_, a method that can be used to achieve CV-like transfer learning for any task for NLP.
+1. proposes _**Universal Language Model Fine-tuning (ULM-FiT)**_, a method that can be used to achieve CV-like transfer learning for any task for NLP.
 1. proposes _**discriminative fine-tuning**_, _**slanted triangular learning rates**_, and _**gradual unfreezing**_ to retain previous knowledge and avoid catastrophic forgetting during fine-tuning.
 
 ## Problem setting
@@ -37,10 +37,10 @@ ULMFiT consists of three stages:
 
 _**This stage is the most expensive, it only needs to be performed once.**_
 
-Three stacled AWD-LSTM are trained on a _**general-domain corpus**_.
+Three stacked AWD-LSTM are trained on a _**general-domain corpus**_.
 
 - dataset Wikitext-103 is used as the _**general-domain corpus**_.
-- Wikitext-103 consists of 28,595 preprocessed Wikipedia articles and 103 million words.
+    - Wikitext-103 consists of 28,595 preprocessed Wikipedia articles and 103 million words.
 
 ### 2. Target task LM fine-tuning: learn task-specific features.
 
