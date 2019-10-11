@@ -1,10 +1,10 @@
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [An Example of Tape-based Reverse Mode AD](#an-example-of-tape-based-reverse-mode-ad)
-	- [The First-order Derivatives of a Scalar-function](#the-first-order-derivatives-of-a-scalar-function)
-		- [The primal program](#the-primal-program)
-		- [The adjoint program](#the-adjoint-program)
-	- [High-order Derivatives of a Multi-variable Function](#high-order-derivatives-of-a-multi-variable-function)
+    - [The First-order Derivatives of a Scalar-function](#the-first-order-derivatives-of-a-scalar-function)
+        - [The primal program](#the-primal-program)
+        - [The adjoint program](#the-adjoint-program)
+    - [High-order Derivatives of a Multi-variable Function](#high-order-derivatives-of-a-multi-variable-function)
 
 <!-- /TOC -->
 

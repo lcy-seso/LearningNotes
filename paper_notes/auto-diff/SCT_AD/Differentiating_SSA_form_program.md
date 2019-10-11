@@ -2,9 +2,9 @@
 
 - [Goals](#goals)
 - [Background](#background)
-	- [Problem setting && Notation](#problem-setting-notation)
-		- [Notation](#notation)
-		- [Function call Tracing: dynamic vs. static approaches](#function-call-tracing-dynamic-vs-static-approaches)
+    - [Problem setting && Notation](#problem-setting-notation)
+        - [Notation](#notation)
+        - [Function call Tracing: dynamic vs. static approaches](#function-call-tracing-dynamic-vs-static-approaches)
 
 <!-- /TOC -->
 

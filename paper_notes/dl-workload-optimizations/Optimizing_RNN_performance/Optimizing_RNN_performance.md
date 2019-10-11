@@ -158,4 +158,4 @@ To get the best performance out of Recurrent Neural Networks you often have to e
 1. [Why GEMM is at the heart of deep learning](https://petewarden.com/2015/04/20/why-gemm-is-at-the-heart-of-deep-learning/)
 1. [cuDNN: Efficient Primitives for Deep Learning](https://arxiv.org/pdf/1410.0759.pdf)
 1. [Caffe con Troll: Shallow Ideas to Speed Up Deep Learning](https://arxiv.org/pdf/1504.04343v1.pdf)
-1. [Persistent RNNs: Stashing Recurrent Weights On-Chip](http://proceedings.mlr.press/v48/diamos16.pdf) 
+1. [Persistent RNNs: Stashing Recurrent Weights On-Chip](http://proceedings.mlr.press/v48/diamos16.pdf)

@@ -1,13 +1,13 @@
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Scheduled Dataflow: Execution Paradigm, Architecture, and Performance Evaluation](#scheduled-dataflow-execution-paradigm-architecture-and-performance-evaluation)
-	- [Takeaways and Further Questions](#takeaways-and-further-questions)
-		- [Takeaways](#takeaways)
-		- [Further Questions](#further-questions)
-	- [Problem to solve](#problem-to-solve)
-	- [Approaches](#approaches)
-	- [Some details](#some-details)
-	- [References](#references)
+    - [Takeaways and Further Questions](#takeaways-and-further-questions)
+        - [Takeaways](#takeaways)
+        - [Further Questions](#further-questions)
+    - [Problem to solve](#problem-to-solve)
+    - [Approaches](#approaches)
+    - [Some details](#some-details)
+    - [References](#references)
 
 <!-- /TOC -->
 
