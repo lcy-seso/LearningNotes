@@ -42,6 +42,11 @@
      //tensorflow/tools/pip_package:build_pip_package
     ```
 3. Build wheel.
+
+    ```bash
+    bazel-bin/tensorflow/tools/pip_package/build_pip_package ~/tensorflow_package
+    ```
+
     ```bash
     bazel build --config opt tensorflow/core/profiler:profiler
     ```
