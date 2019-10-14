@@ -28,9 +28,9 @@
 - The compiler's ability to reduce the cost of that computation depends directly on its analysis of the code and the surrounding context.
     - This is more to be a generally true philosophy.
 
-## 1. Two examples
+## Two examples
 
-### 1.1 Array address: knowledge and context plays a vital role in optimization
+### 1. Array address: knowledge and context plays a vital role in optimization
 
 <span style="background-color:#ACD6FF;">_**The compiler’s ability to reduce the cost of that computation depends directly on its analysis of the code and the surrounding context.**_</span>
 
@@ -38,7 +38,7 @@ consider the array reference example below.
 
 $$\text{m}(i,j)$$
 
-#### 1.1.1 Without knowledge about `m`, `i` and `j` or the surrounding context
+#### 1.1 Without knowledge about `m`, `i` and `j` or the surrounding context
 
 the compiler MUST generate _**the full expression**_ for addressing a two-dimensional array stored in column-major order:
 
@@ -48,13 +48,13 @@ $$\text{@m} + (j - low_2(\text{m})) \times (high_1(\text{m}) - low_1(\text{m}) +
 - $high_i(\text{m})$: the higher bound.
 - $\omega$: the size of an element of $m$.
 
-#### 1.1.2 Given the knowledge about _m_
+#### 1.2 Given the knowledge about _m_
 
 If `m` is a local array with lower bounds of 1 in each dimension and known upper bounds, then the compiler can simplify the calculation to:
 
 $$\text{@m} + (j - 1) \times h\omega + (i - 1) \times \omega$$
 
-#### 1.1.3 Given the context
+#### 1.3 Given the context
 
 <span style="background-color:#ACD6FF;">_**Knowing the context around the reference to m(i,j) allows the compiler to signiﬁcantly reduce the cost of array addressing.**_</span>
 
@@ -65,7 +65,7 @@ If the compiler knows the context:
     > _**[Operator strength reduction](https://en.wikipedia.org/wiki/Strength_reduction)**_ _is a technique that improves compiler-generated code by reformulating certain costly computations in terms of less expensive ones._
 
     <p align="center">
-    <img src="images/strength-reduction.png" width=30%><br>Fig. strength reduction.
+    <img src="images/strength-reduction.png" width=30%><br>Fig 1. strength reduction.
     </p>
 
     replace the term $(j - 1) \times hw$ with a sequence $j'_1$,$j'_2$,$j'_3$,...,$j'_k$, where $j'_1 = 0$, and $j'_i = j'_{i-1} + hw$
@@ -88,10 +88,39 @@ If the compiler knows the context:
         - The upper and lower bounds for _m_ might change on each call to the procedure.
     1. the compiler may be unable to simplify the address calculation.
 
-### 1.2 Loop nest in LINPACK: the transformation process and challenges
+### 2 Loop nest in LINPACK: the transformation process and challenges
 
 `dmxpy` routine: $y + x \times m$ where $x$ and $y$ are vectors and $m$ is a matrix.
 
+#### 2.1 Hand-applied transformation
+
+Fig 2 is the simle implementation of `dmxpy` before the author hand transforming the codes:
+
+<p align="center">
+<image src="images/simple-version-of-dmxpy.png" width=30%><br>Fig 2. The simple version of `dmxpy` before applying manual transformations.
+</p>
+
+```python
+    do 60 j = 1, n2
+        do 50 i = 1, n1
+            y(i) = y(i) + x(j) * m(i, j)
+50      continue
+60  continue
+```
+
+Manual optimizations.
+
+<p align="center">
+<image src="images/excerpt-from-dmxpy-in-linpack.png" width=50%>
+</p>
+
+To improve performance:
+
+1. the author _**unrolled**_ the outer loop: the _j_ loop 16 times.
+    - this rewrite will create 16 copies of the assignment statement with distinct values for _j_.
+    - the unrolling also changes the increment on the outer loop from 1 to 16.
+
+#### 2.2 Challenges compiler faced
 
 # Reference
 

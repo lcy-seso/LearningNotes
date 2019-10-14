@@ -11,7 +11,7 @@
 
 # Reading List
 
-## RNN Cell
+## RNN Variants
 
 - [ ] [Fast-Slow Recurrent Neural Networks](https://arxiv.org/abs/1705.08639)
 - [x] [Dilated Recurrent Neural Networks](https://arxiv.org/abs/1710.02224) (NIPS 2017)
@@ -25,6 +25,7 @@
 - [ ] [Phased LSTM: accelerating recurrent network training for long or event-based sequences](https://papers.nips.cc/paper/6310-phased-lstm-accelerating-recurrent-network-training-for-long-or-event-based-sequences.pdf)
 - [x] [Multi-dimensional recurrent neural networks](https://arxiv.org/pdf/0705.2011.pdf)
 - [x] [Ordered Neurons: Integrating Tree Structures into Recurrent Neural Networks](https://openreview.net/pdf?id=B1l6qiR5F7)
+- [ ] [Efficient Neural Audio Synthesis](https://arxiv.org/abs/1802.08435)
 
 ## Training RNN
 

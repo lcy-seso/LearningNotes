@@ -34,7 +34,7 @@
 <font size=5>
 
 1. RNNs are notorious for their sequential execution natures. Nevertheless, is there no parallelism at all in recurrent models?
-1. RNN is a wide spectrum of models more than LSTM/GRU. Is there common semantics to describe general-purpose RNN computation, and the description is able to be optimized?  
+1. RNN is a wide spectrum of models more than LSTM/GRU. Is there common semantics to describe general-purpose RNN computation, and the description is able to be optimized?
 
 </font>
 
