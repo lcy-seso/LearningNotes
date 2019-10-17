@@ -96,6 +96,10 @@ If the compiler knows the context:
 
 Fig 2 is the simple implementation of `dmxpy` before the author hand transforms the codes:
 
+<p align="center">
+<image src="images/dmxpy.png" width=50%><br> Fig 2. the `dmxpy` rotunine.
+</p>
+
 ```python
     do 60 j = 1, n2
         do 50 i = 1, n1
@@ -104,19 +108,45 @@ Fig 2 is the simple implementation of `dmxpy` before the author hand transforms 
 60  continue
 ```
 
-Manual optimizations.
+To improve performance, the author will perform below manual optimizations:
 
-<p align="center">
-<image src="images/excerpt-from-dmxpy-in-linpack.png" width=50%>
-</p>
-
-To improve performance:
-
-1. the author _**unrolled**_ the outer loop: the _j_ loop 16 times.
-    - this rewrite will create 16 copies of the assignment statement with distinct values for _j_.
+1. _**unrolls**_ the outer _j_ loop 16 times.
+    - unrolling will create 16 copies of the assignment statement with distinct values for _j_.
     - the unrolling also changes the increment on the outer loop from 1 to 16.
+1. handle the cases where the array bounds are not integral multiples of 16.
+    - this seems to be "loop tiling"
+
+      <p align="center">
+      <image src="images/manual-optimizations-for-dmxpy.png" width=50%><br> Fig 3. Manual code optimizations applied for the `dmxpy`.
+      </p>
+
+    - The final loop nest after manual optimizations:
+
+      <p align="center">
+      <image src="images/excerpt-from-dmxpy-in-linpack.png" width=50%><br> Fig 4. The optmized final loop nest.
+      </p>
+
+Performance gains:
+
+1. Unrolling the loop eliminates some scalar operations which often improves cache locality.
 
 #### 2.2 Challenges compiler faced
+
+- _**Goal**_
+
+    <span style="background-color:#ACD6FF;"> produce good performance across a wide range of target machines and compilers.</span>
+
+- _**Challenges**_
+
+    1. The loop nest contains 33 distinct array-address expressions, 16 for m, 16 for x, and one for y that it uses twice.
+
+        _**Unless the compiler can simplify those address calculations, the loop will be awash in integer arithmetic.**_
+
+    1. To achieve this code shape, the compiler must refactor the address expressions, perform strength reduction, recognize loop-invariant calculations and move them out of inner loops, and choose the appropriate addressing mode for the loads.
+
+    1. If the compiler fails in some part of this transformation sequence, the result- ing code might be substantially worse than the original.
+
+    the quality of code produced by the compiler depends on an orchestrated series of transformations that all must work; when one fails to achieve its purpose, the overall sequence may produce lower quality code than the user expects.
 
 # Reference
 
