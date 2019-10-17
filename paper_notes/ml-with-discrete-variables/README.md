@@ -8,3 +8,7 @@
 - [ ] [Estimating or Propagating Gradients Through Stochastic Neurons for Conditional Computation](https://arxiv.org/pdf/1308.3432.pdf)
 - [ ] [Gradient Estimation Using Stochastic Computation Graphs](https://arxiv.org/pdf/1506.05254.pdf)
 - [ ] [Estimating or Propagating Gradients Through Stochastic Neurons]()
+
+## Some blog
+
+1. [Neural Networks gone wild! They can sample from discrete distributions now](http://anotherdatum.com/gumbel-gan.html)

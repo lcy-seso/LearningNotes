@@ -130,7 +130,7 @@ $$\mathbf{h}_t = \mathbf{o}_t \circ \text{tanh}(\mathbf{c}_t) $$
 
 <font size=5>
 
-# Summary: csore of LSTM
+# Summary: core of LSTM
 
 1. Introduce the cell memory (GRU has no cell).
 1. In LSTM, history information flow along with the redline, and no non-linear squashing function is applied.

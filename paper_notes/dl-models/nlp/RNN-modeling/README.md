@@ -1,3 +1,4 @@
+
 # My Notes
 
 - [Optimizing RNN performance](Optimizing_RNN_performance/Optimizing_RNN_performance.pdf)

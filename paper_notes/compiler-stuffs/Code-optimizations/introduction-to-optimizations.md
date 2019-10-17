@@ -21,7 +21,7 @@
 
     > Because the translation from source code into IR is a local process. It occurs without extensive analysis of the surrounding context. It typically generates IR to handle the most general case of each construct. _**With contextual knowledge**_, the optimizer can _**often determine**_ that the code _**does not need**_ that full generality; when that happens, the optimizer can _**rewrite the code**_ in _**a more restricted**_ and more efficient way.
 
-    > A _**second significant source**_ of opportunity for the optimizer lies with the target machine. The compiler must understand, in detail, of the target that affects performance. Issues such as the number of functionall units and their capabilities, the latency and bandwidth to various levels of the memory hierarchy, the various addressing modes supported in the instruction set, and the availability of unusual or complex operations all affect the kind of code that the compiler should generate for a given application.
+    > A _**second significant source**_ of opportunity for the optimizer lies with the target machine. The compiler must understand, in detail, of the target that affects performance. Issues such as the number of functional units and their capabilities, the latency and bandwidth to various levels of the memory hierarchy, the various addressing modes supported in the instruction set, and the availability of unusual or complex operations all affect the kind of code that the compiler should generate for a given application.
 - Optimization further insulates the front end from performance concerns.
 - At the same time, optimization changes the code that the back end processes. Modern optimizers assume that the back end will handle resource allocation; thus, they _**typically target an idealized machine**_ that has an unlimited supply of registers, memory, and functional units. This, in turn, places more pressure on the techniques used in the compiler’s back end.
 - If compilers are to shoulder their share of responsibility for runtime performance, they must include optimizers.
@@ -94,11 +94,7 @@ If the compiler knows the context:
 
 #### 2.1 Hand-applied transformation
 
-Fig 2 is the simle implementation of `dmxpy` before the author hand transforming the codes:
-
-<p align="center">
-<image src="images/simple-version-of-dmxpy.png" width=30%><br>Fig 2. The simple version of `dmxpy` before applying manual transformations.
-</p>
+Fig 2 is the simple implementation of `dmxpy` before the author hand transforms the codes:
 
 ```python
     do 60 j = 1, n2
@@ -125,3 +121,4 @@ To improve performance:
 # Reference
 
 1. [operator strength reduction](https://www.cs.rice.edu/~keith/EMBED/OSR.pdf)
+1. [Engineering A Compiler: Chapter 8](https://www.elsevier.com/books/engineering-a-compiler/cooper/978-0-12-088478-0)
