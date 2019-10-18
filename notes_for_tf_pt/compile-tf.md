@@ -31,6 +31,7 @@
      --verbose_failures \
      --config=opt \
      --config=cuda \
+     --config=v2 \
      --action_env="LD_LIBRARY_PATH=${LD_LIBRARY_PATH}" \
      //tensorflow/tools/pip_package:build_pip_package
     ```
@@ -39,9 +40,9 @@
     bazel build \
       --config=opt \
       --config=cuda \
-      --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" \
       --config=mkl \
       --config=v2 \
+      --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" \
       --verbose_failures \
       --action_env="LD_LIBRARY_PATH=${LD_LIBRARY_PATH}" \
      //tensorflow/tools/pip_package:build_pip_package
