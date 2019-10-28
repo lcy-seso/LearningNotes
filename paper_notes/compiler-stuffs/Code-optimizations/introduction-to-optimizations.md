@@ -101,33 +101,48 @@ Fig 2 is the simple implementation of `dmxpy` before the author hand transforms 
 </p>
 
 ```python
-    do 60 j = 1, n2
-        do 50 i = 1, n1
-            y(i) = y(i) + x(j) * m(i, j)
-50      continue
-60  continue
+def dmxpy(n1, y, n2, x, m):
+    for j in range(n2):
+        for i in range(n1):
+            y[i] = y[i] + x[j] * m[i, j]
 ```
 
 To improve performance, the author will perform below manual optimizations:
 
 1. _**unrolls**_ the outer _j_ loop 16 times.
-    - unrolling will create 16 copies of the assignment statement with distinct values for _j_.
-    - the unrolling also changes the increment on the outer loop from 1 to 16.
-1. handle the cases where the array bounds are not integral multiples of 16.
-    - this seems to be "loop tiling"
+    ```python
+    for jmin in range(0, n2, 16):
+        for i in range(n1):
+            y[i] = y[i] + x[jmin] * m[i, jmin]
+            y[i] = y[i] + x[jmin + 1] * m[i, jmin + 1]
+            y[i] = y[i] + x[jmin + 2] * m[i, jmin + 2]
+            y[i] = y[i] + x[jmin + 3] * m[i, jmin + 3]
+            y[i] = y[i] + x[jmin + 4] * m[i, jmin + 4]
+            y[i] = y[i] + x[jmin + 5] * m[i, jmin + 5]
+            y[i] = y[i] + x[jmin + 6] * m[i, jmin + 6]
+            y[i] = y[i] + x[jmin + 7] * m[i, jmin + 7]
+            y[i] = y[i] + x[jmin + 8] * m[i, jmin + 8]
+            y[i] = y[i] + x[jmin + 9] * m[i, jmin + 9]
+            y[i] = y[i] + x[jmin + 10] * m[i, jmin + 10]
+            y[i] = y[i] + x[jmin + 11] * m[i, jmin + 11]
+            y[i] = y[i] + x[jmin + 12] * m[i, jmin + 12]
+            y[i] = y[i] + x[jmin + 13] * m[i, jmin + 13]
+            y[i] = y[i] + x[jmin + 14] * m[i, jmin + 14]
+            y[i] = y[i] + x[jmin + 15] * m[i, jmin + 15]
+    ```
+    1. unrolling will create 16 copies of the assignment statement with distinct values for _j_.
+    2. the unrolling changes the increment on the outer loop from 1 to 16.
 
-      <p align="center">
-      <image src="images/manual-optimizations-for-dmxpy.png" width=50%><br> Fig 3. Manual code optimizations applied for the `dmxpy`.
-      </p>
+2. The above codes cannot handle the cases where the array bounds are not integral multiples of 16.
+    <p align="center">
+    <image src="images/manual-optimizations-for-dmxpy.png" width=50%><br> Fig 3. Manual code optimizations applied for the `dmxpy`.
+    </p>
 
-    - The final loop nest after manual optimizations:
+    Check [this Python implementation](https://github.com/lcy-seso/LearningNotes/blob/master/paper\_notes/compiler-stuffs/Code-optimizations/dmxpy.py\#L12-L91).
 
-      <p align="center">
-      <image src="images/excerpt-from-dmxpy-in-linpack.png" width=50%><br> Fig 4. The optmized final loop nest.
-      </p>
+_**Performance gains**_
 
-Performance gains:
-
+1. Merging 16 assignments into a single state eliminate 16 additions and loads and stores of `y(i)`.
 1. Unrolling the loop eliminates some scalar operations which often improves cache locality.
 
 #### 2.2 Challenges compiler faced
@@ -138,15 +153,38 @@ Performance gains:
 
 - _**Challenges**_
 
+    ```python
+    for jmin in range(0, width, 16):
+    for i in range(n1):
+        y[i] = (
+            y[i] + x[jmin] * m[i, jmin] + x[jmin + 1] * m[i, jmin + 1] +
+            x[jmin + 2] * m[i, jmin + 2] + x[jmin + 3] * m[i, jmin + 3] +
+            x[jmin + 4] * m[i, jmin + 4] + x[jmin + 5] * m[i, jmin + 5] +
+            x[jmin + 6] * m[i, jmin + 6] + x[jmin + 7] * m[i, jmin + 7] +
+            x[jmin + 8] * m[i, jmin + 8] + x[jmin + 9] * m[i, jmin + 9] +
+            x[jmin + 10] * m[i, jmin + 10] +
+            x[jmin + 11] * m[i, jmin + 11] +
+            x[jmin + 12] * m[i, jmin + 12] +
+            x[jmin + 13] * m[i, jmin + 13] +
+            x[jmin + 14] * m[i, jmin + 14] +
+            x[jmin + 15] * m[i, jmin + 15])
+    ```
+
     1. The loop nest contains 33 distinct array-address expressions, 16 for m, 16 for x, and one for y that it uses twice.
 
         _**Unless the compiler can simplify those address calculations, the loop will be awash in integer arithmetic.**_
 
-    1. To achieve this code shape, the compiler must refactor the address expressions, perform strength reduction, recognize loop-invariant calculations and move them out of inner loops, and choose the appropriate addressing mode for the loads.
+    2. To achieve this code shape, the compiler must:
+        1. refactor the address expressions;
+        1. perform strength reduction;
+        1. recognize loop-invariant calculations and move them out of inner loops;
+            - the reference to `x` does not change during execution of the inner loop
+            - the optimizer can move the address calculatioins and the loads for `x` out of the inner loop, and maybe keep it in register
+        2. choose the appropriate addressing mode for the loads;
 
-    1. If the compiler fails in some part of this transformation sequence, the result- ing code might be substantially worse than the original.
+    3. If the compiler fails in some part of this transformation sequence, the resulting code might be substantially worse than the original.
 
-    the quality of code produced by the compiler depends on an orchestrated series of transformations that all must work; when one fails to achieve its purpose, the overall sequence may produce lower quality code than the user expects.
+    4. the quality of code produced by the compiler depends on an orchestrated series of transformations that all must work; when one fails to achieve its purpose, the overall sequence may produce lower quality code than the user expects.
 
 # Reference
 
