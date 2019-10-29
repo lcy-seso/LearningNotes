@@ -1,3 +1,5 @@
+[TOC]
+
 # Introduction to optimization
 
 ## Takeaways
@@ -28,7 +30,7 @@
 - The compiler's ability to reduce the cost of that computation depends directly on its analysis of the code and the surrounding context.
     - This is more to be a generally true philosophy.
 
-## Two examples
+## Two Examples
 
 ### 1. Array address: knowledge and context plays a vital role in optimization
 
@@ -186,7 +188,39 @@ _**Performance gains**_
 
     4. the quality of code produced by the compiler depends on an orchestrated series of transformations that all must work; when one fails to achieve its purpose, the overall sequence may produce lower quality code than the user expects.
 
+## Considerations for Optimizations
+
+Two issues, safety and profitability lie at the hear of every optimization.
+
+## Opportunities for Optimization
+
+1. reducing the overhead of abstraction.
+    - data structures and types introduced by programming languages require runtime support.
+1. taking advantage of special cases.
+1. matching the code to system resources.
+
+## Scope of optimization
+
+### 1. Local Methods
+
+operate over a single basic block: a maximal-length sequence of branch-free code.
+
+### 2. Regional Methods
+
+1. What it is
+
+    - operate over scopes larger than a single block but smaller than a full procedure.
+    - the compiler can choose regions in many different ways and a region might be defined by some source-code control structure.
+
+1. Advantage
+
+    - limiting the scope of a transformation to a region smaller than the entire precedure allows the compiler to focus its efforts on heavily executed regions.
+
+### 3. Global Methods
+
+also called intraprocedural methods. uses an entire procedure as context.
+
 # Reference
 
 1. [operator strength reduction](https://www.cs.rice.edu/~keith/EMBED/OSR.pdf)
-1. [Engineering A Compiler: Chapter 8](https://www.elsevier.com/books/engineering-a-compiler/cooper/978-0-12-088478-0)
+2. [Engineering A Compiler: Chapter 8](https://www.elsevier.com/books/engineering-a-compiler/cooper/978-0-12-088478-0)
