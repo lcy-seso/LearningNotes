@@ -220,6 +220,8 @@ operate over a single basic block: a maximal-length sequence of branch-free code
 
 also called intraprocedural methods. uses an entire procedure as context.
 
+### 4. Full Program Methods
+
 # Reference
 
 1. [operator strength reduction](https://www.cs.rice.edu/~keith/EMBED/OSR.pdf)
