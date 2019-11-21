@@ -11,6 +11,13 @@
     - We aim for making loop transformations and generic optimization strategies that potentially benefit performance less compiler dependent.
 1. Traditional, a language's compiler, is mainly designed for optimal code generation. Besides code generation, there is another critical factor for performance: task scheduling to automatic scale the computation.
 1. From this thesis, the polyhedral schedule is a loop analysis theory that will facilitate and generalize loop and data layout transformation. It is worth further learning.
+1. Existing frameworks do not take advantage of many compiler's generic transformations in their default optimization sequence. Frameworks are required to hardcode domain specific transformations in their backends which _**reduce performance portablity**_ and increase code bloat and repeated efforts.
+    - there is a strong need for making generic loop transformations more accessible.
+
+1. Some difficult    to    understand knowledge are exposed:
+    1. [isl](https://core.ac.uk/download/pdf/34473132.pdf)
+    1. <span style="background-color:#ACD6FF;">_**Polyhedra**_</span>[[8](#Reference)] or <span style="background-color:#ACD6FF;">_**Presburger**_</span>[[9,10](#Reference)]  relations are the mathematical foundations of polyhedral compilation. Read these to learn more.
+
 
 ## Some excerpts from the thesis
 
@@ -60,5 +67,6 @@ Polyhedral compilation uses _**a compact mathematical representation**_ to _**pr
 1. Allen R, Kennedy K. [Automatic translation of Fortran programs to vector form](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.14.1321&rep=rep1&type=pdf)[J]. ACM Transactions on Programming Languages and Systems (TOPLAS), 1987, 9(4): 491-542.
 1. Wolf M E, Lam M S. [A loop transformation theory and an algorithm to maximize parallelism](https://www.cs.indiana.edu/~achauhan/Teaching/B629/2006-Fall/CourseMaterial/1991-tpds-wolf-unimodular.pdf)[J]. IEEE Transactions on Parallel & Distributed Systems, 1991 (4): 452-471.
 1. Verdoolaege S. [isl: An integer set library for the polyhedral model](https://lirias.kuleuven.be/retrieve/123807)[C]//International Congress on Mathematical Software. Springer, Berlin, Heidelberg, 2010: 299-302.
+1. Loechner V, Wilde D K. [Parameterized polyhedra and their vertices](https://www.researchgate.net/profile/Doran_Wilde/publication/47735236_Parameterized_Polyhedra_and_Their_Vertices/links/0f31753275c2d0fecb000000/Parameterized-Polyhedra-and-Their-Vertices.pdf?origin=publication_detail)[J]. International Journal of Parallel Programming, 1997, 25(6): 525-549.
 1. Pugh W, Wonnacott D. [Static analysis of upper and lower bounds on dependences and parallelism](https://drum.lib.umd.edu/bitstream/handle/1903/629/CS-TR-3250.pdf?sequence=4&isAllowed=y)[J]. ACM Transactions on Programming Languages and Systems (TOPLAS), 1994, 16(4): 1248-1278.
 1. Pugh W, Wonnacott D. [An exact method for analysis of value-based array data dependences](https://drum.lib.umd.edu/bitstream/handle/1903/608/CS-TR-3196.pdf?sequence=4&isAllowed=y)[C]//International Workshop on Languages and Compilers for Parallel Computing. Springer, Berlin, Heidelberg, 1993: 546-566.
