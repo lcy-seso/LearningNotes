@@ -1,25 +1,28 @@
 # Reading List
 
-- [ ] [Tiramisu: A Polyhedral Compiler for Expressing Fast and Portable Code](https://arxiv.org/abs/1804.10694)
+- [x] [Tiramisu: A Polyhedral Compiler for Expressing Fast and Portable Code](https://arxiv.org/abs/1804.10694)
 - [ ] [Tensor comprehensions: Framework-agnostic high-performance machine learning abstractions](https://arxiv.org/abs/1802.04730)
 
 ## Polyhedral compilation
 
-- [ ] Grosser T. [A decoupled approach to high-level loop optimization: tile shapes, polyhedral building blocks and low-level compilers](https://tel.archives-ouvertes.fr/tel-01144563/document)[D]. , 2014.
+- [x] Grosser T. [A decoupled approach to high-level loop optimization: tile shapes, polyhedral building blocks and low-level compilers](https://tel.archives-ouvertes.fr/tel-01144563/document)[D]. , 2014.
 - [ ] [Polyhedral school](http://labexcompilation.ens-lyon.fr/polyhedral-school/program/)
 
-## Code Transformations
+## Loop Transformations
 
 - [ ] Kelly W, Pugh W. [A unifying framework for iteration reordering transformations](https://drum.lib.umd.edu/bitstream/handle/1903/708/CS-TR-3430.pdf?sequence=4&isAllowed=y)[C]//Proceedings 1st International Conference on Algorithms and Architectures for Parallel Processing. IEEE, 1995, 1: 153-162.
 
     > this work first presented that striping-mining is able to be modeled as a schedule only transformation.
 
-## Polyhedral analysis for parallelism
+- [ ] Girbal S, Vasilache N, Bastoul C, et al. [Semi-automatic composition of loop transformations for deep parallelism and memory hierarchies]()[J]. International Journal of Parallel Programming, 2006, 34(3): 261-317.
+
+  > this work show us _**some most impactful loop nest transformations**_ (<span style="background-color:#ACD6FF;">_what kind of transformation??_</span>) cannot be expressed as _**structural, incremental updates of the loop tree structure**_ (<span style="background-color:#ACD6FF;">_what does this mean??_</span>).
+
+## Dataflow analysis for parallelism using Polyhedral
 
 - [ ] Lim A W. [Improving parallelism and data locality with affine partitioning](https://suif.stanford.edu/papers/lim-thesis.ps.gz)[J]. 2002
-
-
-- [ ] [The omega test: a fast and practical integer programming algorithm for dependence analysis](http://www.cs.cmu.edu/~emc/spring06/home1_files/p4-pugh.pdf)
+- [ ] [GCD Test](https://apps.dtic.mil/dtic/tr/fulltext/u2/a268069.pdf)
+- [x] Pugh W. [The Omega test: a fast and practical integer programming algorithm for dependence analysis](http://www.cs.cmu.edu/~emc/spring06/home1_files/p4-pugh.pdf)[C]//Supercomputing'91: Proceedings of the 1991 ACM/IEEE conference on Supercomputing. IEEE, 1991: 4-13.
 
     > `isl` is inspried by this work.
 
@@ -41,4 +44,12 @@
 ## Translate dataflow program into integer set representation
 
 - [ ] Bhaskaracharya S G, Bondhugula U. [Polyglot: a polyhedral loop transformation framework for a graphical dataflow language]()[C]//International Conference on Compiler Construction. Springer, Berlin, Heidelberg, 2013: 123-143.
-- [ ] Benabderrahmane M W, Pouchet L N, Cohen A, et al. [The polyhedral model is more widely applicable than you think](https://link.springer.com/content/pdf/10.1007/978-3-642-11970-5_16.pdf)[C]//International Conference on Compiler Construction. Springer, Berlin, Heidelberg, 2010: 283-303.
+- [x] Benabderrahmane M W, Pouchet L N, Cohen A, et al. [The polyhedral model is more widely applicable than you think](https://link.springer.com/content/pdf/10.1007/978-3-642-11970-5_16.pdf)[C]//International Conference on Compiler Construction. Springer, Berlin, Heidelberg, 2010: 283-303.
+
+    > This work expands the application domain of the polyhedral model. It presents slight extensions to the polyhedral representation itself, based on the notions of _**exit**_ and _**control predicates**_ that allow to consider _**general while loops**_ and _**if conditions**_
+
+    > Mainstream deep learning frameworks represented by TensorFlow characterize deep learning computation as a dataflow program. Whether this work also could inspire us to make an incremental extension to deep learning frameworks?
+
+- [ ] Feautrier P. [Dataflow analysis of array and scalar references](https://www.researchgate.net/publication/2425315_Dataflow_Analysis_of_Array_and_Scalar_References)[J]. International Journal of Parallel Programming, 1991, 20(1): 23-53.
+- [ ] Maydan D E. [Accurate analysis of array references](https://apps.dtic.mil/dtic/tr/fulltext/u2/a268069.pdf)[R]. STANFORD UNIV CA DEPT OF COMPUTER SCIENCE, 1992.
+    > This work propose some methods to make the ordering constraints explicit for the compiler.
