@@ -10,6 +10,7 @@
 
 ## Loop Transformations
 
+- [ ] [Loop transformations](https://www.cri.ensmp.fr/~tadonki/PaperForWeb/tadonki_loop.pdf)
 - [ ] Kelly W, Pugh W. [A unifying framework for iteration reordering transformations](https://drum.lib.umd.edu/bitstream/handle/1903/708/CS-TR-3430.pdf?sequence=4&isAllowed=y)[C]//Proceedings 1st International Conference on Algorithms and Architectures for Parallel Processing. IEEE, 1995, 1: 153-162.
 
     > this work first presented that striping-mining is able to be modeled as a schedule only transformation.
@@ -18,7 +19,7 @@
 
   > this work show us _**some most impactful loop nest transformations**_ (<span style="background-color:#ACD6FF;">_what kind of transformation??_</span>) cannot be expressed as _**structural, incremental updates of the loop tree structure**_ (<span style="background-color:#ACD6FF;">_what does this mean??_</span>).
 
-## Dataflow analysis for parallelism using Polyhedral
+## Dependence analysis for parallelism using Polyhedral
 
 - [ ] Lim A W. [Improving parallelism and data locality with affine partitioning](https://suif.stanford.edu/papers/lim-thesis.ps.gz)[J]. 2002
 - [ ] [GCD Test](https://apps.dtic.mil/dtic/tr/fulltext/u2/a268069.pdf)
@@ -53,3 +54,20 @@
 - [ ] Feautrier P. [Dataflow analysis of array and scalar references](https://www.researchgate.net/publication/2425315_Dataflow_Analysis_of_Array_and_Scalar_References)[J]. International Journal of Parallel Programming, 1991, 20(1): 23-53.
 - [ ] Maydan D E. [Accurate analysis of array references](https://apps.dtic.mil/dtic/tr/fulltext/u2/a268069.pdf)[R]. STANFORD UNIV CA DEPT OF COMPUTER SCIENCE, 1992.
     > This work propose some methods to make the ordering constraints explicit for the compiler.
+
+## Skewing/Wavefront Parallelism
+
+- [ ] Belviranli M E, Deng P, Bhuyan L N, et al. [Peerwave: Exploiting wavefront parallelism on gpus with peer-sm synchronization](http://mehmet.belviranli.com/papers/ics15.pdf)[C]//Proceedings of the 29th ACM on International Conference on Supercomputing. ACM, 2015: 25-35.
+- [ ] Loop skewing: the wavefront method revisited
+- [ ] Tang P. [Chain-based scheduling: Part I-loop transformations and code generation](https://openresearch-repository.anu.edu.au/bitstream/1885/40801/3/TR-CS-92-09.pdf)[J]. 1992.
+- [ ] Lamport L. [The parallel execution of do loops](https://www.cs.colostate.edu/~cs560dl/Notes/LamportCACM1974.pdf)[J]. Communications of the ACM, 1974, 17(2): 83-93.
+
+## Algebraic view of code transformation
+
+- [ ] [A Linear Algebraic View of Loop Transformations and Their Interaction](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.56.5153&rep=rep1&type=pdf)
+- [ ] Dowling M L. Optimal code parallelization using unimodular transformations[J]. Parallel computing, 1990, 16(2-3): 157-171.
+- [ ] Whitfield D, Soffa M L. [An approach to ordering optimizing transformations](https://dl.acm.org/citation.cfm?id=99179)[C]//ACM SIGPLAN Notices. ACM, 1990, 25(3): 137-146.
+- [ ] Wolfe M. Massive parallelism through program restructuring[C]//[1990 Proceedings] The Third Symposium on the Frontiers of Massively Parallel Computation. IEEE, 1990: 407-415.
+- [ ] Allen J R. [Dependence analysis for subscripted variables and its application to program transformations](https://scholarship.rice.edu/bitstream/handle/1911/19045/8314916.PDF?sequence=1&isAllowed=y)[D]. Rice University, 1983.
+- [ ] Coarse-grained loop parallelization: Iteration Space Slicing vs affine transformations
+- [ ] Optimizing supercompilers for supercomputers
