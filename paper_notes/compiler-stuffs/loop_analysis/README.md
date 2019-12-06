@@ -1,0 +1,210 @@
+# Introduction to Loop Analysis
+
+
+```python
+for i in range(20):    # loop bounds is 0 to 19
+  a[i] = a[i - 1] + 3    # satements
+```
+1.  _**<span style="background-color:#ACD6FF;">two array references $a$ and $a'$ is dependent**_</span> if anly of the locations accessed by reference $a$ are also accessed by reference $a'$, otherwise, the two references are _**independent**_.
+    - _the two array references access the same memory locations_.
+2. <span style="background-color:#ACD6FF;">_**dependent iteration pairs**_</span>: within the loop bounds, there exist two iterations of the loop $\vec{i}$ and $\vec{i'}$ that they access the same memory location.
+    - _If all array reference pairs in a loop are independent. We can run all the iterations of the loop in parallel_.
+    - _If some pairs are dependent, it **might still be possible** to parallel some iterations_.
+
+3. A dependent iteration pair such that $\vec{i} = \vec{i'}$ is a <span style="background-color:#ACD6FF;">_**loop-independent dependence**_</span>.
+
+    ```python
+    for i in range(20):
+        a[i] = a[i] + 3
+    ```
+    data is _**not transfered**_ between iterations.
+4. A dependent iteration pair such that $\vec{i} \ne \vec{i'}$ is a <span style="background-color:#ACD6FF;">_**loop-carried dependence**_</span> (data dependence).
+     ```python
+    for i in range(20):
+        a[i] = a[i - 1] + 3
+    ```
+    data is _**transfered**_ between iterations.
+
+Lesson 1: <span style="background-color:#D8BFD8;">All the iterations of a loop nesting can be run in parallel _**if and only if**_ there are _**no loop-carried dependences**_ between any two references in the loop</span>.
+
+To parallelize a subset of the loop nesting, is it sufficient to only know whether there are loop-carried dependences?
+
+No, we need to know more than this.
+
+An Example
+
+```python
+for i in range(20):
+    for j in range(20):
+        a[i][j] = a[i - 1][j - 1] + 3
+```
+<p align="center">
+<img src="images/example-01.png" width=50%>
+</p>
+
+1. all the dependencies in this loop nesting are loop-carried.
+    - _we cannot run all the iterations in parallel_.
+2. if we run loop $i$ sequentially, we can run the $j$ loop in parallel.
+
+_Lesson 2_: <span style="background-color:#D8BFD8;"> To fully exploit the parallelism inherently present in a loop, we need to calculate _**all**_ the dependent iteration pairs.</span> $\rightarrow$ accurate
+
+_Usually, this is both infeasible and unnecessary for compiler's most optimization techniques._
+
+1. _**<span style="background-color:#ACD6FF;">Distance vectors</span>**_ represent the vector difference between the two iteration elements in a dependent iteration pair. Two references are dependent with distance vector $\vec{d}$ if there exists a dependent iteration pair $(\vec{i}, \vec{i'})$ such that $\vec{i'} - \vec{i} = \vec{d}$.
+2. _**<span style="background-color:#ACD6FF;">Direction vectors</span>**_ represent the sign of the distance vectors. Direction vector replaces each compoent distance with its sign: $+$, $-$, or $0$.
+
+Recap the above example
+
+1. there is a dependence from <span style="background-color:#AFEEEE;">_**the write**_</span> to <span style="background-color:#AFEEEE;">_**the read**_</span> with direction $(+, +)$.
+2. there is no dependence with the direction $(0, +)$.
+3. so, it is possible to sequentialize loop $i$ and then parallelize loop $j$.
+
+## So far, how to _formalize_ the problem of parallelizing loop nets?
+
+Standard compiler requires parallelization to <span style="background-color:#ACD6FF;">preserve the order</span> between <span style="background-color:#ACD6FF;">all write operations</span> and <span style="background-color:#ACD6FF;">all read/write</span> operations to the <span style="background-color:#ACD6FF;">same location</span>.
+
+- Given this model, distance and direction vectors are sufficient representations for parallelization.
+- However, it is too restrictive.
+
+Not all dependencies are equally harmful.
+
+Which dependence inherently limits parallelism?
+
+- Loop 1
+
+   ```python
+   for i in range(20):
+       a[i] = a[i - 1] + 3
+   ```
+   - ==_**value**_== <span style="background-color:#ACD6FF;">written (produced)</span> in iteration ==**$i$**== is <span style="background-color:#ACD6FF;">read (consumed)</span> in the next iteration ==**$i + 1$**==.
+   - <font color=    #FF0000    >**inherently sequential**</font>.
+
+- Loop 2
+
+   ```python
+   for i in range(20):
+       a[i] = a[i + 1] + 3
+   ```
+   ==_**location**_== being read in iteration $i$ is being overwritten in the next iteration $i + 1$.
+
+1. There are loop-carried dependences in both loops and we cannot run either loop without modifications in parallel.
+2. There is a dependence from <span style="background-color:#ACD6FF;">read and write</span> statement with a distance vector of $(1)$.
+3. There is a dependence from <span style="background-color:#ACD6FF;">read and write</span> statement with a distance vector of $(-1)$.
+
+Possible optimizations to loop2
+
+We cannot run the loop as written in parallel. We can transform it into the following two loops, each of which is _**individually**_ parallelizable.
+
+```python
+for i in range(1, 21):
+    b[i] = a[i]
+for i in range(20):
+    a[i] = b[i + 1] + 3
+```
+
+- Distance vectors is sufficient to discover that loop1 is inherently sequential while loop2 is not.
+- For any pair of write and read references with a positive distance vector <span style="background-color:#ACD6FF;">from the write to the read</span>, i.e. ==$\vec{i_r} - \vec{i_w}>0$== is called a _<span style="background-color:#ACD6FF;">**true dependence**_</span>.
+  - If the distance vector is $\vec{0}$, the dependence is a true dependence.
+- For any pair of write and read references with a negative distance vector <span style="background-color:#ACD6FF;">from the write to the read</span>, i.e. ==$\vec{i_r} - \vec{i_w}<0$== is called a _<span style="background-color:#ACD6FF;">**anti-dependence**_</span>.
+
+_==Lesson 3==_: <span style="background-color:#D8BFD8;"> Anti-dependence can always be eliminated. True dependences (write and then read) are inherently limit parallelism.</span>
+
+## Are all true dependencies are inherently harmful?
+
+```python
+for i in range(20)
+    for j in range(20)
+        a[j] = ...
+    for j in range(20)
+        ... = a[j]
+```
+
+- There is a loop-carried true dependence between the write and the read.
+- However, in each iteration of $i$ loop, the value read in iteration $i = a$ was in fact, written in the same iteration. $\rightarrow$ $a$ is a temporary array.
+
+We can parallelize $i$ loop by _**privatizing**_ the array $a$.
+
+- Traditionally, this optimization is mainly for multi-core CPU: giving each processor its own private copy of a temporary array.
+
+## Data-flow dependence
+
+A read reference to be data-flow dependent on a write reference if the write reference writes a ==$value$== that is read by an instance of the read reference.
+
+- data-flow dependences are a subset of true dependences.
+
+Answer: <span style="background-color:#D8BFD8;"> Only data-flow dependences inherently limit parallelism.</span>
+
+- _dependence vectors do not contain sufficient information to distinguish true dependences from data-flow dependences._ $\rightarrow$ data-flow dependence vectors.
+
+## Calculating Data Dependence Relations
+
+Ideally, we would like to know the exact dependence and data-flow dependence vectors between any two references.
+
+1. static vs. dynamic dependences
+
+    ```python
+    """read n"""
+    for i in range(20):
+        a[i] = a[i - n] + 3
+    ```
+2. the problem canbe made arbitrarily difficult for compiler:
+
+    ```python
+    if n > 2:
+        if a > 0:
+            if b > 0:
+                if c > 0:
+                    x[pow(a, n)] = x[pow(b, n) + pow(c, n)] + 3
+    ```
+
+## Affine Memory Access Constraint
+
+Affine expression: an expression is affine w.r.t variables $v_1$, $v_2$, ..., $v_n$ if it can be expressed as $c_0 + c_1v_1 + ..., c_nv_n$ where $c_o, c_1, ...,c_n$ are constant.
+
+```cpp
+for (int i = 0; i < M; ++i) {
+    for (int j = 1; j < N; ++j) {
+        arr[i][j - 1] = arr[i][j];
+    }
+}
+```
+
+- The statement $s$: `arr[i][j - 1] = arr[i][j]` is an affine expression w.r.t. $i$ and $j$
+- The statement $s$ assigns a value to `arr[i * N + j - 1]` at every iteration. This memory access pattern statisfies affine memory constraint.
+
+<span style="background-color:#D8BFD8;">When all expressions in a loop are affine, the loop is amenable to some advance analysis and optimizations.
+
+## What is Polyhedral Compilation, and Why it comes?
+
+Polyhedral compilation uses a compact mathematical representation to precisely model the individual elements of a compute program. The use of a solid mathematical model enables detailed static analysis and exact transformations.
+
+(Integer) polyhedra or Presburger relations are the mathematical foundations of polyhedral compilation.
+
+## Polyhedral representation
+
+1. **What is Good** ?
+
+    - reason about and precisely control high-level property without distrction from imperative or low-level construct.
+    - precise data-flow dependences is one analysis significantly facilitated by the use of polyhedral representation.
+2. **What is modeled**?
+    1. individual statement instances
+    2. their execution order
+    3. individual array element accessed  
+        - read-access
+        - must-write access
+
+ 1. **What is hidden**?
+    1. control-flow construct
+    2. loop induction variables
+    3. loop bounds
+    4. array subscripts
+
+## Transformations that reorder computations
+
+1. Fussion
+2. Fission
+3. Reversal
+4. Interchange
+5. Skewing
+
+- loop interchange, permutation, reversal, hyperplane(skewing), tiling and concurrentization can be realized as matrix multiplication by a suitable matrix.
