@@ -19,6 +19,10 @@
 
   > this work show us _**some most impactful loop nest transformations**_ (<span style="background-color:#ACD6FF;">_what kind of transformation??_</span>) cannot be expressed as _**structural, incremental updates of the loop tree structure**_ (<span style="background-color:#ACD6FF;">_what does this mean??_</span>).
 
+## Dependence vectors
+
+- [ ] [Computing dependence direction vectors and dependence cones with linear systems](https://www.cri.ensmp.fr/classement/doc/E-094.pdf)
+
 ## Dependence analysis for parallelism using Polyhedral
 
 - [ ] Lim A W. [Improving parallelism and data locality with affine partitioning](https://suif.stanford.edu/papers/lim-thesis.ps.gz)[J]. 2002

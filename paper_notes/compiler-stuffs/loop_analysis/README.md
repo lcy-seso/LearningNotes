@@ -1,5 +1,24 @@
-# Introduction to Loop Analysis
+# Loop nesting analysis for deep learning program
 
+Taking advantage of the available parallelism is the major way to speed up a compute program. There are different levels of parallelism that can be exploited. Scientific programs usually make heavy use of loops to operate on array data structure. To produce efficient parallel code, the user must consider different ways of ordering the operations to increase parallelism.
+
+Without formalized loop nets representatioin.
+
+## Basics of parallelization
+
+Program parallelization and restructuring must preserve the initial program semantics. The order of read and write accesses to each memory location is kept while accesses to distinct memory locations can be exchanged. thus the value history of each memory location remains the same and final states are equal at the bit level.
+
+Dependence based parallelization enforces the order between any read and any write and between writes. This is a sufficient condition for histories to be preserved.
+
+## Dependences in loop nets
+
+### What is dependence analysis
+
+1. Scalar variables are easy to deal with since dependences can be tested with a string comparison. So, here we only considers array references enclosed in for loop bodies.
+1. GOTO and IF statement can be dealt with the IF conversion algorithm.
+    - FOR loop can be normalized.
+
+### How to represent dependence?
 
 ```python
 for i in range(20):    # loop bounds is 0 to 19
@@ -50,10 +69,32 @@ _Lesson 2_: <span style="background-color:#D8BFD8;"> To fully exploit the parall
 
 _Usually, this is both infeasible and unnecessary for compiler's most optimization techniques._
 
+### Notations and Definitions
+
+Let $S_1$ and $S_2$ be two potentially dependent statements. Let $R_1$ and $R_2$ be two references to the same array. Let $k$ be the number of enclosing FOR loops.
+
+Iterations of $S_1$ and $S_2$ are integer elements of a $k$-dimensional vector space called the **iteration space**, and are labeled by **iteration vectors** whose coordinates are equal to FOR loop index values relative to iterations.
+
+Loop bounds define a subset of the iteration space called the **iteration domain**. Under affine assumptions, this subset is a convex polyhedron.
+
+### Dependence distance vectors
+
+Let suppose iteration $\vec{j_2}$ of $S_2$ <span style="background-color:#ACD6FF;">**reads**</span> a memory location <span style="background-color:#ACD6FF;">**written**</span> by iteration $\vec{j_1}$ of $S_1$. Then $S_2$ dependens on $S_1$ and $\vec{d} = \vec{j_2} - \vec{j_1}$ is a dependence distance vector.
+
+1. If $\vec{d}$ is lexico-positive, $\vec{j_2}$ must occur after $\vec{j_1}$ and the dependence is called **data (flow) dependence** or **true dependence**.
+1. If $\vec{d}$ is lexico-negative, the read must occur after write. This is a memory location re-use. The dependence from $S_2$ to $S_1$ is called **anti-dependence**; its dependence distance vector is $-\vec{d}$.
+1. If $R_1$ and $R_2$ are both write references, the dependence is called **output-dependence**.
+1. **Control dependences** are ignored because it can be dealt with with the IF conversion algorithm described in [[](#reference)].
+
+
+<p align="center">
+<img src="images/different_dependences.png" width=50%>
+</p>
+
 1. _**<span style="background-color:#ACD6FF;">Distance vectors</span>**_ represent the vector difference between the two iteration elements in a dependent iteration pair. Two references are dependent with distance vector $\vec{d}$ if there exists a dependent iteration pair $(\vec{i}, \vec{i'})$ such that $\vec{i'} - \vec{i} = \vec{d}$.
 2. _**<span style="background-color:#ACD6FF;">Direction vectors</span>**_ represent the sign of the distance vectors. Direction vector replaces each compoent distance with its sign: $+$, $-$, or $0$.
 
-Recap the above example
+Recap the above example:
 
 1. there is a dependence from <span style="background-color:#AFEEEE;">_**the write**_</span> to <span style="background-color:#AFEEEE;">_**the read**_</span> with direction $(+, +)$.
 2. there is no dependence with the direction $(0, +)$.
@@ -76,7 +117,7 @@ Which dependence inherently limits parallelism?
    for i in range(20):
        a[i] = a[i - 1] + 3
    ```
-   - ==_**value**_== <span style="background-color:#ACD6FF;">written (produced)</span> in iteration ==**$i$**== is <span style="background-color:#ACD6FF;">read (consumed)</span> in the next iteration ==**$i + 1$**==.
+   - _**value**_ <span style="background-color:#ACD6FF;">written (produced)</span> in iteration ==**$i$**== is <span style="background-color:#ACD6FF;">read (consumed)</span> in the next iteration ==**$i + 1$**==.
    - <font color=    #FF0000    >**inherently sequential**</font>.
 
 - Loop 2
@@ -85,7 +126,7 @@ Which dependence inherently limits parallelism?
    for i in range(20):
        a[i] = a[i + 1] + 3
    ```
-   ==_**location**_== being read in iteration $i$ is being overwritten in the next iteration $i + 1$.
+   _**location**_== being read in iteration $i$ is being overwritten in the next iteration $i + 1$.
 
 1. There are loop-carried dependences in both loops and we cannot run either loop without modifications in parallel.
 2. There is a dependence from <span style="background-color:#ACD6FF;">read and write</span> statement with a distance vector of $(1)$.
@@ -172,6 +213,9 @@ for (int i = 0; i < M; ++i) {
 - The statement $s$: `arr[i][j - 1] = arr[i][j]` is an affine expression w.r.t. $i$ and $j$
 - The statement $s$ assigns a value to `arr[i * N + j - 1]` at every iteration. This memory access pattern statisfies affine memory constraint.
 
+- Affine means the transformation can include a (possibly symbolic) constant term.
+- Psuedo affine means that the transformations can also involve integer division and modulor operators.
+
 <span style="background-color:#D8BFD8;">When all expressions in a loop are affine, the loop is amenable to some advance analysis and optimizations.
 
 ## What is Polyhedral Compilation, and Why it comes?
@@ -208,3 +252,9 @@ Polyhedral compilation uses a compact mathematical representation to precisely m
 5. Skewing
 
 - loop interchange, permutation, reversal, hyperplane(skewing), tiling and concurrentization can be realized as matrix multiplication by a suitable matrix.
+
+# Reference
+
+1. École nationale supérieure des mines de Paris. Centre d'Automatique et Informatique, F. Irigoin, and R. Triolet. [Computing dependence direction vectors and dependence cones with linear systems](https://www.cri.ensmp.fr/classement/doc/E-094.pdf). 1987.
+1. Grosser T. [A decoupled approach to high-level loop optimization: tile shapes, polyhedral building blocks and low-level compilers](https://tel.archives-ouvertes.fr/tel-01144563/document)[D]. , 2014.
+1. Allen J R, Kennedy K, Porterfield C, et al. [Conversion of control dependence to data dependence](https://dl.acm.org/citation.cfm?id=567085)[C]//Proceedings of the 10th ACM SIGACT-SIGPLAN symposium on Principles of programming languages. ACM, 1983: 177-189.
