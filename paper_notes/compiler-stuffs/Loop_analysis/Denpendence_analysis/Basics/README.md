@@ -18,7 +18,75 @@ Dependence based parallelization enforces the order between any read and any wri
 1. GOTO and IF statement can be dealt with the IF conversion algorithm.
     - FOR loop can be normalized.
 
-### How to represent dependence?
+### Dependence system
+
+#### Definition
+
+Dependence system is a set of linear equation and inequations that sets the conditions for a dependence between two statements $S_1$ and $S_2$ to exist because of references $R_1$ of $S_1$ and $R_2$ of $S_2$.
+
+#### Usage
+
+A dependence system is used to compute the set of points of $\vec{j_2}$ of the iteration space which are dependent on a given point $\vec{j_1}$. This set may be approximated by a convex polyhedron.
+
+Such dependence systems are built for each pair $(R_1, R_2)$ of references to the same array.
+
+#### Variables of the dependence system
+
+1. **iteration vector** $\mathbf{i}_l^j$: the value of index $I_l$ for statement $S_j$
+    - iteration vectors $\vec{\mathbf{j}_1}$ and $\vec{\mathbf{j}_2}$ of $S_1$ and $S_2$.
+    - can I understand this as a way to describe the iteration space?
+1. $\vec{\mathbf{d}}$: the dependence vector.
+1. **variable vectors**.
+    - usually the subscript expression or DO-loop bounds.
+    - other **scalar variable** values.
+    They are kept in vectors $\vec{\mathbf{v}_1}$ and $\vec{{\mathbf{v}_2}}$ which are called variable vectors.
+
+#### Equations and Inequatioins of the dependence system
+
+Let $R_1$ be the matrix of the _**affine function that maps**_ the iteration vector $\vec{\mathbf{j}}_1$ and the variable vector $\vec{\mathbf{v}}_1$ onto <span style="background-color:#ACD6FF;">**array indices**</span> and $\vec{\mathbf{r}}_1$ the constant term.
+
+- **Equations**
+
+    1. an equation must hold
+
+        By definition a dependence exists if both statements $S_1$ and $S_2$ refere the same memory location at some iteration $\vec{\mathbf{j}_1}$ and $\vec{\mathbf{j}_2}$. The the following equation must hold for a dependence to exist:
+
+        $$R_1 \begin{pmatrix} \vec{\mathbf{j}}_1 \\
+        \vec{\mathbf{v}}_1
+        \end{pmatrix} + \vec{r}_1 = R_2 \begin{pmatrix} \vec{\mathbf{j}}_2 \\
+        \vec{\mathbf{v}}_2
+        \end{pmatrix} + \vec{r}_2$$
+
+    1. the definition of the dependence vectors
+
+        $$\vec{\mathbf{d}} = \vec{\mathbf{j_2}} - \vec{\mathbf{j}}_1$$
+
+    2. equations between variable values at $S_1$ and $S_2$ sometimes exist:
+
+        $$\vec{\mathbf{v}}_1 = F\vec{\mathbf{v}}_2 + \mathbf{f}$$
+
+- **Inequations**
+
+    1. Information at $S_1$ and $S_2$ is usually a set of inequations like DO-loop bounds or results of a semantic analysis although equations between variables sometimes exist.
+    1. Variables may also be disguised constants.
+
+    Then, these information is added to the system in terms of inequations.
+
+    $$C_1 \begin{pmatrix} \vec{\mathbf{j}}_1 \\
+    \vec{\mathbf{v}}_1
+    \end{pmatrix} \le \vec{\mathbf{c}}_1$$
+
+    $$C_2 \begin{pmatrix} \vec{\mathbf{j}}_2 \\
+    \vec{\mathbf{v}}_2
+    \end{pmatrix} \le \vec{\mathbf{c}}_2$$
+
+#### **Summary**
+
+1. The dependence system characterizes all possible dependence distance vectors <span style="background-color:#ACD6FF;">**between references of two statement iteration**</span>.
+1. The projection $\Pi$ of this system on the subspace of dependence distance vectors $\vec{\mathbf{d}}$ can be approximated by the smallest convex hull of these distance vectors. This is again a linear system.
+1. If the dependece system is not feasible. $\Pi$ is empty and there are no dependences between the two statements for the references taht were considered.
+
+### Loop Nest Representation?
 
 ```python
 for i in range(20):    # loop bounds is 0 to 19
@@ -37,6 +105,9 @@ for i in range(20):    # loop bounds is 0 to 19
         a[i] = a[i] + 3
     ```
     data is _**not transfered**_ between iterations.
+
+    RNN's input-to-hidden is loop-independent dependence.
+
 4. A dependent iteration pair such that $\vec{i} \ne \vec{i'}$ is a <span style="background-color:#ACD6FF;">_**loop-carried dependence**_</span> (data dependence).
      ```python
     for i in range(20):
@@ -79,28 +150,32 @@ Loop bounds define a subset of the iteration space called the **iteration domain
 
 ### Dependence distance vectors
 
-Let suppose iteration $\vec{j_2}$ of $S_2$ <span style="background-color:#ACD6FF;">**reads**</span> a memory location <span style="background-color:#ACD6FF;">**written**</span> by iteration $\vec{j_1}$ of $S_1$. Then $S_2$ dependens on $S_1$ and $\vec{d} = \vec{j_2} - \vec{j_1}$ is a dependence distance vector.
+Let suppose iteration $\vec{j_2}$ of $S_2$ <span style="background-color:#ACD6FF;">**reads**</span> a memory location <span style="background-color:#ACD6FF;">**written**</span> by iteration $\vec{j_1}$ of $S_1$. Then $S_2$ dependens on $S_1$ and $\vec{d} = \vec{j_2} - \vec{j_1}$ is a **dependence distance vector**.
+
+- distance vectors represent the vector difference between the two iteration elements in a dependent iteration pair.
+
+### Dependence direction vectors (DDV)
+
+A vector of elements taking their value in the set $\{ <, =, >\}$.
+
+- These comparison symbols are used to express approximate possible directions for the dependence distance vectors, by comparing their coefficients to $0$.
+
+### Nature of dependence
 
 1. If $\vec{d}$ is lexico-positive, $\vec{j_2}$ must occur after $\vec{j_1}$ and the dependence is called **data (flow) dependence** or **true dependence**.
-1. If $\vec{d}$ is lexico-negative, the read must occur after write. This is a memory location re-use. The dependence from $S_2$ to $S_1$ is called **anti-dependence**; its dependence distance vector is $-\vec{d}$.
-1. If $R_1$ and $R_2$ are both write references, the dependence is called **output-dependence**.
-1. **Control dependences** are ignored because it can be dealt with with the IF conversion algorithm described in [[3](#reference)].
-
+2. If $\vec{d}$ is lexico-negative, the read must occur after write. This is a memory location re-use. The dependence from $S_2$ to $S_1$ is called **anti-dependence**; its dependence distance vector is $-\vec{d}$.
+3. If $R_1$ and $R_2$ are both write references, the dependence is called **output-dependence**.
+4. **Control dependences** are ignored because it can be dealt with with the IF conversion algorithm described in [[3](#reference)].
 
 <p align="center">
 <img src="images/different_dependences.png" width=65%>
 </p>
-
-1. _**<span style="background-color:#ACD6FF;">Distance vectors</span>**_ represent the vector difference between the two iteration elements in a dependent iteration pair. Two references are dependent with distance vector $\vec{d}$ if there exists a dependent iteration pair $(\vec{i}, \vec{i'})$ such that $\vec{i'} - \vec{i} = \vec{d}$.
-2. _**<span style="background-color:#ACD6FF;">Direction vectors</span>**_ represent the sign of the distance vectors. Direction vector replaces each compoent distance with its sign: $+$, $-$, or $0$.
 
 Recap the above example:
 
 1. there is a dependence from <span style="background-color:#AFEEEE;">_**the write**_</span> to <span style="background-color:#AFEEEE;">_**the read**_</span> with direction $(+, +)$.
 2. there is no dependence with the direction $(0, +)$.
 3. so, it is possible to sequentialize loop $i$ and then parallelize loop $j$.
-
-## So far, how to _formalize_ the problem of parallelizing loop nets?
 
 Standard compiler requires parallelization to <span style="background-color:#ACD6FF;">preserve the order</span> between <span style="background-color:#ACD6FF;">all write operations</span> and <span style="background-color:#ACD6FF;">all read/write</span> operations to the <span style="background-color:#ACD6FF;">same location</span>.
 
@@ -115,9 +190,11 @@ Which dependence inherently limits parallelism?
 
    ```python
    for i in range(20):
-       a[i] = a[i - 1] + 3
+       a[i] = a[i - 1] + 3  # a[i - 1] is a read reference.
+                            # a[i] is a write reference.
    ```
-   - _**value**_ <span style="background-color:#ACD6FF;">written (produced)</span> in iteration ==**$i$**== is <span style="background-color:#ACD6FF;">read (consumed)</span> in the next iteration ==**$i + 1$**==.
+   $\vec{d} = ()$
+   - _**value**_ <span style="background-color:#ACD6FF;">written (produced)</span> in iteration **$i$** is <span style="background-color:#ACD6FF;">read (consumed)</span> in the next iteration **$i + 1$**.
    - <font color=    #FF0000    >**inherently sequential**</font>.
 
 - Loop 2
@@ -126,11 +203,11 @@ Which dependence inherently limits parallelism?
    for i in range(20):
        a[i] = a[i + 1] + 3
    ```
-   _**location**_== being read in iteration $i$ is being overwritten in the next iteration $i + 1$.
+   _**location**_ being read in iteration $i$ is being overwritten in the next iteration $i + 1$.
 
 1. There are loop-carried dependences in both loops and we cannot run either loop without modifications in parallel.
-2. There is a dependence from <span style="background-color:#ACD6FF;">read and write</span> statement with a distance vector of $(1)$.
-3. There is a dependence from <span style="background-color:#ACD6FF;">read and write</span> statement with a distance vector of $(-1)$.
+2. For loop1, there is a dependence vector $\vec{d} = (1)$.
+3. For loop2, there is a dependence vector $\vec{d} = (-1)$.
 
 Possible optimizations to loop2
 
@@ -148,7 +225,7 @@ for i in range(20):
   - If the distance vector is $\vec{0}$, the dependence is a true dependence.
 - For any pair of write and read references with a negative distance vector <span style="background-color:#ACD6FF;">from the write to the read</span>, i.e. ==$\vec{i_r} - \vec{i_w}<0$== is called a _<span style="background-color:#ACD6FF;">**anti-dependence**_</span>.
 
-_==Lesson 3==_: <span style="background-color:#D8BFD8;"> Anti-dependence can always be eliminated. True dependences (write and then read) are inherently limit parallelism.</span>
+Lesson 3: <span style="background-color:#D8BFD8;"> Anti-dependence can always be eliminated. True dependences (write and then read) are inherently limit parallelism.</span>
 
 ## Are all true dependencies are inherently harmful?
 
@@ -258,3 +335,5 @@ Polyhedral compilation uses a compact mathematical representation to precisely m
 1. École nationale supérieure des mines de Paris. Centre d'Automatique et Informatique, F. Irigoin, and R. Triolet. [Computing dependence direction vectors and dependence cones with linear systems](https://www.cri.ensmp.fr/classement/doc/E-094.pdf). 1987.
 1. Grosser T. [A decoupled approach to high-level loop optimization: tile shapes, polyhedral building blocks and low-level compilers](https://tel.archives-ouvertes.fr/tel-01144563/document)[D]. , 2014.
 1. Allen J R, Kennedy K, Porterfield C, et al. [Conversion of control dependence to data dependence](https://dl.acm.org/citation.cfm?id=567085)[C]//Proceedings of the 10th ACM SIGACT-SIGPLAN symposium on Principles of programming languages. ACM, 1983: 177-189.
+1. [Change of basis in Linear Algebra](https://eli.thegreenplace.net/2015/change-of-basis-in-linear-algebra/)
+1. the hyperplane method: Lamport L. [The parallel execution of do loops](https://www.cs.colostate.edu/~cs560dl/Notes/LamportCACM1974.pdf)[J]. Communications of the ACM, 1974, 17(2): 83-93.
