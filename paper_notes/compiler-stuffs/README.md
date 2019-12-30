@@ -59,6 +59,22 @@
 - [ ] Maydan D E. [Accurate analysis of array references](https://apps.dtic.mil/dtic/tr/fulltext/u2/a268069.pdf)[R]. STANFORD UNIV CA DEPT OF COMPUTER SCIENCE, 1992.
     > This work propose some methods to make the ordering constraints explicit for the compiler.
 
+## Fully automatic polyhedral compilers
+
+- General polyhedral compilers
+  - [ ] _**PENCIL**_, Baghdadi R, Cohen A, Grosser T, et al. [PENCIL language specification](https://hal.inria.fr/hal-01154812/document)[J]. 2015.
+  - [ ] _**PENCIL**_, Baghdadi R, Beaugnon U, Cohen A, et al. [Pencil: A platform-neutral compute intermediate language for accelerator programming](https://lirias.kuleuven.be/retrieve/342210)[C]//2015 International Conference on Parallel Architecture and Compilation (PACT). IEEE, 2015: 138-149.
+  - [ ] _**Pluto**_, Bondhugula U, Hartono A, Ramanujam J, et al. [A practical automatic polyhedral parallelizer and locality optimizer](https://s3.amazonaws.com/academia.edu.documents/32503610/pldi08.pdf?response-content-disposition=inline%3B%20filename%3DA_practical_automatic_polyhedral_paralle.pdf&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWOWYYGZ2Y53UL3A%2F20191227%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20191227T040240Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=57e69856de3e15a7bb196a5cadc90f7746f1be7fedce07e41ee5dd8558f636c4)[C]//Acm Sigplan Notices. ACM, 2008, 43(6): 101-113.
+  - [ ] _**Polly**_, Grosser T, Groesslinger A, Lengauer C. [Polly—performing polyhedral optimizations on a low-level intermediate representation](https://grosser.es/publications/grosser-2012-Polly-Performing-polyhedral-optimizations-on-a-low-level-intermediate-representation.pdf)[J]. Parallel Processing Letters, 2012, 22(04): 1250010.
+
+- PolyMega and TC are designed for specific domain.
+    - [ ] _**PolyMage**_, Mullapudi R T, Vasista V, Bondhugula U. Polymage: Automatic optimization for image processing pipelines[C]//ACM SIGPLAN Notices. ACM, 2015, 50(4): 429-443.
+    - [ ] _**TC**_, Vasilache N, Zinenko O, Theodoridis T, et al. [Tensor comprehensions: Framework-agnostic high-performance machine learning abstractions](https://arxiv.org/pdf/1802.04730.pdf)[J]. arXiv preprint arXiv:1802.04730, 2018.
+
+## IRs for DSL compiler
+
+1. Chafi H, Sujeeth A K, Brown K J, et al. [A domain-specific approach to heterogeneous parallelism](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.644.4729&rep=rep1&type=pdf)[J]. ACM SIGPLAN Notices, 2011, 46(8): 35-46.
+
 ## Skewing/Wavefront Parallelism
 
 - [ ] Belviranli M E, Deng P, Bhuyan L N, et al. [Peerwave: Exploiting wavefront parallelism on gpus with peer-sm synchronization](http://mehmet.belviranli.com/papers/ics15.pdf)[C]//Proceedings of the 29th ACM on International Conference on Supercomputing. ACM, 2015: 25-35.

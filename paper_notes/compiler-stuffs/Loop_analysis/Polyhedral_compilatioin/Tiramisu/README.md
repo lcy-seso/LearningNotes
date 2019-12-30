@@ -74,6 +74,57 @@ The process is:
     3. memory management optimizations
 1. _**Fully automatic polyhedral compilers**_ do not obtain the desired level of performance since: their search techniques _**only consider only a subset of**_ the necessary optimizations and rely on _**less accurate machine**_ models.
 
+## Tiramisu Embedded DSL
+
+### Specifying the algorithm
+
+1. the algorithm is pure function that has inputs, outputs, and is composed of a sequence of computations.
+1. flow-control is restricted to _for_ loops and conditionals.
+    - _While_ loops, early exits, and _GOTOs_ cannot be expressed.
+2. the user provides both the iteration domain of the computation and the expression to compute.
+
+### Scheduling commands
+
+Novel commands introduced by Tiramisu:
+1. array allocation
+1. copying data between hierarchies
+1. sending and receiving data between **nodes** (what are nodes in Tiramisu)
+1. synchronization
+1. return an operation that can be scheduled like any other computation.
+
+    > The use of `allocate_at()`, `copy_at()`, and `barrier_at()` allows TIRAMISU to automatically compute iteration domain for the data copy, allocation, and synchronization operations. This is important because it relieves the user from guessing or computing the iteration domain manually, especially when exploring different possible schedules.
+
+### Rationale for a multi-layer IR
+
+1. using memory to communicate between program statements creates memory-based dependencies in the program, and forces compilers to choose data layout before deciding on optimizations and mapping to hardware. Thus, any data layout specified before scheduling must be undone to allow more freedom for scheduling.
+    > Optimizing a program for different hardware architectures usually requires modifying the data layout and eliminating memory-based dependencies since they restrict optimizations.
+1. buffer mapping to memory hierarchies, communication management, and synchronization should not occur before scheduling.
+
+Four-layer IR:
+
+1. the first layer: describe the pure algorithm using producer-consumer relationships without memory locations.
+    - specify the algorithm without specifying when and where computations occur, how data should be stored in memory, or communication
+        - values are communicated via explicit producer-consumer relationship.
+        - specify iteration domain
+2. the second layer: specifies the order of computation, along with which processor computates each value;
+    - speficy the order of executions and the processor on which they execute.
+    - computations in this layer are ordered and assigned to a particular processor. The order is dictated by _**time dimensions**_ and _**space dimensions**_.
+        - this layer is suitable for performing a vast number of optimizations without dealing with concrete memory layouts.
+        - this layer does not specify how intermedia values are stored in memory.
+3. the third layer speficifies where to store intermediate data before they are consumed.
+    - speficify memory locations for storing computed values
+        - make the data layout concrete by specifying where intermediate values are stored.
+        - this layer is automatically generated from layer 2 by applying the scheduling commands for data mapping.
+        - data mapping in TIRAMISU is an affine relation that maps each computation to a buffer element.
+4. the forth layer adds all the necessary communication and synchronization operations.
+    - add synchronization and communication operations to the representation, mapping them to the time-space domain, and concretizes when statements for buffer allocation/deallocation occur.
+
+    <p align="center">
+    <img src="tiramisu_overview.png" width=80%>
+    </p>
+
+    Tiramisu uses integer sets to represent each of the four IR layers and uses maps to represent transformations on the iteration domain and data layout.
+
 # Reference
 
 1. Kazushige Goto and Robert A. van de Geijn. [Anatomy of high- performance matrix multiplication](http://www.cs.utexas.edu/~flame/pubs/GotoTOMS_revision.pdf). ACM Trans. Math. Softw., 34(3):12:1– 12:25, May 2008.
