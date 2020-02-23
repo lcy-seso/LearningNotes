@@ -1,0 +1,35 @@
+\documentclass {article}
+
+\input{structure.tex} % Include the file specifying the document structure and custom commands
+\title{Note for
+\textit{\href{https://arxiv.org/abs/1909.01792}{Mogrifier LSTM}}}
+\author{Ying Cao}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\begin{info}[Codes information]
+
+\begin{itemize}
+\item Currently, the authors of this paper only release their \href{https://github.com/RMichaelSwan/MogrifierLSTM}{experimental codes}
+on the github.
+\item The final codes are not released yet. When the codes is available, it should
+be at \href{https://github.com/deepmind/lamb}{https://github.com/deepmind/lamb}.
+\end{itemize}
+\end{info}
+
+\input{contents.tex}
+
+{
+\small
+\raggedright
+\bibliographystyle{ieeetr}
+% or, abbrv, acm, alpha, apalike, ieeetr, plain, siam, unsrt
+\begin{spacing}{1}
+\bibliography{references.bib}
+\end{spacing}
+}
+\end{document}
