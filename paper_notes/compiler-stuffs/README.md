@@ -6,6 +6,7 @@
   - [Polyhedral compilation](#polyhedral-compilation)
     - [Miscellanea](#miscellanea)
     - [Thesis](#thesis)
+    - [Improvements to standard polyhedral framework](#improvements-to-standard-polyhedral-framework)
     - [Dependence analysis/test in polyhedral framework](#dependence-analysistest-in-polyhedral-framework)
     - [Polyhedral and precise data-flow analysis](#polyhedral-and-precise-data-flow-analysis)
     - [Translate dataflow program into integer set representation](#translate-dataflow-program-into-integer-set-representation)
@@ -49,6 +50,10 @@
 - [ ] Bastoul. [Improving Data Locality in Static Control Programs](http://icps.u-strasbg.fr/people/bastoul/public_html/research/papers/Bastoul_thesis.pdf). PhD thesis, University Paris 6, Pierre et Marie Curie, France, Dec. 2004.
 - [ ] Lim A W. [Improving parallelism and data locality with affine partitioning](https://suif.stanford.edu/papers/lim-thesis.ps.gz)[J]. 2002
 - [ ] Grosser T. [A decoupled approach to high-level loop optimization: tile shapes, polyhedral building blocks and low-level compilers](https://tel.archives-ouvertes.fr/tel-01144563/document)[D]. , 2014.
+
+### Improvements to standard polyhedral framework
+
+- [ ] Zhao J, Kruse M, Cohen A. [A polyhedral compilation framework for loops with dynamic data-dependent bounds](https://hal.inria.fr/hal-01720368/document)[C]//Proceedings of the 27th International Conference on Compiler Construction. 2018: 14-24.
 
 ### Dependence analysis/test in polyhedral framework
 
@@ -122,3 +127,5 @@
 
 - [ ] Bastoul C, Feautrier P. [More legal transformations for locality](https://hal.inria.fr/inria-00001056/document)[C]//European Conference on Parallel Processing. Springer, Berlin, Heidelberg, 2004: 272-283.
 - [ ] Bondhugula U, Hartono A, Ramanujam J, et al. [A practical automatic polyhedral parallelizer and locality optimizer](http://www.ece.lsu.edu/jxr/Publications-pdf/pldi08.pdf)[C]//Proceedings of the 29th ACM SIGPLAN Conference on Programming Language Design and Implementation. 2008: 101-113.
+- [ ] Bastoul, Cédric, and Paul Feautrier. "[Improving data locality by chunking](https://link.springer.com/content/pdf/10.1007/3-540-36579-6_23.pdf)." International Conference on Compiler Construction. Springer, Berlin, Heidelberg, 2003.
+- [ ] Wolf, Michael E., and Monica S. Lam. "[A data locality optimizing algorithm](http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15745-s05/www/lectures/wolf-lam-pldi91.pdf)." Proceedings of the ACM SIGPLAN 1991 conference on Programming language design and implementation. 1991.
