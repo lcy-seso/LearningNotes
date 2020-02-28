@@ -10,3 +10,8 @@ __pycache__/
 venv/
 .idea/
 .checkpoints/
+
+*.log
+*.aux
+*.out
+*.toc

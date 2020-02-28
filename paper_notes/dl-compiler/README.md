@@ -1,3 +1,4 @@
 - [TVM](rendered/TVM.pdf)
 - [Swift for TensorFlow](rendered/swift_for_tensorflow.pdf)
 - [Glow](rendered/Glow.pdf)
+- [MLIR: A Compiler Infrastructure for the End of Moore's Law](https://arxiv.org/abs/2002.11054)

@@ -1,14 +1,24 @@
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+- [Reading List](#reading-list)
+  - [Loop Transformations in non-polyhedral framework](#loop-transformations-in-non-polyhedral-framework)
+  - [Dependence representation](#dependence-representation)
+  - [Polyhedral compilation](#polyhedral-compilation)
+    - [Miscellanea](#miscellanea)
+    - [Thesis](#thesis)
+    - [Dependence analysis/test in polyhedral framework](#dependence-analysistest-in-polyhedral-framework)
+    - [Polyhedral and precise data-flow analysis](#polyhedral-and-precise-data-flow-analysis)
+    - [Translate dataflow program into integer set representation](#translate-dataflow-program-into-integer-set-representation)
+    - [Fully automatic polyhedral compilers](#fully-automatic-polyhedral-compilers)
+  - [IRs for DSL compiler](#irs-for-dsl-compiler)
+  - [Skewing/Wavefront Parallelism](#skewingwavefront-parallelism)
+  - [Algebraic view of code transformation](#algebraic-view-of-code-transformation)
+  - [Affine loop transformation for locality](#affine-loop-transformation-for-locality)
+
+<!-- /TOC -->
 # Reading List
 
-- [x] [Tiramisu: A Polyhedral Compiler for Expressing Fast and Portable Code](https://arxiv.org/abs/1804.10694)
-- [ ] [Tensor comprehensions: Framework-agnostic high-performance machine learning abstractions](https://arxiv.org/abs/1802.04730)
-
-## Polyhedral compilation
-
-- [x] Grosser T. [A decoupled approach to high-level loop optimization: tile shapes, polyhedral building blocks and low-level compilers](https://tel.archives-ouvertes.fr/tel-01144563/document)[D]. , 2014.
-- [ ] [Polyhedral school](http://labexcompilation.ens-lyon.fr/polyhedral-school/program/)
-
-## Loop Transformations
+## Loop Transformations in non-polyhedral framework
 
 - [ ] [Loop transformations](https://www.cri.ensmp.fr/~tadonki/PaperForWeb/tadonki_loop.pdf)
 - [ ] Kelly W, Pugh W. [A unifying framework for iteration reordering transformations](https://drum.lib.umd.edu/bitstream/handle/1903/708/CS-TR-3430.pdf?sequence=4&isAllowed=y)[C]//Proceedings 1st International Conference on Algorithms and Architectures for Parallel Processing. IEEE, 1995, 1: 153-162.
@@ -19,13 +29,29 @@
 
   > this work show us _**some most impactful loop nest transformations**_ (<span style="background-color:#ACD6FF;">_what kind of transformation??_</span>) cannot be expressed as _**structural, incremental updates of the loop tree structure**_ (<span style="background-color:#ACD6FF;">_what does this mean??_</span>).
 
-## Dependence vectors
+## Dependence representation
 
 - [ ] [Computing dependence direction vectors and dependence cones with linear systems](https://www.cri.ensmp.fr/classement/doc/E-094.pdf)
 
-## Dependence analysis for parallelism using Polyhedral
+## Polyhedral compilation
 
+### Miscellanea
+
+- [Polyhedral school](http://labexcompilation.ens-lyon.fr/polyhedral-school/program/)
+- A lecture for polyhedral compilation https://www.cs.colostate.edu/~pouchet/
+- [Polyhedral Compilation as a Design Pattern for Compilers](https://www.youtube.com/watch?v=mt6pIpt5Wk0)
+    - [slides](https://pliss2019.github.io/albert_cohen_slides.pdf)
+- [Cédric Bastoul's website](http://icps.u-strasbg.fr/people/bastoul/public_html/)
+- [Theoretical background for Polyhedral compilation](http://www.irisa.fr/polylib/DOC/index.html).
+
+### Thesis
+
+- [ ] Bastoul. [Improving Data Locality in Static Control Programs](http://icps.u-strasbg.fr/people/bastoul/public_html/research/papers/Bastoul_thesis.pdf). PhD thesis, University Paris 6, Pierre et Marie Curie, France, Dec. 2004.
 - [ ] Lim A W. [Improving parallelism and data locality with affine partitioning](https://suif.stanford.edu/papers/lim-thesis.ps.gz)[J]. 2002
+- [ ] Grosser T. [A decoupled approach to high-level loop optimization: tile shapes, polyhedral building blocks and low-level compilers](https://tel.archives-ouvertes.fr/tel-01144563/document)[D]. , 2014.
+
+### Dependence analysis/test in polyhedral framework
+
 - [ ] [GCD Test](https://apps.dtic.mil/dtic/tr/fulltext/u2/a268069.pdf)
 - [x] Pugh W. [The Omega test: a fast and practical integer programming algorithm for dependence analysis](http://www.cs.cmu.edu/~emc/spring06/home1_files/p4-pugh.pdf)[C]//Supercomputing'91: Proceedings of the 1991 ACM/IEEE conference on Supercomputing. IEEE, 1991: 4-13.
 
@@ -38,17 +64,16 @@
 - [ ] Feautrier P. [Array expansion](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.29.5704&rep=rep1&type=pdf)[C]//ACM International Conference on Supercomputing 25th Anniversary Volume. ACM, 2014: 99-111.
 - [ ] Liu D, Shao Z, Wang M, et al. [Optimal loop parallelization for maximizing iteration-level parallelism](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.149.7760&rep=rep1&type=pdf)[C]//Proceedings of the 2009 international conference on Compilers, architecture, and synthesis for embedded systems. ACM, 2009: 67-76.
 - [ ]  Sinharoy B, Szymanski B K. [Finding optimum wavefront of parallel computation](https://www.cs.rpi.edu/~szymansk/papers/jpaa.92.pdf)[J]. Parallel algorithms and applications, 1994, 2(1-2): 5-26.
-- [ ]  [A Practical Automatic Polyhedral Parallelizer and Locality Optimizer](http://www.ece.lsu.edu/jxr/Publications-pdf/pldi08.pdf)
 
-## Polyhedral and precise data-flow analysis
+### Polyhedral and precise data-flow analysis
 
-- [ ] Maslov V. [Lazy array data-flow dependence analysis]()[C]//Proceedings of the 21st ACM SIGPLAN-SIGACT symposium on Principles of programming languages. ACM, 1994: 311-325.
+- [ ] Maslov V. [Lazy array data-flow dependence analysis](https://drum.lib.umd.edu/bitstream/handle/1903/590/CS-TR-3110.pdf?sequence=4&isAllowed=y)[C]//Proceedings of the 21st ACM SIGPLAN-SIGACT symposium on Principles of programming languages. ACM, 1994: 311-325.
 - [ ] Chafi H, Sujeeth A K, Brown K J, et al. [A domain-specific approach to heterogeneous parallelism](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.644.4729&rep=rep1&type=pdf)[J]. ACM SIGPLAN Notices, 2011, 46(8): 35-46.
 - [ ] Libby J C, Kent K B. [A survey of data dependence analysis techniques for automated parallelization](http://www.cs.unb.ca/tech-reports/documents/TR07-188_000.pdf)[J]. TR07-188, 2007: 1-34.
 
-## Translate dataflow program into integer set representation
+### Translate dataflow program into integer set representation
 
-- [ ] Bhaskaracharya S G, Bondhugula U. [Polyglot: a polyhedral loop transformation framework for a graphical dataflow language]()[C]//International Conference on Compiler Construction. Springer, Berlin, Heidelberg, 2013: 123-143.
+- [ ] Bhaskaracharya S G, Bondhugula U. [Polyglot: a polyhedral loop transformation framework for a graphical dataflow language](https://link.springer.com/content/pdf/10.1007/978-3-642-37051-9_7.pdf)[C]//International Conference on Compiler Construction. Springer, Berlin, Heidelberg, 2013: 123-143.
 - [x] Benabderrahmane M W, Pouchet L N, Cohen A, et al. [The polyhedral model is more widely applicable than you think](https://link.springer.com/content/pdf/10.1007/978-3-642-11970-5_16.pdf)[C]//International Conference on Compiler Construction. Springer, Berlin, Heidelberg, 2010: 283-303.
 
     > This work expands the application domain of the polyhedral model. It presents slight extensions to the polyhedral representation itself, based on the notions of _**exit**_ and _**control predicates**_ that allow to consider _**general while loops**_ and _**if conditions**_
@@ -59,7 +84,7 @@
 - [ ] Maydan D E. [Accurate analysis of array references](https://apps.dtic.mil/dtic/tr/fulltext/u2/a268069.pdf)[R]. STANFORD UNIV CA DEPT OF COMPUTER SCIENCE, 1992.
     > This work propose some methods to make the ordering constraints explicit for the compiler.
 
-## Fully automatic polyhedral compilers
+### Fully automatic polyhedral compilers
 
 - General polyhedral compilers
   - [ ] _**PENCIL**_, Baghdadi R, Cohen A, Grosser T, et al. [PENCIL language specification](https://hal.inria.fr/hal-01154812/document)[J]. 2015.
@@ -70,6 +95,7 @@
 - PolyMega and TC are designed for specific domain.
     - [ ] _**PolyMage**_, Mullapudi R T, Vasista V, Bondhugula U. Polymage: Automatic optimization for image processing pipelines[C]//ACM SIGPLAN Notices. ACM, 2015, 50(4): 429-443.
     - [ ] _**TC**_, Vasilache N, Zinenko O, Theodoridis T, et al. [Tensor comprehensions: Framework-agnostic high-performance machine learning abstractions](https://arxiv.org/pdf/1802.04730.pdf)[J]. arXiv preprint arXiv:1802.04730, 2018.
+- [x] [Tiramisu: A Polyhedral Compiler for Expressing Fast and Portable Code](https://arxiv.org/abs/1804.10694)
 
 ## IRs for DSL compiler
 
@@ -90,4 +116,9 @@
 - [ ] Wolfe M. Massive parallelism through program restructuring[C]//[1990 Proceedings] The Third Symposium on the Frontiers of Massively Parallel Computation. IEEE, 1990: 407-415.
 - [ ] Allen J R. [Dependence analysis for subscripted variables and its application to program transformations](https://scholarship.rice.edu/bitstream/handle/1911/19045/8314916.PDF?sequence=1&isAllowed=y)[D]. Rice University, 1983.
 - [ ] Coarse-grained loop parallelization: Iteration Space Slicing vs affine transformations
-- [ ] Optimizing supercompilers for supercomputers
+- [ ] Optimizing supercompilers for supercomputers.
+
+## Affine loop transformation for locality
+
+- [ ] Bastoul C, Feautrier P. [More legal transformations for locality](https://hal.inria.fr/inria-00001056/document)[C]//European Conference on Parallel Processing. Springer, Berlin, Heidelberg, 2004: 272-283.
+- [ ] Bondhugula U, Hartono A, Ramanujam J, et al. [A practical automatic polyhedral parallelizer and locality optimizer](http://www.ece.lsu.edu/jxr/Publications-pdf/pldi08.pdf)[C]//Proceedings of the 29th ACM SIGPLAN Conference on Programming Language Design and Implementation. 2008: 101-113.

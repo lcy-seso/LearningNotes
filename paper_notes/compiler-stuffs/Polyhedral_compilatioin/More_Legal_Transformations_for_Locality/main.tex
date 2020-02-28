@@ -1,0 +1,25 @@
+\documentclass {article}
+
+\input{structure.tex} % Include the file specifying the document structure and custom commands
+\title{Note for
+\textit{\href{https://hal.inria.fr/inria-00001056/document}{More Legal Transformations for Locality}}}
+\author{Ying Cao}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\input{contents.tex}
+
+{
+\small
+\raggedright
+\bibliographystyle{ieeetr}
+% or, abbrv, acm, alpha, apalike, ieeetr, plain, siam, unsrt
+\begin{spacing}{1}
+\bibliography{references.bib}
+\end{spacing}
+}
+\end{document}
