@@ -14,3 +14,4 @@
 
 2. Verdoolaege, Sven, and Tobias Grosser. "[Polyhedral extraction tool](https://www.grosser.es/publications/grosser-2012-Polyhedral-Extraction-Tool-IMPACT.pdf)." Second International Workshop on Polyhedral Compilation Techniques (IMPACT’12), Paris, France. 2012.
     - Pet project: https://github.com/Meinersbur/pet
+    - The doctoral thesis of Pet's author. Chapter 9 of: Grosser, Tobias. [A decoupled approach to high-level loop optimization: tile shapes, polyhedral building blocks and low-level compilers](https://tel.archives-ouvertes.fr/tel-01144563/document). Diss. 2014.

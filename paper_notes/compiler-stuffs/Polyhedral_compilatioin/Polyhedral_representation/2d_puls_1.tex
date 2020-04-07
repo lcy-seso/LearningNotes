@@ -1,0 +1,49 @@
+
+
+\section{the $2\mathbf{d}+1$ representation}
+
+\subsection {Classical loop transformations}
+
+\begin{enumerate}
+  \item only modif the iteration domain but do not affact the order in which
+  statement instances are executed or the way arrays are accessed;
+  \begin{enumerate}
+    \item loop unrolling
+    \item strip-mining
+  \end{enumerate}
+  \item modifies both iteration domain and a schedule transformation;
+  \begin{enumerate}
+    \item tiling: a combination of strip-mining and loop interchange;
+  \end{enumerate}
+  \item modifies schedule;
+  \begin{enumerate}
+    \item shifting/pipelining
+  \end{enumerate}
+  \item modifies array subscripts
+  \begin{enumerate}
+    \item privatization
+  \end{enumerate}
+  \item only modifies the array declarations (data layout)
+  \begin{enumerate}
+    \item padding
+  \end{enumerate}
+\end{enumerate}
+
+\subsection{Polyhedral model}
+Refer to paper \cite{girbal2006semi}\cite{vasilache2007scalable} for details.
+
+The polyhedral representation is a semantics-based representation instead of
+syntax-based representation. It clearly separates the four different types of
+actions performed by program transformations:
+
+\begin{enumerate}
+  \item modification of the iteration domain (loop bounds and strides);
+  \item modification of the schedule of each individual statement;
+  \item modification of access functions (array subscripts)
+  \item modification of the data layout (array declarations)
+\end{enumerate}
+
+Loop transformations are expressed as a "syntax-free" function compositions.
+
+Aribitrarily complex compositions of classical transformations can be captured
+in one single transformation step of the polyhedral model.
