@@ -1,0 +1,166 @@
+\batchmode
+%\usepackage{pgfpages}
+% \pgfpagesuselayout{4 on 1}[letterpaper,landscape,border shrink=5mm]
+\setbeamertemplate{items}[ball]
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{MnSymbol}
+
+\usepackage{smartdiagram}
+
+\usepackage{media9}
+\usetikzlibrary{arrows, shapes}
+\usepackage{stmaryrd}
+\usepackage{colortbl}
+\usepackage{caption}
+\usepackage{comment}
+\usepackage{pdfpages}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{booktabs}
+\usepackage{soul}
+\usepackage[normalem]{ulem}
+
+\usepackage{tcolorbox}
+\usepackage{lipsum}
+\usepackage{pgf}
+\usepackage{etex}
+
+\usepackage{tikz, pgfplots}
+
+\setbeamersize{text margin left=1cm,text margin right=1cm}
+\newenvironment{changemargin}[2]{%
+  \begin{list}{}{%
+    \setlength{\topsep}{0pt}%
+    \setlength{\leftmargin}{#1}%
+    \setlength{\rightmargin}{#2}%
+    \setlength{\listparindent}{\parindent}%
+    \setlength{\itemindent}{\parindent}%
+    \setlength{\parsep}{\parskip}%
+  }%
+  \item[]}{\end{list}}
+
+\usepackage{color}
+\definecolor{purple}{rgb}{0.5, 0, 0.5}
+\definecolor{dkgreen} {rgb} {0, 0.6, 0}
+\definecolor{gray} {rgb} {0.5, 0.5, 0.5}
+\definecolor{mauve} {rgb} {0.58, 0, 0.82}
+
+\tikzstyle {every picture}+=[remember picture]
+\everymath {\displaystyle}
+
+\usepackage{cite}
+
+\setbeamertemplate{bibliography item}[text]
+%\usepackage[backend=bibtex,sorting=none]{biblatex}
+%\addbibresource{references.bib}
+%\setbeamerfont{footnote}{size=\tiny}
+
+\usepackage[square, numbers]{natbib} % \bibliographystyle {unsrtnat}
+
+\hypersetup{
+colorlinks=true,
+linkcolor=blue,
+filecolor=blue,
+urlcolor=mauve,
+anchorcolor=blue,
+citecolor=blue,
+}
+
+\mode<presentation>{
+
+% The Beamer class comes with a number of default slide themes
+% which change the colors and layouts of slides. Below this is a list
+% of all the themes, uncomment each in turn to see what they look like.
+
+%\usetheme{default}
+%\usetheme{AnnArbor}
+%\usetheme{Antibes}
+%\usetheme{Bergen}
+%\usetheme{Berkeley}
+%\usetheme{Berlin}
+\usetheme{Boadilla}
+%\usetheme{CambridgeUS}
+%\usetheme{Copenhagen}
+%\usetheme{Darmstadt}
+%\usetheme{Dresden}
+%\usetheme{Frankfurt}
+%\usetheme{Goettingen}
+%\usetheme{Hannover}
+%\usetheme{Ilmenau}
+%\usetheme{JuanLesPins}
+%\usetheme{Luebeck}
+%\usetheme{Madrid}
+%\usetheme{Malmoe}
+%\usetheme{Marburg}
+%\usetheme{Montpellier}
+%\usetheme{PaloAlto}
+%\usetheme{Pittsburgh}
+%\usetheme{Rochester}
+%\usetheme{Singapore}
+%\usetheme{Szeged}
+%usetheme{Warsaw}
+
+% As well as themes, the Beamer class has a number of color themes
+% for any slide theme. Uncomment each of these in turn to see how it
+% changes the colors of your current slide theme.
+
+%\usecolortheme{albatross}
+%\usecolortheme{beaver}
+%\usecolortheme{beetle}
+%\usecolortheme{crane}
+%\usecolortheme{dolphin}
+%\usecolortheme{dove}
+%\usecolortheme{fly}
+%\usecolortheme{lily}
+%\usecolortheme{orchid}
+%\usecolortheme{rose}
+%\usecolortheme{seagull}
+%\usecolortheme{seahorse}
+\usecolortheme{whale}
+%\usecolortheme{wolverine}
+
+%\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
+% To replace the footer line in all slides with a simple slide count uncomment this line
+\setbeamertemplate{footline}[page number]
+% To remove the navigation symbols from the bottom of all slides uncomment this line
+\setbeamertemplate{navigation symbols}{}
+\usefonttheme{professionalfonts}
+\useoutertheme{infolines}
+\useinnertheme{circles}
+}
+
+
+\newtheorem*{bem}{Bemerkung}
+
+\usepackage{tikz}
+
+\usepackage{listings}
+\usepackage{courier}
+\lstset{ %
+language=Python,  % the language of the code
+    basicstyle={\small\footnotesize},  % the size of the fonts that are used for the code
+    numbers=left,  % where to put the line - numbers
+    numberstyle=\tiny\color{mauve},  % the style that is used for the line - numbers
+    stepnumber=1,  % the step between two line - numbers. If it's 1, each line will be numbered
+    numbersep=5pt,                  % how far the line-numbers are from the code
+    backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+    showspaces=false,               % show spaces adding particular underscores
+    showstringspaces=false,         % underline spaces within strings
+    showtabs=false,                 % show tabs within strings adding particular underscores
+    frame=none,                   % adds a frame around the code
+    rulecolor=\color{black},        % if not set, the frame-color may be changed
+                                    % on line-breaks within not-black text (e.g. commens (green here))
+    tabsize=2,                      % sets default tabsize to 2 spaces
+    captionpos=b,                   % sets the caption-position to bottom
+    breaklines=true,                % sets automatic line breaking
+    breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+    title=\lstname,                 % show the filename of files included with \lstinputlisting;
+                                    % also try caption instead of title
+    keywordstyle=\color{blue},      % keyword style
+    commentstyle=\color{dkgreen},   % comment style
+    stringstyle=\color{gray},       % string literal style
+    xleftmargin=.05\textwidth,
+    xrightmargin=.05\textwidth
+}
