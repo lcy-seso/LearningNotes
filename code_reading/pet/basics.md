@@ -1,13 +1,19 @@
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Basics](#basics)
-    - [Data structure of `pet_scop`](#data-structure-of-petscop)
-        - [Data structure of `pet_array`](#data-structure-of-petarray)
-        - [Data structure of `pet_stmt`](#data-structure-of-petstmt)
+  - [Data structure of `pet_scop`](#data-structure-of-petscop)
+    - [Data structure of `pet_array`](#data-structure-of-petarray)
+    - [Data structure of `pet_stmt`](#data-structure-of-petstmt)
 
 <!-- /TOC -->
 
 # Basics
+
+```
+ASTConsumer is an interface used to write generic actions on an AST, regardless of how the AST was produced. ASTConsumer provides many different entry points, but for our use case the only one needed is HandleTranslationUnit, which is called with the ASTContext for the translation unit.
+```
+
+[Introduction to Clang AST](https://clang.llvm.org/docs/IntroductionToTheClangAST.html)
 
 ## Data structure of `pet_scop`
 
