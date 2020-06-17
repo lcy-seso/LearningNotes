@@ -1,0 +1,217 @@
+\section{Presburger Sets and Relations}
+
+Presburger formula provides a way to describe set and binary relation through properties that need to be satisfied instead of listing the elements contained in the set of binary relation.
+
+The elements of a Presburger set are descriped in terms of \textcolor{vr}{\textbf{\emph{Structured Named Integer Tuple Templates}}} which are essentially the same as structured named integer tuples. except that \textbf{the integers have been replaced by variables}.
+
+
+\subsection{Presburger Sets and Relations}
+
+Refer to pp.43 to 45 (section 3.2) of \cite{verdoolaege2016presburger} for the concept of Presburger formula.
+
+\textbf{Example 1} (not in \emph{isl}'s notation):
+
+$$\{B[i]: 5 \le i \le 6; C[]: \}$$
+
+\begin{itemize}
+  \item the set above is equal to $\{B[5]; B[6]; C[]\}$ in the notaion of sets of named integer tuples.
+\end{itemize}
+
+\textbf{Example 2} (not in \emph{isl}'s notation):
+
+$$\{ [i]: 0 \ge i \wedge i \le 10 \wedge \exists \alpha : i = \alpha + \alpha] \}$$
+
+\begin{itemize}
+  \item the set above is equal to $\{ [0]; [2]; [4]; [6]; [8]; [10]; \}$ in the notaion of sets of named integer tuples.
+\end{itemize}
+
+\textbf{Example 3} (not in \emph{isl}'s notation):
+
+$$\{ S[i]: 0 \le i \wedge i \le n \}$$
+
+\begin{itemize}
+  \item The isl notation for above set above is: $[n] \rightarrow \{ S[i]: 0 \le i \quad \text{and} \quad i \le n \}$
+  \item In isl, \textit{\textbf{a constant symbol is called a parameter}}.
+  \begin{itemize}
+    \item A parameter has to be declared in front of the set or binary relation description.
+    \item \textit{\textbf{All parameters need to be placed in a comma separated list enclosed in brackets and followed by a "-> in front of the set or binary relation description}}.
+    \item The order of the parameters inside the list is immaterial.
+  \end{itemize}
+\end{itemize}
+
+\textbf{Example 4} (in \emph{isl}'s notation):
+
+$$\{ :n \ge 0\}$$
+
+\begin{itemize}
+  \item The set above is called a \textcolor{vr}{\textbf{\emph{Unit Set}}}.
+  \item In isl, unit sets are called \emph{parameter sets} and they are represented by an \textcolor{pg}{\emph{isl\_set}}.
+\end{itemize}
+
+\subsection{Operations for Presburger Sets and Relations}
+
+Most of the operations defined in section[\ref{section:Sets of Named Integer Tuples}] are not affected by the presence of constant symbols. The operation is simply applied uniformly for all possible values of those constant symbols. Some operations, in particular the comparison operations, are affected, however. See pp. 48 ~ 53 of \cite{verdoolaege2016presburger} for details.
+
+\subsubsection{Lexicographic Order in Presburger Relations}
+
+\textcolor{vr}{A \textbf{\emph{Lexicographic Order}}} expressed in Presburger Formula is:
+
+Given two vector $\mathbf{a}$ and $\mathbf{b}$ of equal length, $\mathbf{a}$ is said to be Lexicographically smaller than $\mathbf{b}$ if:
+$$ \mathbf{a} \prec \mathbf{b} =
+\bigvee_{i: 1\le i \le n} \left( \left(  \bigwedge_{j: 1 \le j \le i} a_j = b_j \wedge a_i < b_i\right) \right)$$
+
+notations:
+
+\begin{enumerate}
+  \item $\prec/2$: \emph{lexicographically smaller-than}
+  \item $\preccurlyeq/2$: \emph{lexicographically smaller-than-or-equal}
+  \item $\succ /2$: \emph{lexicographically greater-than}
+  \item $\succcurlyeq /2$: \emph{lexicographically greater-than-or-equal}
+\end{enumerate}
+
+\begin{enumerate}
+  \item \textcolor{vr}{\textbf{\emph{Lexicographically-smaller-than Relation on Sets}}}. The lexicographically-smaller-than relation $A \prec B$ on two sets $A$ and $B$ is a binary relation (\textcolor{pg}{\emph{isl\_union\_map}}) that contains pairs of elements, one from $A$ and one from $B$ such that the two elements \textbf{\textit{have the same space}} and the first is lexicographically smaller than the second. That is:
+
+  $$A \prec B = \{ \mathbf{a} \rightarrow \mathbf{b} : \mathbf{a} \in A \wedge \mathbf{b} \in B
+  \wedge \mathit{S}a = \mathit{S}b \wedge \mathit{V}\mathbf{a} \prec \mathit{V}\mathbf{b}\}$$
+
+  in isl, this operation is called \textcolor{pg}{\emph{isl\_union\_set\_lex\_lt\_union\_set}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Lexicographically-smaller-than-or-equal Relation on Sets}}}:
+
+  $$A \prec B = \{ \mathbf{a} \rightarrow \mathbf{b} : \mathbf{a} \in A \wedge \mathbf{b} \in B
+  \wedge \mathit{S}a = \mathit{S}b \wedge \mathit{V}\mathbf{a} \preccurlyeq \mathit{V}\mathbf{b}\}$$
+
+  in isl, this operation is called \textcolor{pg}{\emph{isl\_union\_set\_lex\_le\_union\_set}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Lexicographically-greater-than Relation on Sets}}}:
+
+  $$A \prec B = \{ \mathbf{a} \rightarrow \mathbf{b} : \mathbf{a} \in A \wedge \mathbf{b} \in B
+  \wedge \mathit{S}a = \mathit{S}b \wedge \mathit{V}\mathbf{a} \succ \mathit{V}\mathbf{b}\}$$
+
+  in isl, this operation is called \textcolor{pg}{\emph{isl\_union\_set\_lex\_gt\_union\_set}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Lexicographically-greater-than-or-equal Relation on Sets}}}:
+
+  $$A \prec B = \{ \mathbf{a} \rightarrow \mathbf{b} : \mathbf{a} \in A \wedge \mathbf{b} \in B
+  \wedge \mathit{S}a = \mathit{S}b \wedge \mathit{V}\mathbf{a} \succcurlyeq \mathit{V}\mathbf{b}\}$$
+
+  in isl, this operation is called \textcolor{pg}{\emph{isl\_union\_set\_lex\_ge\_union\_set}}.
+
+\end{enumerate}
+
+The same operations are also available on binary relations, but in this case the comparison is \textbf{\textit{performed on the range elements}} of the input relations and the \textbf{\textit{result collects the corresponding domain elements}}.
+
+\begin{enumerate}
+  \item \textcolor{vr}{\textbf{\emph{Lexicographically-smaller-than Relation on Binary Relations}}}. The lexicographically-smaller-than relation $A \prec B$ on two binary relations $A$ and $B$ is a binary relation (\textcolor{pg}{\emph{isl\_union\_map}}) that contains pairs of elements, one from \textbf{\textit{the domain of}} $A$ and one from \textbf{\textit{the domain of}} $B$ that have corresponding \textbf{\textit{range elements}} such that the first is lexicographically smaller than the second. That is:
+
+  $$A \prec B = \{
+  \mathbf{a} \rightarrow \mathbf{b}: \exists \mathbf{c},\mathbf{d}:
+  \mathbf{a} \rightarrow \mathbf{c} \in A \wedge \mathbf{b} \rightarrow \mathbf{d} \in B
+  \wedge \mathit{S}\mathbf{c} = \mathit{S}\mathbf{d}
+  \wedge \mathit{V}\mathbf{c} \prec \mathit{V}\mathbf{d}
+  \}$$
+
+  in isl, this operation is called \textcolor{pg}{\emph{isl\_union\_map\_lex\_le\_union\_map}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Lexicographically-smaller-than-or-equal Relation on Binary Relations}}} is a binary relation (\textcolor{pg}{\emph{isl\_union\_map}}) that:
+
+  $$A \prec B = \{
+  \mathbf{a} \rightarrow \mathbf{b}: \exists \mathbf{c},\mathbf{d}:
+  \mathbf{a} \rightarrow \mathbf{c} \in A \wedge \mathbf{b} \rightarrow \mathbf{d} \in B
+  \wedge \mathit{S}\mathbf{c} = \mathit{S}\mathbf{d}
+  \wedge \mathit{V}\mathbf{c} \preccurlyeq \mathit{V}\mathbf{d}
+  \}$$
+
+  in isl, this operation is called \textcolor{pg}{\emph{isl\_union\_map\_lex\_le\_union\_map}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Lexicographically-greater-than Relation on Binary Relations}}} is a binary relation (\textcolor{pg}{\emph{isl\_union\_map}}) that:
+
+  $$A \prec B = \{
+  \mathbf{a} \rightarrow \mathbf{b}: \exists \mathbf{c},\mathbf{d}:
+  \mathbf{a} \rightarrow \mathbf{c} \in A \wedge \mathbf{b} \rightarrow \mathbf{d} \in B
+  \wedge \mathit{S}\mathbf{c} = \mathit{S}\mathbf{d}
+  \wedge \mathit{V}\mathbf{c} \succ \mathit{V}\mathbf{d}
+  \}$$
+
+  in isl, this operation is called \textcolor{pg}{\emph{isl\_union\_map\_lex\_gt\_union\_map}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Lexicographically-greater-than-or-equal Relation on Binary Relations}}} is a binary relation (\textcolor{pg}{\emph{isl\_union\_map}}):
+
+  $$A \prec B = \{
+  \mathbf{a} \rightarrow \mathbf{b}: \exists \mathbf{c},\mathbf{d}:
+  \mathbf{a} \rightarrow \mathbf{c} \in A \wedge \mathbf{b} \rightarrow \mathbf{d} \in B
+  \wedge \mathit{S}\mathbf{c} = \mathit{S}\mathbf{d}
+  \wedge \mathit{V}\mathbf{c} \succcurlyeq \mathit{V}\mathbf{d}
+  \}$$
+
+  in isl, this operation is called \textcolor{pg}{\emph{isl\_union\_map\_lex\_ge\_union\_map}}.
+\end{enumerate}
+
+\subsubsection{Space-Local Operations}
+
+\begin{enumerate}
+  \item \textcolor{vr}{\textbf{\emph{Space Decomposition of a Set}}} denoted as $\mathit{D}S$ is:
+  $$S_i := \{\mathbf{x}: \mathbf{x} \in S \wedge \mathit{S}\mathbf{x} = U_i\}
+  \text{, then: }\mathit{D}S = \{S_i\}_i \text{.}$$
+
+  in isl, this operation is called \textcolor{pg}{\emph{isl\_union\_set\_foreach\_set}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Space Decomposition of a Binary Relation}}} denoted as $\mathit{D}R$ is:
+  $$R_i := \{\mathbf{x} \rightarrow \mathbf{y}:\mathbf{x} \rightarrow \mathbf{y} \in S
+  \wedge \mathit{S}\mathbf{x} = U_i \wedge \mathit{S}\mathbf{y} = V_i\}
+  \text{, then: }\mathit{D}R = \{R_i\}_i \text{.}$$
+
+  in isl, this operation is called \textcolor{pg}{\emph{isl\_union\_set\_foreach\_map}}.
+
+\end{enumerate}
+
+\textbf{Lexicographic optimizatioin can be defined in terms of the space decomposition}.
+
+\begin{enumerate}
+
+  \item \textcolor{vr}{\textbf{\emph{Lexicographic Maximum of a Set}}} is a subset of $S$ that contains the lexicographically maximal element of each of the spaces with elements in $S$. \textbf{\textit{If there is any such space with no lexicographically maximal element, then the operation is undefined}}. That is, let $\mathit{D}S =: \{ S_i \}_i$, Define:
+
+  $$M_i := \{\mathbf{x}:\mathbf{x} \in S_i \wedge \forall \mathbf{y} \in S_i :
+  \mathit{V}\mathbf{x} \succcurlyeq \mathit{V}\mathbf{y}\}\text{,}$$ Then:
+  $$\text{lexmax}S=\bigcup_{i}M_i$$
+
+  in isl, this operation is called \textcolor{pg}{\emph{isl\_union\_set\_lexmax}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Lexicographic Minimum of a Set}}} is a subset of $S$ that contains the lexicographically minimal element of each of the spaces with elements in $S$. \textbf{\textit{If there is any such space with no lexicographically minimal element, then the operation is undefined}}. That is, let $\mathit{D}S =: \{ S_i \}_i$, Define:
+
+  $$M_i := \{\mathbf{x}:\mathbf{x} \in S_i \wedge \forall \mathbf{y} \in S_i :
+  \mathit{V}\mathbf{x} \preccurlyeq \mathit{V}\mathbf{y}\}\text{,}$$ Then:
+  $$\text{lexmin}S=\bigcup_{i}M_i$$
+
+  in isl, this operation is called \textcolor{pg}{\emph{isl\_union\_set\_lexmin}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Lexicographic Maximum of a Binary Relation}}} is a subset of $R$ that for each first element in the pairs of elements in $R$ and for each of the spaces of the corresponding second elements, the lexicographically maximal of those corresponding elements. \textbf{\textit{If there is any such first element and space with no corresponding lexicographically maximal second element, then the operation is undefined}}. That is, let $\mathit{D}R =: \{ R_i \}_i$, Define:
+
+  $$M_i := \{\mathbf{x} \rightarrow \mathbf{y}:\mathbf{x} \rightarrow \mathbf{y}\in R_i
+  \wedge \forall \mathbf{x}' \rightarrow \mathbf{z} \in R_i :
+  \mathbf{x} = \mathbf{x}' \Rightarrow \mathit{V}\mathbf{y} \succcurlyeq \mathit{V}\mathbf{z}\}\text{,}$$ Then:
+  $$\text{lexmax}R=\bigcup_{i}M_i \text{.}$$
+
+  $a \Rightarrow b$ (implication) is equivalent to $\neg a \vee b$.
+
+  in isl, this operation is called \textcolor{pg}{\emph{isl\_union\_map\_lexmax}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Lexicographic Minimum of a Binary Relation}}} is a subset of $R$ that for each first element in the pairs of elements in $R$ and for each of the spaces of the corresponding second elements, the lexicographically mimimal of those corresponding elements. \textbf{\textit{If there is any such first element and space with no corresponding lexicographically minimal second element, then the operation is undefined}}. That is, let $\mathit{D}R =: \{ R_i \}_i$, Define:
+
+  $$M_i := \{\mathbf{x} \rightarrow \mathbf{y}:\mathbf{x} \rightarrow \mathbf{y}\in R_i
+  \wedge \forall \mathbf{x}' \rightarrow \mathbf{z} \in R_i :
+  \mathbf{x} = \mathbf{x}' \Rightarrow \mathit{V}\mathbf{y} \preccurlyeq \mathit{V}\mathbf{z}\}\text{,}$$ Then:
+  $$\text{lexmin}R=\bigcup_{i}M_i \text{.}$$
+
+  in isl, this operation is called \textcolor{pg}{\emph{isl\_union\_map\_lexmin}}.
+\end{enumerate}
+
+\subsubsection{Simplification}
+
+In isl, sets and binary relations are represented internally in \textbf{\textit{disjunctive normal form}}: all disjunctions are moved to the outermost positions in the formula, while all conjunctions are moved innermost:
+
+$$\bigvee_{i} \left(\exists \alpha_i : \left( \bigwedge _{j}t_{i,j}(\mathbf{x}_i,\alpha_x) = 0
+\wedge \bigwedge_{k} u_{i,k}(\mathbf{x,\alpha_i}) \ge 0 \right) \right)$$
+
+\textcolor{vr}{\textbf{\emph{Coalescing}}} takes a formula in disjunctive normal form and rewrites it using fewer or the same number of disjuncts. In isl, this operation is called \textcolor{pg}{\emph{isl\_union\_set\_coalesce}} for sets and \textcolor{pg}{\emph{isl\_union\_map\_coalesce}} for binary relations.

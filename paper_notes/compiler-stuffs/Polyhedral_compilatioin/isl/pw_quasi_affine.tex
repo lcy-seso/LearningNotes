@@ -1,0 +1,172 @@
+\section{Piecewise Quasi-Affine Expressions}
+
+\begin{tabular}{lp{7cm}p{3cm}p{3cm}}
+\toprule
+\textbf{Concept} & \textbf{Notes} & \textbf{\emph{isl}'s representation for quasi-affine} \\
+\midrule
+\textbf{\textit{Base Expression}} &
+maps integer tuples to a rational value &
+\textcolor{pg}{\emph{isl\_aff}} \\
+\textbf{\textit{Tuple of Expressions}} &
+combines $n \ge 0$ base expressions of the \underline{same type} and with the \underline{same domain space} into \textbf{\textit{a multi-dimensional expression}} that shares this domain space. &
+\textcolor{pg}{\emph{isl\_multi\_aff}} \\
+\textbf{\textit{Piecewise Expression}} &
+combines $n \ge 0$ pairs of \textbf{fixed-space} sets $S_i$ and base quasi-affine expressions $E_i$ into \textbf{a single quasi-affine expression}. &
+\textcolor{pg}{\emph{isl\_pw\_aff}} \\
+\textbf{\textit{Piecewise Tuple of Expression}} &
+apply the definition of piecewise expression to tuples of expressions. The results \underline{is a piecewise expression}. & \textcolor{pg}{\emph{isl\_pw\_multi\_aff}} \\
+\textbf{\textit{Tuple of Piecewise Expressions}} &
+is the results of applying the definition of "tuple of expressions" to piecewise expressions. The result \underline{is a tuple}.&
+\textcolor{pg}{\emph{isl\_multi\_pw\_aff}} \\
+\textbf{\textit{Multi-Space Expression}} & combines piecewise expressions with different domain and/or range spaces, but with \underline{pair-wise disjoint domains} into \textbf{a single expression}. &
+\textcolor{pg}{\emph{isl\_union\_pw\_aff}}  \\
+
+\bottomrule
+\end{tabular}
+
+\subsection{Concepts and Definitions}
+
+\subsubsection{Quasi-Affine Expression}
+
+A \textcolor{vr}{\textbf{\emph{Quasi-Affine Expression}}} $f$ is a function that maps a named integer tuple with a given space $S$ to a rational value, where the function is specified as a Presburger term in the variables of the tuple, optionally divided by an integer constant (integer division is not affine, so the name "quasi-" comes).
+
+In isl, a quasi-affine expression is represented by an \textcolor{pg}{\emph{isl\_aff}}.
+
+\begin{itemize}
+  \item \textcolor{vr}{\textbf{\emph{The domain space of a quasi-affine expression}}} is the space of the input integer tuple and is written $S^{\text{dom}}f$.
+  \item \textcolor{vr}{\textbf{\emph{The range space of a quasi-affine expression}}} is fixed to the anonymous single-dimensional  space.
+\end{itemize}
+
+The quasi-affine expression may also be a (symbolic) constant expression, in which case there is no domain space, written $S^{\text{dom}}f = \perp $, and the domain is a unit set.
+
+\textbf{Example} (in \emph{isl}'s notation):
+
+$$\{[x, y] \rightarrow [x + 2 + y - 6]\}$$
+
+\subsubsection{Tuple of Quasi-Affine Expressions}
+
+A \textcolor{vr}{\textbf{\emph{Tuple of Quasi-Affine Expressions}}} combines zero or more base affine expressions of \textbf{\textit{the same type and with the same domain space}} (or no domain space) into a multi-dimensional expression that \textbf{\textit{shares this domain space}} and that \textbf{\textit{has a prescribed range space}}.
+
+In particular, it is either:
+
+\begin{itemize}
+  \item an identifier $n$ along with $d \ge 0$ base expressions $e_j$ for $0 \le j < d$, written $n[e_0 , e_1,...,e_{d-1}]$, or
+  \item an identifier $n$ along with two tuples of expressions $\mathbf{e}$ and $\mathbf{f}$ written $n[\mathbf{e} \rightarrow \mathbf{f}]$.
+\end{itemize}
+
+\begin{info}
+\begin{enumerate}
+  \item The \textcolor{vr}{\textbf{\emph{domain of a Tuple of Quasi-Affine Expressions}}} is the intersection of the domains of the quasi-affine expressions.
+  \item The domain of a tuple of zero expressions is undefined.
+\end{enumerate}
+\end{info}
+
+In \emph{isl}:
+
+\begin{enumerate}
+  \item a tuple of quasi-affine expressions is represented by an \textcolor{pg}{\emph{isl\_multi\_aff}}.
+  \item the space of a tuple of quasi-affine expressions is called the \emph{range space} (?? confusing to me) of its \textcolor{pg}{\emph{isl\_multi\_aff}} representation.
+\end{enumerate}
+
+\subsubsection{Piecewise Quasi-Affine Expression}
+
+A \textcolor{vr}{\textbf{\emph{Piecewise Quasi-Affine Expression}}} combines $n \ge 0$ pairs of \textbf{fixed-space} sets $S_i$ (domain spaces) and base quasi-affine expressions $E_i$ into \textbf{a single quasi-affine expression}.
+\begin{itemize}
+  \item The spaces of the $S_i$ and the domain and range spaces of the $E_i$ \textbf{all need to be the same}.
+  \item \underline{\textbf{The $S_i$ need to be pairwise disjoint}}.
+\end{itemize}
+
+\begin{info}{}
+\begin{enumerate}
+  \item \textcolor{vr}{\textbf{\emph{The domain of the piecewise quasi-affine expression}}} is the union of the $S_i$.
+  \item \textcolor{vr}{\textbf{\emph{The value of the piecewise quasi-affine expression}}} at an integer tuple $\mathbf{x}$ is: $E_i(\mathbf{x})$ if $x \in S_i$ for some $i$. Otherwise, the value is undefined.
+\end{enumerate}
+\end{info}
+
+In isl, a piecewise quasi-affine expression is represented by an \textcolor{pg}{\emph{isl\_pw\_aff}}.
+
+\subsubsection{Piecewise Tuple of Quasi-Affine Expressions}
+A \textcolor{vr}{\textbf{\emph{Piecewise Tuple of Quasi-Affine Expressions}}} is to apply the concept and definition of piecewise expression to tuples of quasi-affine expressions.
+
+In isl, a piecewise quasi-affine expression is represented by an \textcolor{pg}{\emph{isl\_pw\_multi\_aff}}.
+
+\subsubsection{Multi-Space Piecewise Quasi-Affine Expression}
+
+\begin{info}{Notes about multi-space expression}
+\begin{enumerate}
+  \item A multi-space expression does not have a specific domain or range space.
+  \item The domain of a multi-space expression is the union of the domains of the combined piecewise expressions.
+  \item The value of a multi-space expression at an integer tuple $\mathbf{x}$ is the value of the piecewise expression at $\mathbf{x}$ that contains $\mathbf{x}$ in its domain, if any.
+\end{enumerate}
+\end{info}
+
+A \textcolor{vr}{\textbf{\emph{Multi-Space Piecewise Quasi-Affine Expression}}} is the result of applying the concept and definition of \emph{multi-space expressionn} to piecewise quasi-affine expressions.
+
+In isl, a piecewise quasi-affine expression is represented by an \textcolor{pg}{\emph{isl\_union\_pw\_aff}}.
+
+\subsubsection{Multi-Space Piecewise Tuple of Quasi-Affine Expressioins}
+
+A \textcolor{vr}{\textbf{\emph{Multi-Space Piecewise Tuple of Quasi-Affine Expressioins}}} is the result of applying the concept and definition of \emph{multi-space expression} to piecewise tuples of quasi-affine expressions.
+
+In isl, a piecewise quasi-affine expression is represented by an \textcolor{pg}{\emph{isl\_union\_pw\_multi\_aff}}.
+
+\subsubsection{Tuple of Piecewise Quasi-Affine Expressions}
+
+A \textcolor{vr}{\textbf{\emph{Tuple of Piecewise Quasi-Affine Expressions}}} is the result of applying the concept and definition of \emph{tuple of expressions} to piecewise quasi-affine expressions.
+
+In isl, a piecewise quasi-affine expression is represented by an \textcolor{pg}{\emph{isl\_multi\_pw\_aff}}.
+
+\begin{info}{}
+  \begin{enumerate}
+    \item piecewise tuples of quasi-affine is a piecewise expression.
+    \item tuples of piecewise quasi-affine is a tuple.
+  \end{enumerate}
+\end{info}
+
+\begin{table}
+  \centering
+  \caption{piecewise tuples of quasi-affine \textbf{vs}. tuples of piecewise quasi-affine}
+  \begin{tabular}{p{7cm}p{7cm}}
+    \toprule
+    \textbf{piecewise tuples of quasi-affine} & \textbf{tuples of piecewise quasi-affine} \\
+    \midrule
+    a piecewise expressioin & a tuple \\
+    the entire tuple is either defined or undefined at any particular point in the domain space.&
+    each element of the tuple is a piecewise expression that may be undefined in different parts of the domain. \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\textbf{Example 1}
+
+a tuple of piecewise quasi-affine expressions:
+$$\{ [i] \rightarrow [(i : i\ge 0), (i - 1 : i \ge 1)] \}$$
+In particular, the first piecewise quasi-affine expression has domain $\{[i]:i\ge 0\}$ while the second has domain $\{[i]:i\ge 1\}$.
+
+\textbf{Example 2} (in \emph{isl}'s notation):
+
+a piecewise tuple of quasi-affine expresions:
+
+$$\{[i]\rightarrow [(i), (-1 + i)] : i > 0\}$$
+
+a tuple of piecewise quasi-affine expression:
+
+$$\{ [i] \rightarrow [((i) : i>0), ((-1 + i): i > 0)]\}$$
+
+\subsubsection{Tuple of Multi-Space Piecewise Quasi-Affine Expressions}
+
+A \textcolor{vr}{\textbf{\emph{Tuple of Multi-Space Piecewise Quasi-Affine Expressions}}} is the result of applying the concept and definition of tuple of expressions to multi=space piecewise quasi-affine expressions. A tuple of multi-space piecewise quasi-affine expressions \underline{does not have a domain space}.
+
+In isl, a tuple of multi-space piecewise quasi-affine expression is represented by an \textcolor{pg}{\emph{isl\_multi\_union\_pw\_aff}}.
+
+\textbf{Example} (in \emph{isl}'s notation):
+
+$$[n] \rightarrow A[\{S2[i,j] \rightarrow [(i)]; S1[] \rightarrow [(n)]\},
+\{ S2[i,j] \rightarrow [(j)]; S1[] \rightarrow [0] \}]$$
+
+\subsection{Operations}
+
+\begin{enumerate}
+  \item \textcolor{vr}{\textbf{\emph{Sum}}}: The sum $f+g$ of two quasi-affine expressions $f$ and $g$ with the same domain space is a function with the same domain space and as value the sum of the values of $f$ and $g$.
+  \item \textcolor{vr}{\textbf{\emph{Union}}}: The union of two expressions with disjoint domains combines them into a single expression defined over the union of the domains.
+\end{enumerate}

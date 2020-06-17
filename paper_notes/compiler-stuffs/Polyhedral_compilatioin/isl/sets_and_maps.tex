@@ -1,0 +1,317 @@
+\section{Sets of Named Integer Tuples}\label{section:Sets of Named Integer Tuples}
+
+\subsection{Named Integer Tuple}
+
+\textcolor{vr}{A \textbf{\emph{Named Integer Tuple}} consists of an identifier(name) and a sequence of integer values}. The identifier may be omitted and the sequence of integers may have a zero length.
+
+\textbf{Example} (in \emph{isl}'s notation):
+
+$$A[2,8,1]$$
+
+\begin{itemize}
+  \item Above example is a named integer tuple with identifier $A$ and sequence of integers 2, 8 and 1.
+\end{itemize}
+
+$$[]$$
+
+\begin{itemize}
+  \item Above example is a “named” integer tuple without identifier. Such an integer tuple is a zero-length sequence of integers.
+\end{itemize}
+
+\subsection{Sets}
+
+\subsubsection{Concept and Notation}
+
+\textcolor{vr}{A \textbf{\emph{Set}} of named integer tuples contains zero or more named integer tuples as elements}.
+
+in isl, sets are represented by \textcolor{pg}{\emph{isl\_basic\_set}},\textcolor{pg}{\emph{isl\_set}},\textcolor{pg}{\emph{isl\_union\_set}}.
+
+\begin{enumerate}
+  \item \textcolor{pg}{\emph{isl\_basic\_set}} represents sets that can be described as a conjunction of affine constraints.
+  \item \textcolor{pg}{\emph{isl\_set}} and represents unions of \textcolor{pg}{\emph{isl\_basic\_sets}}.
+
+    all \textcolor{pg}{\emph{isl\_basic\_set}}s in the union need to live in the same space.
+
+  \item \textcolor{pg}{\emph{isl\_union\_set}}s represents unions of \textcolor{pg}{\emph{isl\_set}}s in different spaces.
+
+    spaces are considered different if they have a different number of dimensions and/or different names.
+\end{enumerate}
+
+
+\textbf{Example} (in \emph{isl}'s notation):
+
+$$\{[];A[2,8,1]\}$$
+
+\begin{itemize}
+  \item In isl, such sets are represented by an \textcolor{pg}{\emph{isl\_union\_set}}.
+  \item No order is defined on the elements in a set.
+  \item Elements in a set do not carry any multiplicity.
+\end{itemize}
+
+\subsubsection{Basic Operations for Sets}
+
+\begin{enumerate}
+  \item intersection of sets $A \cap B$: \textcolor{pg}{\emph{isl\_union\_set\_intersect}}.
+  \item union of sets $A \cup B$: \textcolor{pg}{\emph{isl\_union\_set\_union}}.
+  \item set difference of two sets $A \setminus B$: \textcolor{pg}{\emph{isl\_union\_set\_subtract}}.
+  \item compare equality $A = B$ \textcolor{pg}{\emph{isl\_union\_set\_is\_equal}}.
+  \item emptiness of a set \textcolor{pg}{\emph{isl\_union\_set\_is\_empty}}.
+  \item ...
+\end{enumerate}
+
+\subsection{Binary Relations}
+
+\subsubsection{Concept and Notation}
+
+\textcolor{vr}{A \textbf{\emph{Binary Relation}} is a set that contains pairs of named integer tuples.}
+
+in isl, relations are represented by  \textcolor{pg}{\emph{isl\_basic\_map}},\textcolor{pg}{\emph{isl\_map}},\textcolor{pg}{\emph{isl\_union\_map}}.
+
+\begin{enumerate}
+  \item \textcolor{pg}{\emph{isl\_basic\_map}} represents relations that can be described as a conjunction of affine constraints.
+  \item \textcolor{pg}{\emph{isl\_map}} and represents unions of \textcolor{pg}{\emph{isl\_basic\_map}}s.
+
+    all \textcolor{pg}{\emph{isl\_basic\_map}}s in the union need to live in the same space.
+
+  \item \textcolor{pg}{\emph{isl\_union\_map}}s represents unions of \textcolor{pg}{\emph{isl\_map}}s in different spaces.
+
+    spaces are considered different if they have a different number of dimensions and/or different names.
+\end{enumerate}
+
+\textbf{Example} (in \emph{isl}'s notation):
+
+$$\{ A[2,8,1] \rightarrow B[5]; A[2,8,1] \rightarrow B[6]; B[5] \rightarrow B[5] \}$$
+
+\begin{itemize}
+  \item In isl, the two named integer tuples in each pair in a binary relation are separated by a "->".
+  \item A binary relation can be considered as \textbf{\textit{representing the edges of a graph}}. This graph may have loops, but no parallel edges.
+\end{itemize}
+
+\subsubsection{Basic Operations for Binary Relations}
+
+\begin{enumerate}
+  \item Since a binary relation is essentially a set of pairs of tuples, the operations that apply to sets also apply to binary relations:
+  \begin{itemize}
+    \item intersection: $A \cap B$, \textcolor{pg}{\emph{isl\_union\_map\_intersect}}.
+    \item union: $A \cup B$, \textcolor{pg}{\emph{isl\_union\_map\_union}}.
+    \item difference: ${A \setminus B}$, \textcolor{pg}{\emph{isl\_union\_map\_subtract}}.
+    \item equality: ${A = B}$, \textcolor{pg}{\emph{isl\_union\_map\_is\_equal}}.
+    \item emptiness: \textcolor{pg}{\emph{isl\_union\_map\_is\_empty}}.
+    \item subrelation: $A \subseteq B$, \textcolor{pg}{\emph{isl\_union\_map\_is\_subset}}.
+    \item strict subrelation: $A \subsetneq B$, \textcolor{pg}{\emph{isl\_union\_map\_is\_strict\_subset}}.
+    \item superrelation: $A \supseteq B$, call \textcolor{pg}{\emph{isl\_union\_map\_is\_subset}} with arguments reversed.
+    \item strict superrelation: $A \supsetneq B$, call \textcolor{pg}{\emph{isl\_union\_map\_is\_strict\_subset}} with arguments reversed.
+    \item ...
+  \end{itemize}
+
+  \item The same comparison operators that can be applied to sets can also be applied to binary relations.
+
+  \item Binary relations additionally admit an inverse and a composition operation.
+  \begin{itemize}
+    \item \textcolor{vr}{\textbf{\emph{Inverse of a Binary Relation}}}: $R^{-1}$. \textcolor{pg}{\emph{isl\_union\_map\_reverse}}:
+    $$R^{-1} = \{\mathbf{j} \rightarrow \mathbf{i} : \mathbf{i} \rightarrow \mathbf{j} \in R \}$$
+
+    \item \textcolor{vr}{\textbf{\emph{Composition of Binary Relations}}}: $B \circ A$:
+    $$B \circ A = \{ \mathbf{i} \rightarrow \mathbf{j}:
+    \exists k: \mathbf{i} \rightarrow \mathbf{k} \in A
+    \wedge \mathbf{k} \rightarrow \mathbf{j} \in B \}$$
+    \item \textcolor{vr}{\textbf{\emph{Fixed Power of a Binary Relation}}}: $R^n$, \textcolor{pg}{\emph{isl\_union\_map\_fixed\_power\_val}}
+    \item ...
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection{Conversions}
+
+There are some ways to create binary relations from sets or the other way around.
+
+\begin{enumerate}
+
+\item \textcolor{vr}{\textbf{\emph{Domain of a Binary Relation}}, denoted as $dom R$}:
+$$dom R = \{ \mathbf{i} : \exists \mathbf{j}: \mathbf{i} \rightarrow \mathbf{j} \in R \}$$
+In isl, this operation is called \textcolor{pg}{\emph{isl\_union\_map\_domain}}.
+
+\textbf{Example} (in \emph{isl}'s notation):
+
+Operation: The domain of $\{ A[2,8,1] \rightarrow B[5]; A[2,8,1] \rightarrow B[6]; B[5] \rightarrow B[5] \}$ is:
+$\{ A[2,8,1]; B[5]\}$.
+
+\item \textcolor{vr}{\textbf{\emph{Range of a Binary Relation}}, denoted as $ran R$}:
+$$dom R = \{ \mathbf{j} : \exists \mathbf{i}: \mathbf{i} \rightarrow \mathbf{j} \in R \}$$
+In isl, this operation is called \textcolor{pg}{\emph{isl\_union\_map\_range}}.
+
+\textbf{Example} (in \emph{isl}'s notation):
+
+The domain of $\{ A[2,8,1] \rightarrow B[5]; A[2,8,1] \rightarrow B[6]; B[5] \rightarrow B[5] \}$ is:
+$\{ B[5]; B[6]\}$.
+
+\item \textcolor{vr}{\textbf{\emph{Universal Binary Relation between Sets}}}:
+$$ \mathbf{A} \rightarrow \mathbf{B} = \{ \mathbf{i} \rightarrow \mathbf{j} : \mathbf{i} \in A \wedge \mathbf{j} \in B \} $$
+
+In isl, this operation is called \textcolor{pg}{\emph{isl\_union\_map\_from\_domain\_and\_range}}.
+
+\item \textcolor{vr}{\textbf{\emph{Identity Relation on a Set}}, denoted as $\mathbf{1}_{S}$}:
+$$\mathbf{1}_{S} = \{ \mathbf{i} \rightarrow \mathbf{i} : \mathbf{i} \in S \}$$
+
+\end{enumerate}
+
+\subsubsection{Mixed Operations}
+
+There are some mixed operations that combine a binary relation and a set.
+
+\begin{enumerate}
+  \item \textcolor{vr}{\textbf{\emph{Domain restriction}} $R \cap_{dom} S$ of a binary relation $R$ with respect to a set $S$} is:
+  $$R\cap_{dom} S = R \cap (S \rightarrow (ran R))$$
+
+  in isl, this operation is \textcolor{pg}{\emph{isl\_union\_map\_intersect\_domain}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Range restriction}} $R \cap_{ran} S$ of a binary relation $R$ with respect to a set $S$} is:
+  $$R\cap_{ran} S = R \cap ((dom R) \rightarrow S $$
+
+  in isl, this operation is \textcolor{pg}{\emph{isl\_union\_map\_intersect\_range}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Domain subtraction}} $R \setminus_{dom} S$ of a binary relation $R$ with respect to a set $S$} is:
+  $$ R\setminus_{dom} S = R \setminus (S \rightarrow (ran R)) $$.
+
+  in isl, this operation is \textcolor{pg}{\emph{isl\_union\_map\_subtract\_domain}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Range subtraction}} $R \setminus_{ran} S$ of a binary relation $R$ with respect to a set $S$} is:
+  $$ R\setminus_{ran} S = R \setminus (dom(R) \rightarrow (S)) $$
+
+  in isl, this operation is \textcolor{pg}{\emph{isl\_union\_map\_subtract\_range}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Application}}} of a binary relation $R$ to a set $S$ is a set (\textcolor{pg}{\emph{isl\_union\_set}}) that:
+  $$R(S) = ran(R \cap_{dom} S) = \{ \mathbf{j} : \exists \mathbf{i} \in S: \mathbf{i} \rightarrow \mathbf{j} \in R \}$$
+
+  in isl, this operation is \textcolor{pg}{\emph{isl\_union\_set\_apply}}.
+
+  \item ...
+\end{enumerate}
+
+\subsection{Wrapped Relations}
+
+While sets keep track of named integer tuples and binary relations keep track of pairs of such tuples, it can sometimes be convenient to keep track of relations between more than two such tuples. isl currently does not support ternary or general n-ary relations. However isl allows a pair of tuples to be combined into a single tuple, which can then again appear as the first or second tuple in a pair of tuples. This process is called \textcolor{vr}{\textbf{\emph{“wrapping”}}}. The result of wrapping a pair of named integer tuples is called a \textcolor{vr}{structured named integer tuple}.
+
+\subsubsection{Structured Named Integer Tuples}
+
+\textcolor{vr}{
+A structured named integer tuple is either:
+\begin{itemize}
+  \item \textit{a named integer tuple, or}
+  \item \textit{a named pair of structured named integer tuples}.
+\end{itemize}
+}
+
+wrap and unwrap
+
+\begin{itemize}
+  \item The wrap $\mathit{W}R$ of a binary relation $R$ is a set: wrap a pairs of tuple in $R$ into anonymous tuples.
+  \item The unwrap $\mathit{W}^{-1}S$ of a set $S$ is a binary relation.
+\end{itemize}
+
+\subsubsection{Products}
+
+A product of two sets (or binary relations) is a set (or binary relation) that \textbf{combines} the tuples in its arguments \textbf{into wrapped relations}.
+
+\begin{enumerate}
+  \item \textcolor{vr}{\textbf{\emph{Set Product}}} of two sets $A$ and $B$ is a set (\textcolor{pg}{\emph{isl\_union\_set}}):
+  $$A \times B = \mathit{W}(A \rightarrow B) = \{ [\mathbf{i} \rightarrow \mathbf{j}] :
+  \mathbf{i} \in A \wedge \mathbf{j} \in B\}$$
+
+  in isl, this is \textcolor{pg}{\emph{isl\_union\_set\_product}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Binary Relation Product}}} of two binary relations $A$ and $B$ is a binary relation (\textcolor{pg}{\emph{isl\_union\_map}}):
+  $$A \times B = \{ [\mathbf{i} \rightarrow \mathbf{m}] \rightarrow [\mathbf{j} \rightarrow \mathbf{n} ]:
+  \mathbf{i} \rightarrow \mathbf{j} \in A \wedge \mathbf{m} \rightarrow \mathbf{n} \in B \}$$
+  in isl, this is \textcolor{pg}{\emph{isl\_union\_map\_product}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Zip of a Binary Relation}}} $R$ is a binary relation (\textcolor{pg}{\emph{isl\_union\_map}}) that:
+  $$zip R = \{ [\mathbf{i} \rightarrow \mathbf{m}] \rightarrow [\mathbf{j} \rightarrow \mathbf{n}]:
+  [\mathbf{i} \rightarrow \mathbf{j}] \rightarrow [\mathbf{m} \rightarrow \mathbf{n}] \in R\}$$
+
+  in isl, this is called \textcolor{pg}{\emph{isl\_union\_map\_zip}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Domain Product $A \rtimes B$}}} of two binary relations $A$ and $B$ is a binary relation (\textcolor{pg}{\emph{isl\_union\_map}}) that:
+  $$ A \rtimes B = \{ [\mathbf{i} \rightarrow \mathbf{j}] \rightarrow \mathbf{k}:
+  \mathbf{i} \rightarrow \mathbf{k} \in A \wedge [\mathbf{j} \rightarrow \mathbf{k}] \in B\}$$
+
+  in isl, this is called \textcolor{pg}{\emph{isl\_union\_map\_domain\_product}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Range Product $A \rtimes B$}}} of two binary relations $A$ and $B$ is a binary relation (\textcolor{pg}{\emph{isl\_union\_map}}) that:
+  $$ A \rtimes B = \{ \mathbf{i} \rightarrow [\mathbf{j} \rightarrow \mathbf{k}]:
+  \mathbf{i} \rightarrow \mathbf{j} \in A \wedge \mathbf{i} \rightarrow \mathbf{k}] \in B\}$$
+
+  in isl, this is called \textcolor{pg}{\emph{isl\_union\_map\_range\_product}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Domain Factor of Product}}} of a binary relation $R$ is a binary relation (\textcolor{pg}{\emph{isl\_union\_map}}) that:
+  $$\left\{ \mathbf{i} \rightarrow \mathbf{m} : \exists \mathbf{j},\mathbf{n}:
+  [\mathbf{i} \rightarrow \mathbf{j}] \rightarrow [\mathbf{m} \rightarrow \mathbf{n}] \in R \right\}$$
+
+  in isl, this is called \textcolor{pg}{\emph{isl\_union\_map\_factor\_domain}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Range Factor of Product}}} of a binary relation $R$ is a binary relation (union map) that:
+  $$\left\{ \mathbf{j} \rightarrow \mathbf{n} : \exists \mathbf{j},\mathbf{m}:
+  [\mathbf{i} \rightarrow \mathbf{j}] \rightarrow [\mathbf{m} \rightarrow \mathbf{n}] \in R \right\}$$
+
+  in isl, this is called \textcolor{pg}{\emph{isl\_union\_map\_factor\_range}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Domain Factor of Domain Product}}} of a binary relation $R$ is a binary relation (\textcolor{pg}{\emph{isl\_union\_map}}) that:
+  $$\{\mathbf{i} \rightarrow \mathbf{k}: \exists \mathbf{j}: [\mathbf{i} \rightarrow \mathbf{j}] \rightarrow \mathbf{k} \in R \}$$
+
+  in isl, this is called \textcolor{pg}{\emph{isl\_union\_map\_domain\_factor\_domain}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Range Factor of Domain Product}}} of a binary relation $R$ is a binary relation (\textcolor{pg}{\emph{isl\_union\_map}}) that:
+  $$\{\mathbf{j} \rightarrow \mathbf{k}: \exists \mathbf{j}: [\mathbf{i} \rightarrow \mathbf{j}] \rightarrow \mathbf{k} \in R \}$$
+
+  in isl, this is called \textcolor{pg}{\emph{isl\_union\_map\_domain\_factor\_range}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Domain Factor of Range Product}}} of a binary relation $R$ is a binary relation (\textcolor{pg}{\emph{isl\_union\_map}}) that:
+  $$\{\mathbf{i} \rightarrow \mathbf{j}: \exists \mathbf{k}: \mathbf{i} \rightarrow [\mathbf{j} \rightarrow \mathbf{k}] \in R \}$$
+
+  in isl, this is called \textcolor{pg}{\emph{isl\_union\_map\_range\_factor\_domain}}
+
+  \item \textcolor{vr}{\textbf{\emph{Range Factor of Range Product}}} of a binary relation $R$ is a binary relation (\textcolor{pg}{\emph{isl\_union\_map}}) that:
+  $$\{\mathbf{i} \rightarrow \mathbf{k}: \exists \mathbf{j}: \mathbf{i} \rightarrow [\mathbf{j} \rightarrow \mathbf{k}] \in R \}$$
+
+  in isl, this is called \textcolor{pg}{\emph{isl\_union\_map\_range\_factor\_range}}
+
+\end{enumerate}
+
+\subsubsection{Domain and Range Projection}
+
+These operations take a binary relation as input and produce a binary relation that projects a wrapped copy of the input onto its domain or range.
+
+\begin{enumerate}
+  \item \textcolor{vr}{\textbf{\emph{Domain Projection}}} of a binary relation $R$ is a binary relation (\textcolor{pg}{\emph{isl\_union\_map}}) that:
+  $$\xrightarrow{dom} R = \{ [\mathbf{i} \rightarrow \mathbf{j}] \rightarrow \mathbf{i}:
+  \mathbf{i} \rightarrow \mathbf{j} \in R\}$$
+
+  in isl, this is called \emph{isl\_union\_map\_domain\_map}.
+
+  \item \textcolor{vr}{\textbf{\emph{Range Projection}}} of a binary relation $R$ is a binary relation (\textcolor{pg}{\emph{isl\_union\_map}}) that:
+  $$\xrightarrow{ran} R = \{ [\mathbf{i} \rightarrow \mathbf{j}] \rightarrow \mathbf{j}:
+  \mathbf{i} \rightarrow \mathbf{j} \in R\}$$
+
+  in isl, this is called \emph{isl\_union\_map\_range\_map}.
+\end{enumerate}
+
+\subsubsection{Difference Set Projection}
+
+The difference set of a binary relation contains the difference of the pairs of elements in the relation. The difference set projection maps the original pairs to their difference.
+
+\begin{enumerate}
+  \item \textcolor{vr}{\textbf{\emph{Difference Set of a Binary Relation}}} is a set (\textcolor{pg}{\emph{isl\_union\_set}}) a set containing the differences between pairs of elements in $R$ that \textcolor{slateblue}{\textbf{\textit{have the same space}}}, where the difference between a pair of elements \textcolor{slateblue}{\textbf{\textit{has the same space}}} as those two elements and has values that are the difference between the values of the second and those of the first element:
+
+  $$\vartriangle R = \{\mathbf{d}: \exists \mathbf{x} \rightarrow \mathbf{y} \in R:
+  \mathit{S}\mathbf{d} = \mathit{S}\mathbf{x} =\mathit{S}\mathbf{y} \wedge
+  \mathit{V}\mathbf{d} = \mathit{V}\mathbf{y} - \mathit{V}\mathbf{x}\}\}$$
+
+  in isl, this is called \textcolor{pg}{\emph{isl\_union\_map\_deltas}}.
+
+  \item \textcolor{vr}{\textbf{\emph{Difference Set Project of a Binary Relation}}} is a binary relation (\textcolor{pg}{\emph{isl\_union\_map}}) that:
+
+  $$\underrightarrow{\vartriangle} R = \{[\mathbf{x} \rightarrow \mathbf{y}] \rightarrow \mathbf{d}:
+  \mathbf{x} \rightarrow \mathbf{y} \in R \wedge \mathit{S}\mathbf{d} = \mathit{S}\mathbf{x} = \mathit{S}\mathbf{y}
+  \wedge \mathit{V}\mathbf{d} = \mathit{V}\mathbf{y} - \mathit{V}\mathbf{x}\}$$
+
+  in isl, this is called \textcolor{pg}{\emph{isl\_union\_map\_deltas\_map}}.
+\end{enumerate}
