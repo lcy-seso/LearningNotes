@@ -65,34 +65,27 @@ Tensor shape $S=<S_1,S_2,...,S_n>$ is a tuple of n non-negative integers that sp
         tup = (2, 4)
         ```
 
-
 # Tensor
 
 A tensor is characterized by (1) elemental type; (2) its shape which is the number of dimensions and items in a tensor.
 
 ## Tensor operations in neural networks
 
-### Item access and manipulation
+### Atomic item access and manipulation
 
-1. _**slice**_
-    ```python
-    slice(X:Tensor<real>, idx:int, dim:int) -> Tensor<real>
-    ```
+1. _**indexing**_: ```index(X:Tensor<real>,start:int,stride:int,end:int,dim:int)```
+1. _**slice**_: ```slice(X:Tensor<real>, idx:int, dim:int) -> Tensor<real>```
+
+   `X[:,idx,:]`
    - shape function: $S(\mathbf{Y}) = \tau(S(\mathbf{X}), \text{dim}, \text{keep\_dim})$
        - $\text{insert}(\text{del}(S(\mathbf{Y}), \text{dim}), \text{dim}, 1) \quad \text{if keep\_dim}$
        - $\text{del}(S(\mathbf{Y}), \text{dim}) \quad \text{otherwise}$
 
-   - computation
-
 ### Neural network specializations
 
-1. _**embedding**_: parallel slicing
-    ```python
-    embedding(X:Vector<int>, Y:Tensor<real>, dim:int) -> Z:Tensor<real>
-    ```
-    - shape function
-
-        $$S(Z) = \tau (S(\mathbf{X}), S(\mathbf{Y}), \text{dim}) = (S(\mathbf{X})[0]) + \text{del}(S(\mathbf{Y}), \text{dim}) $$
+1. _**embedding**_: ```embedding(X:Vector<int>, Y:Tensor<real>, dim:int) -> Z:Tensor<real>```
+    - shape function: $S(Z) = \tau (S(\mathbf{X}), S(\mathbf{Y}), \text{dim})$
+      - $(S(\mathbf{X})[0]) + \text{del}(S(\mathbf{Y}), \text{dim})$
 
     - computation
 

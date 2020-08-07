@@ -1,0 +1,114 @@
+
+\section{TensorShape operations}
+
+\subsection{Basic query}
+
+\subsubsection{\textbf{\textit{size}}}
+
+\textbf{\textit{size}}: returns a tuple of tensor $A$'s size, or the size of a given dimension.
+\begin{lstlisting}[language=Python]
+size(A:Tensor[T]) -> Tuple[int]
+size(A:Tensor[T], dim:int) -> int
+\end{lstlisting}
+
+\subsubsection{\textbf{\textit{numel}}}
+
+\textbf{\textit{numel}}: returns the cardinality of tensor $A$. It is equivalent to prod(size($A$)).
+\begin{lstlisting}[language=Python]
+numel(tup:Tuple[int]) -> int
+\end{lstlisting}
+
+\subsubsection{\textbf{\textit{ndims}}}
+
+\textbf{\textit{ndims}}: returns number of dimensions of $A$.
+\begin{lstlisting}[language=Python]
+ndims(tup:Tuple[int]) -> int
+\end{lstlisting}
+
+\subsection{Element updating}
+
+\begin{itemize}
+  \item Tuples are immutable so its value cannot be updated or changed.
+  \item A new tuple canbe created from a tuple.
+\end{itemize}
+
+\subsubsection{\textbf{\textit{add}}}
+  \begin{lstlisting}[language=Python]
+  add(tup1:Tuple[int], tup2:Tuple[int]) ->Tuple[int]
+  \end{lstlisting}
+  Examples:
+  \begin{lstlisting}[language=Python]
+  tup1 = (1, 2, 3)
+  tup2 = (4, 5)
+  tup1 + tup2 = (1, 2, 3, 4, 5)
+  \end{lstlisting}
+
+\subsubsection{\textbf{\textit{insert}}}
+
+insert an element into a tuple at a given position
+
+\begin{lstlisting}[language=Python]
+insert(tup:Tuple[int], pos:int, value:int) -> Tuple[int]
+\end{lstlisting}
+
+Example:
+\begin{lstlisting}[language=Python]
+tup = (1, 2, 3)
+insert(tup, 1, 5)
+ans = (1, 5, 2, 3)
+\end{lstlisting}
+
+\subsubsection{\textbf{\textit{del}}}
+
+remove tuple elements by index
+\begin{lstlisting}[language=Python]
+del(tup:Tuple[int], pos:int) -> Tuple[int]
+\end{lstlisting}
+Example:
+\begin{lstlisting}[language=Python]
+tup = (2, 3, 4)
+del(tup, 1)
+ans = (2, 4)
+\end{lstlisting}
+
+\subsubsection{\textbf{\textit{replace}}}
+
+replace the $i$-th tuple element with a given value. \textit{\textbf{replace}} is a combination of \textit{\textbf{del}} and \textit{\textbf{insert}}.
+
+\begin{lstlisting}[language=Python]
+replace(tup:Tuple[int], pos:int, value:int) -> Tuple[int]
+\end{lstlisting}
+
+Example:
+\begin{lstlisting}[language=Python]
+tup = (2, 3, 4)
+replace(tup, 1, 5)
+ans = (2, 5, 4)
+\end{lstlisting}
+
+\subsection{Index generation}
+
+\subsubsection{\textbf{\textit{cartesian\_product}}}
+
+\begin{lstlisting}[language=Python]
+cartesian_product(*tup:Tuple[int]) -> Tuple[Tuple[int]]
+\end{lstlisting}
+
+Examples:
+\begin{lstlisting}[language=Python]
+tup1 = (2, 3, 4)
+tup2 = (0, 1)
+cartesian_product(tup1, tup2)
+ans = ((2, 0), (3, 0), (4, 0), (2, 1), (3, 1), (4, 1))
+\end{lstlisting}
+
+\subsubsection{\textbf{\textit{meshgrid}}}
+
+\subsubsection{\textbf{\textit{arange}}}
+
+
+\subsection{Shape function}
+
+Shape function recieves shapes of input operands and optional arguments, such as a specified dimension, stride, etc. and returns the shape of the output.
+
+$$S(Y) = \Gamma(S(X_i), \text{**kwargs})$$ where $i = 0,...,N$ and $N$ is the number of operands.
