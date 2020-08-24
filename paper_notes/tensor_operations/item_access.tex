@@ -1,6 +1,13 @@
 \section{Atomic item access and manipulation}
 
-Both Tensor and TensorArray are iterative. Their elements can be efficiently traversed through using looping constructs defined in section \ref{section:loop}. It is sufficient to keep two rules in mind: (1) a tensor hold scalars while a tensor array holds fixed-size tensors; (2) tensor array provides constraint way to encode sparsity based on high-level abstraction tensor.
+Both Tensor and TensorArray are iterative. Their dimensions and elements can be efficiently traversed through using looping constructs defined in section \ref{section:loop} in some particularly order. It is sufficient to keep two rules in mind:
+
+\begin{enumerate}
+  \item a tensor hold scalars while a tensor array holds fixed-size tensors.
+  \item tensor array provides constraint way to encode \textbf{\textit{sparsity}} on the basis of the high-level abstraction tensor.
+\end{enumerate}
+
+The second rule helps to make primitives for item access and manipulation supported by TensorArray intelligible: primitives like slice and transpose naturally manipulate items having continous indices will not supported by TensorArray as a first design consideration.
 
 Signatures of operations that access and manipulate tensor and tensor array elements share many similarities.
 

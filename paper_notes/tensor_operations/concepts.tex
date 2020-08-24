@@ -25,9 +25,10 @@ A dense Tensor is a \textbf{\textit{fixed-size multi-dimensional}} container of 
 \begin{enumerate}
   \item elemental type T, including basic arithmetic type: real, bool, integer.
   \item shape $S(\text{x})$: shape defines multi-dimensional indices, each index access decides the physical location of an item stored in the tensor.
+  \item \textcolor{red}{layout: the order that each dimension is stored}.
 \end{enumerate}
 
-The $n$ dimensions of a tensor canbe stored in any order. A $n$-dimensional tensor is a \textbf{\textit{$n$-way collection of numbers with primary arithmetic type}} that data stored in a tensor can be accessed from $n$ directions, but a high-dimensional tensor can only be accessed efficient in only one direction. Figure \ref{fig1} shows the idea.
+The $n$ dimensions of a tensor canbe stored in any order. A $n$-dimensional tensor is a \textbf{\textit{$n$-way collection of numbers with primary arithmetic type}}. Data stored in a tensor can be accessed from $n$ directions, but a high-dimensional tensor can only be accessed efficiently in one direction. Figure \ref{fig1} shows the idea.
 
 \begin{figure}[htbp]
 \centering
@@ -75,10 +76,10 @@ Main purposes of introducing the TensorArray abstraction include:
   \item Enable precise memory-based dependence analysis to improve program parallelism.
 
   \begin{itemize}
-    \item Parallel patterns become implicit for algorithms that iterate over \textit{\textbf{nested}} tensor arrays using nested looping constructs. TensorArray abstracts away low-level details of underlying memory, and makes dependence analysis on the basis of high-level abstractions.
+    \item Parallel patterns become implicit for algorithms that iterate over \textit{\textbf{nested}} tensor arrays using nested looping constructs. TensorArray abstracts away low-level details of underlying memory, and makes dependence analysis simplified with the help of high-level abstractions.
   \end{itemize}
 
-  \item Separate the effects and interfaces of storage format and manipulations based on fixed-size and variable-size memory blocks.
+  \item Separate the effects and interfaces of operations applied to fixed-size and variable-size memory blocks which also cause different storage formats and memory management internally.
 
   \begin{itemize}
     \item Undecidable memory size at compile-time leads to dynamics. TensorArray operations will delegate to different implementations according to whether compile-time analysis can reason about strong static conditions of a tensor array.
@@ -86,9 +87,9 @@ Main purposes of introducing the TensorArray abstraction include:
 
 \end{enumerate}
 
-\subsubsection{Shape of nested tensor array}
+\subsubsection{Shape of a nested TensorArray}
 
-Tensors in (nested) tensor arrays are stored in a continous memory, but the meta data, shape of nested tensor array, is in the form of a tree. Figure \ref{nested_ta} shows the intuitioin.
+Tensors in tensor arrays and nested tensor arrays are stored in a continous memory. Shape of nested tensor array, a meta data, is in the form of a tree. Figure \ref{nested_ta} shows the intuitioin.
 
 \begin{figure}[htbp]
 \centering
