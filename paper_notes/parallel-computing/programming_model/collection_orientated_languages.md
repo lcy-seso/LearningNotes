@@ -75,7 +75,7 @@ Two issues are around implicit _apply-to-each_
 
 how to lining up multiple collections, and applying the multiple argument functions at each location?
 
-- collections may have different lengths, dimension or nesting level.
+- collections may have different lengths, dimension or nesting level.   `
 ##  _argument extension_
 
 how to treate non-collection as collections?
@@ -84,7 +84,7 @@ how to treate non-collection as collections?
 
     |explicit extension|implicit extension|
     |--|--|
-    |introduce special syntax to indicate apply-to-each explicitly|non-collection is automatically extended as needed.|
+    |introduce syntactic token into the language to indicate apply-to-each explicitly|non-collection is automatically extended as needed.|
 
     <font color=#C71585>**implicit extension can lead to ambiguity when the collections to be extended are nested**</font>.
 # The kinds of collections
