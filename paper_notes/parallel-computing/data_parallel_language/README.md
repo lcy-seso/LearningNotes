@@ -1,0 +1,1 @@
+1. Larus J. [C**: A large-grain, object-oriented, data-parallel programming language](https://minds.wisconsin.edu/bitstream/handle/1793/59682/TR1126.pdf?sequence=1)[C]//International Workshop on Languages and Compilers for Parallel Computing. Springer, Berlin, Heidelberg, 1992: 326-341.
