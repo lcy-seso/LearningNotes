@@ -24,10 +24,6 @@ apply\_along\_axis&\text{\sffamily X}&\checkmark&\text{\sffamily X}\\
 \hline
 \end{tabular}
 
-\subsection{\textit{\textbf{foreach}}}
-
-sequential looping whether its body can be executed in parallel needs dependence analysis.
-
 \subsection{\textbf{\textit{parallel\_foreach}}}
 
 explict parallel looping.
@@ -47,11 +43,23 @@ parallel_for(func:callable, X:Iterative, **kwargs) -> Iterative # parallel for
  \item computation: $\textbf{parallel\_foreach}$ implies parallel execution of $\text{apply}(\text{func}, \textbf{X}[i], \text{**kwargs})$.
 \end{itemize}
 
-\subsection{\textbf{\textit{zip}}}
+\subsection{\textbf{\textit{reduce}}}
+
+\subsection{\textbf{\textit{fold}}}
 
 \subsection{\textbf{\textit{scan}}}
 
-\subsection{\textbf{\textit{reduce}}}
+\subsection{\textbf{\textit{broadcast}}}
+
+\begin{lstlisting}[language=Python]
+broadcast(func:callable, X:Tensor, Y:Tensor) -> Tensor
+\end{lstlisting}
+
+$\mathbf{X}$ is the bigger Tensor, $\mathbf{Y}$ is the smaller tensor.
+
+\subsection{\textbf{\textit{zip}}}
+
+\subsection{\textbf{\textit{filter}}}
 
 \subsection{\textbf{\textit{apply\_along\_axis}}:a combination of gather, scatter and parallel\_foreach}
 
@@ -77,15 +85,5 @@ apply_along_axis(func:callable, dim:int, X:Tensor, **kwargs) -> Tensor
     \end{aligned}
   \end{equation*}
 \end{enumerate}
-
-\subsection{\textbf{\textit{broadcast}}}
-
-\begin{lstlisting}[language=Python]
-broadcast(func:callable, X:Tensor, Y:Tensor) -> Tensor
-\end{lstlisting}
-
-$\mathbf{X}$ is the bigger Tensor, $\mathbf{Y}$ is the smaller tensor.
-
-\subsection{\textbf{\textit{filter}}}
 
 \subsection{\textbf{\textit{sortby}}}
