@@ -2,3 +2,4 @@
 1. Malewicz, Grzegorz, et al. "[Pregel: a system for large-scale graph processing](https://www.researchgate.net/profile/James-Dehnert/publication/221257383_Pregel_A_system_for_large-scale_graph_processing/links/00b7d537c615821fa4000000/Pregel-A-system-for-large-scale-graph-processing.pdf)." Proceedings of the 2010 ACM SIGMOD International Conference on Management of data. 2010.
 1. Rocklin M. [Dask: Parallel computation with blocked algorithms and task scheduling](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.825.5314&rep=rep1&type=pdf)[C]//Proceedings of the 14th python in science conference. Austin, TX: SciPy, 2015, 126.
 1. Power R, Li J. [Piccolo: Building Fast, Distributed Programs with Partitioned Tables](https://static.usenix.org/events/osdi10/tech/full_papers/Power.pdf)[C]//OSDI. 2010, 10: 293-306.
+1. [MapReduce: A major step backwards](https://homes.cs.washington.edu/~billhowe/mapreduce_a_major_step_backwards.html)
