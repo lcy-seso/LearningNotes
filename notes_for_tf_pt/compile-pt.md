@@ -66,6 +66,7 @@ Latest PyTorch requires GCC 5+.
     git clone --recursive https://github.com/pytorch/pytorch
     cd pytorch
     # if you are updating an existing checkout
+    # MAKE SURE execute these two commands every time you checkout a new branch.
     git submodule sync
     git submodule update --init --recursive
     ```
