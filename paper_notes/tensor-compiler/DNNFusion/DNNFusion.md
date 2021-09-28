@@ -38,4 +38,3 @@ Highlighted are some operators that the classification does not appropriately ca
 
 <p align="center">
 <img src="images/fusion.png" width=80%><br>
-</p>
