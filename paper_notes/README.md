@@ -75,7 +75,7 @@ TensorFlow's design has its root in dataflow architecture which is a long line s
 1. JANUS: Fast and Flexible Deep Learning via Symbolic Graph Execution of Imperative Programs
 1. AutoGraph: Imperative-style Coding with Graph-based Performance
 1. Swift: A language for distributed parallel scripting
-1. Distributed Data-Parallel Computing Using a High-Level Programming Language (sigmod 09)
+1. [Distributed Data-Parallel Computing Using a High-Level Programming Language](http://michaelisard.com/pubs/sigmod09.pdf) (sigmod 09)
 
 ## Distributed ML
 1. Horovod fast and easy distributed deep learning in TensorFlow
@@ -93,16 +93,16 @@ TensorFlow's design has its root in dataflow architecture which is a long line s
 1. A Case for Managed and Model-less Inference Serving (HotOS'19)
 
 ## Code-gen/automatic kernel optimization/IR/DL compiler (not well classified)
-1. On Optimizing Operator Fusion Plans for Large-Scale Machine Learning in SystemML
+1. [On Optimizing Operator Fusion Plans for Large-Scale Machine Learning in SystemML](http://www.vldb.org/pvldb/vol11/p1755-boehm.pdf)
 1. Polyhedral Optimization of TensorFlow Computation Graphs
 1. A modern compiler infrastructure for deep learning systems with adjoint code generation in a domain-specific IR (authors of this project worked for S4T)
 1. Halide
     - Automatically Scheduling Halide Image Processing Pipelines
     - Halide A Language and Compiler for Optimizing Parallelism, Locality, and Recomputation in Image Processing Pipelines
     - Differentiable Programming for Image Processing and Deep Learning in Halide
-1. Glow Graph Lowering Compiler Techniques for Neural Networks (from facebook for PyTorch's ecosystem)
+1. [Glow Graph Lowering Compiler Techniques for Neural Networks](https://arxiv.org/pdf/1805.00907.pdf) (from facebook for PyTorch's ecosystem)
 1. nGraph
-    - Intel nGraph An Intermediate Representation Compiler and Executor for Deep Learning
+    - Intel [nGraph An Intermediate Representation Compiler and Executor for Deep Learning](https://arxiv.org/pdf/1801.08058.pdf)
     - nGraph-HE: A Graph Compiler for Deep Learning on Homomorphically Encrypted Data
 
 ## Dataflow architecture

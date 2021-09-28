@@ -1,0 +1,1 @@
+# [Loop chaining: A programming abstraction for balancing locality and parallelism](https://www.researchgate.net/profile/Christopher-Krieger/publication/235614401_Loop_Chaining_A_Programming_Abstraction_For_Balancing_Locality_and_Parallelism/links/5905d2f2a6fdccd580d305a8/Loop-Chaining-A-Programming-Abstraction-For-Balancing-Locality-and-Parallelism.pdf)
