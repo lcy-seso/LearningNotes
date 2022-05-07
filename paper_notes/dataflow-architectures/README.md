@@ -18,3 +18,5 @@
 ## Miscellanea
 
 1. [mueller's publicatioins](https://arcb.csc.ncsu.edu/~mueller/publications.html#mueller91)
+1. [ECE 4530 Hardware/Software Codesign](https://schaumont.dyn.wpi.edu/ece4530f19/)
+1. [dMazeRunner: Executing Perfectly Nested Loops on Dataflow Accelerators](https://dl.acm.org/doi/pdf/10.1145/3358198)

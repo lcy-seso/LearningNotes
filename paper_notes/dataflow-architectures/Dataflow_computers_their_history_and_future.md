@@ -1,3 +1,28 @@
+<!-- vscode-markdown-toc -->
+
+- [Dataflow computers: their history and future](#dataflow-computers-their-history-and-future)
+  - [Terminology](#terminology)
+  - [My Takeaways](#my-takeaways)
+- [Overview](#overview)
+  - [Dataflow Principles](#dataflow-principles)
+  - [Dataflow Graph](#dataflow-graph)
+  - [Dataflow Language](#dataflow-language)
+    - [VAL](#val)
+    - [Id](#id)
+    - [SISAL: _**Streams**_ and _**Iterations**_ in a Single Assignment Language](#sisal-streams-and-iterations-in-a-single-assignment-language)
+  - [Dataflow Architecture](#dataflow-architecture)
+    - [static dataflow architecture vs. dynamic dataflow architecture](#static-dataflow-architecture-vs-dynamic-dataflow-architecture)
+    - [pure dataflow architectures](#pure-dataflow-architectures)
+    - [macro dataflow architectures??](#macro-dataflow-architectures)
+    - [hybrid dataflow architecture??](#hybrid-dataflow-architecture)
+- [Reference](#reference)
+
+<!-- vscode-markdown-toc-config
+	numbering=true
+	autoSave=true
+	/vscode-markdown-toc-config -->
+<!-- /vscode-markdown-toc -->
+
 # [Dataflow computers: their history and future](https://csrl.cse.unt.edu/kavi/Research/encyclopedia-dataflow.pdf)
 
 ## Terminology
@@ -28,7 +53,7 @@
     1. the amount of _**parallelism lost because of the sequential execution**_ of instructions within a thread is minimal.
     1. _**thread level speculation**_ to _**improve**_ performance of _**imperative programs**_ is simplified in scheduled dataflow system.
 
-## Overview
+# Overview
 
 Quoted from the paper:
 
