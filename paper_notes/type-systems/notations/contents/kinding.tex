@@ -1,0 +1,26 @@
+\colorbox{thistle}{For programming language, three levels: \textit{\textbf{terms}}, \textit{\textbf{types}}, and \textit{\textbf{kinds}}, have proved sufficient}.
+
+Recap term-level abstraction and application in the $\lambda$-calculus as shown in Grammar \ref{gr:grammar1}.
+
+$\Gamma \vdash \text{T}::\text{K}$ is read as \say{type T has kind K in context $\Gamma$}.
+
+% basic mechanisms of \textcolor{red}{abstraction} and \textcolor{red}{application} at the level of types.
+
+% Precisely define when two type expressions should be regarded as equivalent.
+
+\textit{kinding} is a well-formedness relation.
+
+\begin{question}{To treat type-level functions, collectively called \textit{type operators} more formally, it is required to:}
+\begin{enumerate}
+    \setlength\itemsep{-.3em}
+    \item Add a collection of rules of \textit{kinding} which specify how type expressions can be combined to yield new type expressions.
+    \item Whenever a type T appears in a term ($\lambda x:\text{T}.t$), check whether T is well formed.
+    \item Add a collection of rules for the definitonal equivalence relations between types.
+\end{enumerate}
+\end{question}
+
+\begin{grammar}[$\lambda$-calculus syntax][t][gr:grammar1]
+    \firstcase{\mathit{t}}{\mathit{x}}{Variable}
+    \otherform{\lambda x. \mathit{t}}{Abstraction}
+    \otherform{(\mathit{t}, \mathit{t})}{Application}
+\end{grammar}

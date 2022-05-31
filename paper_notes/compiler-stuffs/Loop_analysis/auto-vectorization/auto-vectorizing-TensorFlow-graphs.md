@@ -93,3 +93,5 @@ The safety mechanism introduced.
     >In computing, a vector processor or array processor is a central processing unit (CPU) that implements an instruction set where its instructions are designed to operate efficiently and effectively on large one-dimensional arrays of data called vectors.
 
     Vector instruction exploits data-level parallelism by performing multiple identical scalar operations in parallel.
+
+1. [Why You Should (or Shouldn't) be Using Google's JAX in 2022](https://www.assemblyai.com/blog/why-you-should-or-shouldnt-be-using-jax-in-2022/)
