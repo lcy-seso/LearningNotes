@@ -1,3 +1,9 @@
+# Paper
+
+1. Henriksen, Troels, and Martin Elsman. "[Towards size-dependent types for array programming](https://futhark-lang.org/publications/array21.pdf)." Proceedings of the 7th ACM SIGPLAN International Workshop on Libraries, Languages and Compilers for Array Programming. 2021.
+
+
+
 # Unclassified References
 
 1. [Understanding typing judgments](https://www.hedonisticlearning.com/posts/understanding-typing-judgments.html)
