@@ -12,6 +12,8 @@
     >
     >_The paper goes through basic concepts, the whole workflow with polyhedral program representation a focus, and inputs, outputs, requirements and formulations for each step without digging into whys and hows._
 
-2. Verdoolaege, Sven, and Tobias Grosser. "[Polyhedral extraction tool](https://www.grosser.es/publications/grosser-2012-Polyhedral-Extraction-Tool-IMPACT.pdf)." Second International Workshop on Polyhedral Compilation Techniques (IMPACT’12), Paris, France. 2012.
+1. Verdoolaege, Sven, and Tobias Grosser. "[Polyhedral extraction tool](https://www.grosser.es/publications/grosser-2012-Polyhedral-Extraction-Tool-IMPACT.pdf)." Second International Workshop on Polyhedral Compilation Techniques (IMPACT’12), Paris, France. 2012.
     - Pet project: https://github.com/Meinersbur/pet
     - The doctoral thesis of Pet's author. Chapter 9 of: Grosser, Tobias. [A decoupled approach to high-level loop optimization: tile shapes, polyhedral building blocks and low-level compilers](https://tel.archives-ouvertes.fr/tel-01144563/document). Diss. 2014.
+
+1. [Polyhedral Process Networks](https://www.semanticscholar.org/paper/Polyhedral-Process-Networks-Verdoolaege/e8f64c573a680cddb6ede148c1778b94afb70830)
