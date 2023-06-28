@@ -1,3 +1,18 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Reading List](#reading-list)
+  - [Latency-oriented scenarios with high-end accelerators](#latency-oriented-scenarios-with-high-end-accelerators)
+  - [Collaborative computing](#collaborative-computing)
+  - [Memory footprint optimization](#memory-footprint-optimization)
+- [Text generation inference](#text-generation-inference)
+  - [projects](#projects)
+- [一些背景资料](#一些背景资料)
+- [一些项目](#一些项目)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Reading List
 
 - [ ] "Tabi: An Efficient Multi-Level Inference System for Large Language Models" (EuroSys 23)[[PDF]](https://dl.acm.org/doi/pdf/10.1145/3552326.3587438)
@@ -26,7 +41,15 @@
 ## Memory footprint optimization
 
 - [ ] "OLLA: Optimizing the Lifetime and Location of Arrays to Reduce the Memory Usage of Neural Networks" [[PDF]](https://arxiv.org/pdf/2210.12924.pdf)
-- [ ] "Zero-offload: Democratizing billion-scale model training." [[PDF]]()
+- [ ] "Zero-offload: Democratizing billion-scale model training." [[PDF]](https://arxiv.org/pdf/2101.06840.pdf)
+
+# Text generation inference
+
+## projects
+
+1. huggingface text generation inference [[github]](https://github.com/huggingface/text-generation-inference)
+1. faster transformer [[github]](https://github.com/NVIDIA/FasterTransformer)
+1. vLLM [[blog]](https://vllm.ai/)
 
 # 一些背景资料
 
