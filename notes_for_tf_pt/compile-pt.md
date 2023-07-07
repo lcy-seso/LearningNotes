@@ -86,6 +86,14 @@ Latest PyTorch requires GCC 5+.
     ```
     make any adjustion you need.
 
+    ```bash
+    cd build
+    make -j$(nproc)
+
+    cd ../
+    python3 setup.py bdist_wheel
+    ```
+
     ```base
     DEBUG=0 python3 setup.py install
     ```
