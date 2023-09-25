@@ -69,6 +69,9 @@ Latest PyTorch requires GCC 5+.
     # MAKE SURE execute these two commands every time you checkout a new branch.
     git submodule sync
     git submodule update --init --recursive
+
+    git fetch --all --tags
+    git checkout tags/vxx -b vxx
     ```
 1. Compile
 
