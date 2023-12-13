@@ -16,6 +16,7 @@
 
 ## General loop program analysis
 
+1. Jang, Byunghyun, et al. "[Exploiting memory access patterns to improve memory performance in data-parallel architectures](https://www.researchgate.net/profile/David-Kaeli/publication/224141979_Exploiting_Memory_Access_Patterns_to_Improve_Memory_Performance_in_Data-Parallel_Architectures/links/0deec5226219d43067000000/Exploiting-Memory-Access-Patterns-to-Improve-Memory-Performance-in-Data-Parallel-Architectures.pdf)." IEEE Transactions on Parallel and Distributed Systems 22.1 (2010): 105-118.
 1. Wolf, Michael E., and Monica S. Lam. "[A loop transformation theory and an algorithm to maximize parallelism](https://homes.luddy.indiana.edu/achauhan/Teaching/B629/2006-Fall/CourseMaterial/1991-tpds-wolf-unimodular.pdf)." IEEE Transactions on Parallel & Distributed Systems 2.04 (1991): 452-471.
 1. Lamport, Leslie. "The parallel execution of DO loops." Communications of the ACM 17.2 (1974): 83-93.
 1. Henriksen, Troels, and Cosmin Eugen Oancea. "[A T2 graph-reduction approach to fusion](https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=9540f4e66b50b2347d17004eb7c61e066edebf95)." Proceedings of the 2nd ACM SIGPLAN workshop on Functional high-performance computing. 2013.
