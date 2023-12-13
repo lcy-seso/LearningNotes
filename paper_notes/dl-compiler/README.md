@@ -44,3 +44,4 @@ PLDI 22, Tensor compiler
 
 - [An Asymptotic Cost Model for Autoscheduling Sparse Tensor Programs](https://arxiv.org/pdf/2111.14947.pdf)
 - [DISTAL: The Distributed Tensor Algebra Compiler](https://arxiv.org/pdf/2203.08069.pdf)
+- [Triton-MLIR: 从DSL到PTX](https://zhuanlan.zhihu.com/p/671434808)
