@@ -24,7 +24,7 @@
 
 ## Polyhedral compliation
 
-1. Zhao, Jie, et al. "[Parallelizing neural network models effectively on gpu by implementing reductions atomically]((https://yaozhujia.github.io/assets/pdf/pact2022-paper.pdf))." Proceedings of the International Conference on Parallel Architectures and Compilation Techniques. 2022.
+1. Zhao, Jie, et al. "[Parallelizing neural network models effectively on gpu by implementing reductions atomically](https://yaozhujia.github.io/assets/pdf/pact2022-paper.pdf))." Proceedings of the International Conference on Parallel Architectures and Compilation Techniques. 2022.
 2. Zhao, Jie, and Peng Di. "[Optimizing the memory hierarchy by compositing automatic transformations on computations and data](https://01.me/files/AKG/akg-micro20.pdf)." 2020 53rd Annual IEEE/ACM International Symposium on Microarchitecture (MICRO). IEEE, 2020.
 3. Zhao, Jie, et al. "[Apollo: Automatic partition-based operator fusion through layer by layer optimization](https://proceedings.mlsys.org/paper_files/paper/2022/file/e175e8a86d28d935be4f43719651f86d-Paper.pdf)." Proceedings of Machine Learning and Systems 4 (2022): 1-19.
 
