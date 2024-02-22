@@ -5,6 +5,7 @@
   - [Polyhedral Compliation](#polyhedral-compliation)
   - [CUDA Programs and Tensor Core-related Optimizations](#cuda-programs-and-tensor-core-related-optimizations)
   - [Array Programming](#array-programming)
+  - [Hardware](#hardware)
   - [Backup](#backup)
     - [PLDI 22, Tensor compiler](#pldi-22-tensor-compiler)
 
@@ -45,10 +46,15 @@
 ## CUDA Programs and Tensor Core-related Optimizations
 
 1. Huang, Jianyu, Chenhan D. Yu, and Robert A. van de Geijn. "[Implementing Strassen's algorithm with CUTLASS on NVIDIA Volta GPUs](https://arxiv.org/pdf/1808.07984.pdf)." arXiv preprint arXiv:1808.07984 (2018).
+1. Lee, Sunjung, et al. "[Future Scaling of Memory Hierarchy for Tensor Cores and Eliminating Redundant Shared Memory Traffic Using Inter-Warp Multicasting](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9893362)." IEEE Transactions on Computers 71.12 (2022): 3115-3126.
 
 ## Array Programming
 
 1. Guo, Jia, et al. "[Hierarchically tiled arrays for parallelism and locality](https://www.researchgate.net/profile/Garzaran-Garzaran/publication/224634572_Hierarchically_tiled_arrays_for_parallelism_and_locality/links/53ecec0c0cf26b9b7dbffd7f/Hierarchically-tiled-arrays-for-parallelism-and-locality.pdf)." Proceedings 20th IEEE International Parallel & Distributed Processing Symposium. IEEE, 2006.
+
+## Hardware
+
+1. Abts, Dennis, et al. "[A software-defined tensor streaming multiprocessor for large-scale machine learning](https://dl.acm.org/doi/pdf/10.1145/3470496.3527405)." Proceedings of the 49th Annual International Symposium on Computer Architecture. 2022.
 
 ## Backup
 
