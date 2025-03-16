@@ -1,0 +1,45 @@
+This is the implementation of Grid LSTM.
+
+\begin{lstlisting}[language=Python]
+# data parallelism: iterate over samples in a batch.
+for sample_id in range(0, batch_size, 1):
+    x = src_array_batch[sample_id]
+    y = trg_array_batch[sample_id]
+
+    src_length = x.size()[0]
+    trg_length = y.size()[0]
+
+    # dim 1: stack Grid LSTM Cell to form depth.
+    for d in range(0, depth, 1):
+        # dim 2: iterate over source sequence length.
+        for i in range(1, src_length + 1, 1):
+            # dim 3: iterate over target sequence length.
+            for j in range(1, trg_length + 1, 1):
+                cell_x = cells[d][0]
+                cell_y = cells[d][1]
+
+                output_d = outputs[sample_id][d]
+
+                if d == 0:
+                    x_t = x[i - 1, :].view(1, input_dim)
+                    y_t = y[j - 1, :].view(1, input_dim)
+                else:
+                    x_t = outputs[sample_id][d - 1][i][j][0][0]
+                    y_t = outputs[sample_id][d - 1][i][j][1][0]
+                states_x = output_d[i][j - 1][0]
+                states_y = output_d[i - 1][j][1]
+
+                h_x_prev, c_x_prev = states_x
+                h_y_prev, c_y_prev = states_y
+
+                h = torch.cat((h_x_prev, h_y_prev), dim=1)
+                h_x, c_x = cell_x(x_t, (h, c_x_prev))
+                h_y, c_y = cell_y(y_t, (h, c_y_prev))
+
+                output_d[i][j][0].append(h_x)  # hidden for direction x
+                output_d[i][j][0].append(c_x)  # cell for direction x
+
+                output_d[i][j][1].append(h_y)  # hidden for direction y
+                output_d[i][j][1].append(c_y)  # cell for direction y
+
+\end{lstlisting}

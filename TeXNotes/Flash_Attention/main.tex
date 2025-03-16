@@ -1,0 +1,45 @@
+\documentclass{article}
+
+\input{structure.tex} % Include the file specifying the document structure and custom commands
+\title{Flash Attention}
+% \author{Ying Cao}
+% \date{\today}
+
+\begin{document}
+\bibliographystyle{plain}
+
+% \maketitle % Print the title
+% \tableofcontents
+
+\noindent
+\linespread{1.2}
+\selectfont
+\setlength{\topskip}{0ex}
+\setlength{\parskip}{1ex}
+\setlength{\lineskip}{1em}
+
+%---------------------------------------------------------------
+% unnumbered section
+%---------------------------------------------------------------
+
+\section{Flash Attention}
+\input{contents/flash_attention.tex}
+
+\newpage
+\section{Online Normalized Softmax}
+\input{contents/online_softmax.tex}
+
+\newpage
+\section{CTA Offset}
+\input{contents/CTA_offset.tex}
+
+\newpage
+\section{I/O Complexity Analysis}
+\input{contents/IO_complexity.tex}
+
+\newpage
+\section{Fuse Consecutive Aggregations}
+\input{contents/fuse_reduce.tex}
+
+\bibliography{references.bib}
+\end{document}

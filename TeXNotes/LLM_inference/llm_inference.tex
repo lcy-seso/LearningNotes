@@ -1,0 +1,94 @@
+\documentclass[10pt,xcolor=dvipsnames]{beamer}
+\usepackage{caption}
+\captionsetup[figure]{font=scriptsize,labelfont=scriptsize}
+
+\usepackage[style=verbose]{biblatex}
+\setbeamerfont{footnote}{size=\tiny}
+\addbibresource{references.bib}
+
+\usepackage{xcolor}
+\definecolor{forestgreen}{RGB}{34,139,34}
+\definecolor{blue1}{RGB}{24,116,205}
+\definecolor{aliceblue}{RGB}{240,248,255}
+\definecolor{maroon}{RGB}{176,48,96}
+\definecolor {dkgreen}{RGB}{0,139,139}
+\definecolor{byzantium}{rgb}{0.44,0.16,0.39}
+\definecolor{whitesmoke}{RGB}{245,245,245}
+\definecolor{grey}{RGB}{128,128,128}
+\definecolor{tomato}{RGB}{139,26,26}
+\definecolor{commentsColor}{rgb}{0,128,128}
+\definecolor{keywordsColor}{rgb}{0.0,0.0,0.64}
+\definecolor{stringColor}{rgb}{0.558215,0.0,0.135316}
+\definecolor{snow}{RGB}{207,207,207}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=forestgreen
+}
+
+\usepackage{soul}
+\makeatletter
+\let\HL\hl
+\renewcommand\hl{%
+  \let\set@color\beamerorig@set@color
+  \let\reset@color\beamerorig@reset@color
+  \HL}
+\makeatother
+
+\usetheme[progressbar=frametitle]{metropolis}
+\usepackage{appendixnumberbeamer}
+
+\usepackage{booktabs}
+\usepackage[scale=2]{ccicons}
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+
+\usepackage{xspace}
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+
+\usepackage{pdfpages}
+\setbeamercolor{section title}{fg=Maroon,bg=Maroon}
+\setbeamercolor*{structure}{bg=Maroon!20,fg=Maroon}
+\setbeamercolor*{palette primary}{use=structure,fg=white,bg=structure.fg}
+\setbeamercolor{progress bar}{fg=gray, bg=gray}
+
+\usepackage{fourier} 
+\usepackage{array}
+\usepackage{makecell}
+
+\renewcommand\theadalign{bc}
+\renewcommand\theadfont{\bfseries}
+\renewcommand\theadgape{\Gape[4pt]}
+\renewcommand\cellgape{\Gape[4pt]}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{LLM inference}
+\subtitle{DeepSpeed Inference, ByteTransformer, and FlexGen}
+\date{\today}
+\author{Ying Cao}
+\institute{}
+\titlegraphic{\hfill\includegraphics[height=1.5cm]{images/logo.jpeg}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usefonttheme[onlymath]{serif} 
+
+\begin{document}
+\maketitle
+
+\begin{frame}{Table of contents}
+  \setbeamertemplate{section in toc}[sections numbered]
+  \tableofcontents%[hideallsubsections]
+\end{frame}
+
+\input{contents/background.tex}
+\input{contents/deepspeed-inference.tex}
+\input{contents/bytetransformer.tex}
+\input{contents/flexgen.tex}
+
+\end{document}

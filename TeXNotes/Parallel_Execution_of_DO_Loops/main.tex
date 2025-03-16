@@ -1,0 +1,30 @@
+\documentclass {article}
+
+\input{structure.tex} % Include the file specifying the document structure and custom commands
+\title{Note for
+\textit{\href{https://www.microsoft.com/en-us/research/wp-content/uploads/2016/12/The-Parallel-Execution-of-DO-Loops.pdf}
+{The Parallel Execution of DO Loops}}}
+\author{Ying Cao}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Basics}
+\input{basics.tex}
+
+\section{The hyperplane method}
+\input{hyperplane.tex}
+
+{
+\small
+\raggedright
+\bibliographystyle{ieeetr}
+% or, abbrv, acm, alpha, apalike, ieeetr, plain, siam, unsrt
+\begin{spacing}{1}
+\bibliography{references.bib}
+\end{spacing}
+}
+\end{document}

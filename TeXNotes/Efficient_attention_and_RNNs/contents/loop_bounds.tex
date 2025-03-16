@@ -1,0 +1,103 @@
+\subsection{循环倾斜后循环边界的上下界的求解}
+
+约定loop nest深度的计数从循环最外层向循环体递减，也就是最外层层数最深，循环体深度记为$d = 0$。
+
+图\ref{cond_branchs}中数据流依赖最复杂的控制区域$s_3$用等价的imperative for loop写出来如下：
+\begin{lstlisting}[language=cplus]
+for (:$i$:) in range (:$[0, N)$:):  // map， 全并行
+  for (:$j$:) in range (:$[1, D)$:):  // scan，控制深度2携带数据流依赖
+    for (:$k$:) in range (:$1, L)$:):  // scan，控制深度1携带数据流依赖
+        (:\textit{UDF}:)(...)
+\end{lstlisting}
+
+以上嵌套循环程序的迭代空间是一个三维立方体，可以用如下不等式表示：
+
+\begin{equation}
+\begin{aligned}
+0 &\le i < N \\
+1 &\le j < D \\
+1 &\le k < L
+\end{aligned}\label{eq:bounds}
+\end{equation}
+
+如果我们把迭代空间看做是一个三维空间中的整数点集合，整个循环体看做一个statement，记作$s_x$。x是迭代空间中的一个整数点，也就是$s$的一次执行。
+$s_{i_1, j_1, k_1}$写，$s_{i_2, j_2, k_2}$读同一个buffer位置，这两次执行之间存在数据流依赖。
+图\ref{fig:dataflow-stacked-rnn}直观地揭示了另一个关于计算过程数据流依赖情况的事实：上面这个loop nest在迭代空间中携带了\textbf{\textcolor{blue}{两类}}数据流，读和写之间的距离是：
+$d_1 = [0, 1, 0]$和$d_2 = [0, 0, 1]$。
+loop nest中的数据流依赖可以用如下dependence distance vector矩阵$M$描述：
+
+\begin{equation*}
+    \begin{bmatrix}
+        \vec{d_1} & \vec{d_2}
+    \end{bmatrix} = 
+    \begin{bmatrix}
+        0 & 0 \\ 1 & 0 \\ 0 & 1
+    \end{bmatrix}
+\end{equation*}
+
+我们要求解的一个调度问题是，给定$M$作为约束，求解一个变化矩阵$T$，能够让最外层循环携带所有数据流依赖。
+这里我们暂时忽略矩阵$T$是如何得到的，只需要先记住$T$不唯一，$T$的求解是一个well-studied问题，有完善的理论和工具。
+下面直接给出$T$的一种可能结果：
+
+\begin{equation*}
+    \delta_A =
+    \begin{bmatrix}
+        0 & 1 & 1 \\ 1 & 0 & 0 \\ 0 & 1 & 0
+    \end{bmatrix}
+    \begin{bmatrix}
+        i \\ j \\ k
+    \end{bmatrix} =
+    \begin{bmatrix}
+        j+k \\ i \\ j
+    \end{bmatrix} =
+    \begin{bmatrix}
+        m \\ n \\ p
+    \end{bmatrix}
+\end{equation*}
+
+于是有：
+\begin{equation}
+    \begin{bmatrix}
+        i \\ j \\ k
+    \end{bmatrix} =
+    \begin{bmatrix}
+        n \\ p \\ m-p
+    \end{bmatrix}\label{eq:skew}
+\end{equation}
+
+我们会得以$m$， $n$， $p$为迭代变量的变化后的循环程序。循环体执行时，在遇到$i$，$j$，$k$的地方，带入\eqref{eq:skew}。
+那么下一个问题是，变化后的循环边界如何求解？（\textcolor{brown}{Fourier-Motzkin Elimination算法就是专门解决这个问题的方法}。isl这样的polyhedral工具都集成了这一算法）
+
+\begin{lstlisting}[language=cplus]
+for (:$m$:) in range (:$\textcolor{red}{?}$:):  // map， 全并行
+  for (:$n$:) in range (:$\textcolor{red}{?}$:):  // scan，控制深度2携带数据流依赖
+    for (:$p$:) in range (:$\textcolor{red}{?}$:):  // scan，控制深度1携带数据流依赖
+        (:\textit{UDF}:)(...)
+\end{lstlisting}
+
+这里我们手算一下变化后的循环边界。
+
+把\eqref{eq:skew}带入\eqref{eq:bounds}我们会得到：
+
+\begin{align}
+\textcolor{dkgreen}{0} &\textcolor{dkgreen}{\le n < N} \\
+1 &\le p < D  \label{eq:bound-d}\\
+1 &\le m - p < L \label{eq:bound-l}
+\end{align}
+
+最外层的循环边界必须是常数。将\eqref{eq:bound-d}和\eqref{eq:bound-l}相加我们能够得到最外层的循环边界：
+\textcolor{dkgreen}{$$2 \le m < L + D -1$$}
+
+从\eqref{eq:bound-l}我们能得到：$m - L < p \le m -1$，即：$m -L+1 \le p < m$；同时，$p$必须满足\eqref{eq:bound-d}的约束。这两个不等式求交集就是$p$的上下界：
+\textcolor{dkgreen}{$$\text{max}(1, m -L+1) \le p < \text{min}(m, D)$$}
+
+\textcolor{dkgreen}{绿色}标注的三个不等式就是变换后循环的上下界，我们会得到下面这样一个变化后的程序：
+\begin{lstlisting}[language=cplus]
+for (:$m$:) in range (:$[2, L + D - 1)$:)  // 串行
+  {  // 把所有可并行的数据batch成一个更大的数据，插入对gather_nd的调用
+    for (:$n$:) in range (:$[0, N)$:)  // 并行
+      for (:$p$:) in range (:[$\max(1, m - L + 1),\ \ \min(m, D))$:) // 并行
+          batched_data = gather(可并行的数据点)
+  }
+  UDF(batched_data)
+\end{lstlisting}

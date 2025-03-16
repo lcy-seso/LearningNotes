@@ -1,0 +1,144 @@
+\subsection {Definitions}
+
+\begin{itemize}
+  \item VAR:a program array variable.
+  \item \textbf {\textit {occerence}}:any appearance of VAR in the loop body.
+  \item \textbf {\textit {generation}}/\textbf {\textit {use}}:VAR appears on the left - hand side of an assignment statement;
+  Such an occurrence is called \textit {generation}; otherwise, a \textit {use}.
+  \begin{enumerate}
+    \item generations modify values of array elements which uses do not.
+    \item an occurrence is a \textit {generation}or \textit {use}.
+  \end{enumerate}
+  \item \textbf {\textit {occurrence mapping}}:$T_f:\zeta \rightarrow Z^d$ where $f$ is
+  an occerence. $d$ is the dimensionality of the array to access.
+  \begin{enumerate}
+    \item the occurrence mapping maps points in index set $\zeta$ to array indices.
+    \item the occurrence mapping relates time and space.
+  \end{enumerate}
+\end {itemize}
+
+\subsection {Assumptions}
+
+Following assumptions are made to the loop body:
+\begin {itemize}
+\item [(A1)] It contains no I/O statement.
+\item [(A2)] It contains no transfer of control to any statement outside the loop.
+\item [(A3)] It contains no subroutine or function call which can modify data.
+\item [(A4)] Any occurrence in the loop body of a generated variable VAR is of the
+form $\text {VAR}(e^1, ..., e^\tau)$, where each $e^i$ is an expression not containing any
+generated variable.
+\end {itemize}
+
+\subsection {Formulation of the problem}
+
+The hyperplane method formulates performing the rewriting procedure as constructing a
+\href {https://en.wikipedia.org/wiki/Injective_function}{one-to-one} linear mapping
+$J:\mathbf {Z}^n \rightarrow \mathbf {Z}^n$ of the form:
+\begin {equation}
+\begin {aligned}
+J[(I^1, ..., I^n)] &= \left(\sum^ {n}_ {j = 1}a^1_jI^j, ..., \sum^ {n}_ {j = n}a^n_jI^j \right)\\ &= (J^1, ..., J^n)\label {eq1}
+\end {aligned}
+\end {equation}
+
+In fact, for the \textit {finite - dimensional vector spaces with a defined basis},
+a vector spaces we're mostly interested in, any linear mapping can be represented
+by a matrix $T$ that is multiplied by the input vector\cite{EliBendersky}. So, we can
+write equation (\ref{eq1}) in the matrix form.
+
+\begin{equation}
+\begin{aligned}
+  J[(I^1,...,I^n)] &=
+  \begin{pmatrix}
+    a_{1,1} & a_{1,2} & \cdots & a_{1,n} \\
+    a_{2,1} & a_{2,2} & \cdots & a_{2,n} \\
+    \vdots  & \vdots  & \ddots & \vdots  \\
+    a_{n,1} & a_{n,2} & \cdots & a_{n,n}
+  \end{pmatrix}
+  \begin{pmatrix}
+    I_{1}\\
+    I_{2}\\
+    \vdots\\
+    I_{n}\\
+  \end{pmatrix}
+\end{aligned}
+\end{equation}
+
+Once the one-to-one mapping $J$ is constructed, we then choose:
+\begin{itemize}
+  \item [1)]
+  the $\lambda^i$, $\mu^i$ and $\mathcal{S}_{J^1,...,J^k}$ to assure that the
+  index set $\zeta$ of loop (\ref{loop2}) equals $J(\zeta)$.
+  \item [2)]
+  write the loop body of loop (\ref{loop2}).
+\end{itemize}
+
+To perform rewriting, two important questions should be answered:
+\begin{question}
+  \begin{itemize}
+  \item [1]
+  Under what conditions, the rewritten loop (\ref{loop2}) is equivalent to the given
+  loop (\ref{loop1})?
+  \item [2]
+  How to construct the one-to-one linear mapping $J$ (or construct the matrix $T$)?
+  \end{itemize}
+\end{question}
+
+\subsection{Concurrent executions of the loop body}
+
+Define mapping $\pi :\mathbf{Z}^n\rightarrow\mathbf{Z}^k$ by $\pi[(I^1,...,I^n)]=(J^1,...,J^k)$:
+
+\begin{itemize}
+\item mapping $\pi(P)$ contains the first $k$ coordinates of $J(P)$, which are sequential loops.
+\item the set defined by $\left\{ P:\pi(P)=\text{constant}\in \mathbf{Z}^k \right\}$
+are parallel $(n-k)$-dimensional planes in $\mathbf{Z}^n$.
+Loop body is executed concurrently for elements of $\zeta$ lying on these sets.
+\item these sets are parallel $(n-k)$-dimensional planes in
+$\mathbf{Z}^n$, hence the name "hyperplane method".
+\end{itemize}
+
+\subsection{Conditions for a legal rewriting}
+
+\begin{info}[\textbf{\textit{Sufficient condition}} for loop (\ref{loop2})
+to be equivalent to loop (\ref{loop1})]
+\begin{itemize}
+\item [(C1)]
+  For {\color{red}{\textit{\textbf{every}}}} variable, and {\color{red}{\textit{\textbf{every}}}}
+  ordered pair of occurrences $f$,$g$ of that variable,
+  at least one of which is a generation: if $T_f(P)=T_g(Q)$ for $P, Q \in \zeta$
+  with $P<Q$, then $\pi$ must satisfy the relateion $\pi(P)<\pi(Q)$.
+\end{itemize}
+\end{info}
+For most loops, (C1) is also a necessary condition.
+
+However, (C1) requires to consider many pairs of points $P$, $Q$ in $\zeta$.
+To address this problem and ease the analysis, the author uses a set descriptor
+$\langle f,g \rangle$ rather than directly considering all the pairs of $P$,$Q$.
+
+Define $\langle f,g \rangle$ a subset of $\mathbf{Z}^n$ by:
+$$\langle f,g \rangle=\left\{X:T_f(P)=T_g(P+X)\quad \text{for some } P \in \mathbf{Z}^n\right\}$$
+
+Set $\langle f, g \rangle$ defines pairs of \textit{use} and \textit{generation} that
+accesses the same memory location. Though this notation is not implicitly called
+dependence vectors in this paper, I think it is $\mathbf{X}$ essentially the
+dependence vector in later research works. Then, we have a more strigent rule:
+
+\begin{info}[Rule for loop (\ref{loop2}) to be equivalent to loop (\ref{loop1})]
+\begin{itemize}
+\item [(C2)]
+  For every variable, and every ordered pair of occurrences $f$,$g$ of that variable,
+  at least one of which is a generation: for every $\mathbf{X} \in \langle f, g \rangle$
+  with $\mathbf{X}>\mathbf{0}$, $\mathbf{\pi}$ must satisfy $\mathbf{\pi}(\mathbf{X})>\mathbf{0}$.
+\end{itemize}
+\end{info}
+
+To guarantee that it is feasible to find a mapping $\pi$ which satisfies (C2),
+the author futher make some restriction (see (A5) in the paper) on the forms of
+variable occurrences. This restriction actually leads to \textbf{\textit{constant dependence vectors}}.
+
+\subsection{The hyperplane theorem}
+
+\subsubsection{The existence of $\pi$}
+\input{hypertheorem.tex}
+
+\subsubsection{The optimality of $\pi$}
+\input{optimalpi.tex}

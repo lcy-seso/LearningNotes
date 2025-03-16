@@ -1,0 +1,55 @@
+\lstset{
+  frame=none,
+  backgroundcolor=\color{white},
+  numbers=left,
+  numbersep=1em,
+  xleftmargin=1em,
+  breaklines=true,
+  linewidth=\linewidth
+}
+\begin{lstlisting}[language=code_example2, caption={}]
+(:\textbf{Input}:): (:$X:[M\times N], \ m_0:[M],\  d_0[M]$:)
+(:\textbf{Output}:): (:$Y:[M \times N]$:)
+
+(:$m_0 \leftarrow -\inf$:)  // accumulator
+(:$d_0 \leftarrow 0$:)  // accumulator
+for (:$i \leftarrow 1, M$:) do  // parallel for, maps to blocks
+  for (:$j \leftarrow 1, N$:) do  // reduce, maps for threads in a thread block
+      (:$m_j[i] \leftarrow \max(m_{j-1}[i], X[i,j])$:)
+      (:$d_j[i] \leftarrow d_{j-1}[i] \times e^{m_{j-1}[i]-m_j[i]}+e^{X[i,j]-m_j[i]}$:)
+  endfor
+
+  for (:$j \leftarrow 1, N$:) do  // parallel for
+    (:$Y[i,j] \leftarrow \frac{e^{X[i,j]-m[i]}}{d[i]}$:)
+  endfor
+endfor
+\end{lstlisting}
+
+\subsection{Fused expression: version 1}
+
+\textcolor{red}{$m$},\textcolor{red}{$L$},\textcolor{red}{$o$} are accumulators.
+
+\begin{tcolorbox}
+for $q$ in $Q$: \textcolor{grey}{\scriptsize{// for loops outside the compute kernel}}
+
+\quad for $k$,$v$ in $K$,$V$:  \textcolor{grey}{\scriptsize{// for loops outside the compute kernel}}
+
+\quad \quad \textcolor{red}{$m$},\textcolor{red}{$L$},\textcolor{red}{$o$} = compute\_kernel($q$, $k$, $v$, \textcolor{red}{$m$}, \textcolor{red}{$L$}, \textcolor{red}{$o$})
+
+\end{tcolorbox}
+
+Input: $q, k, v, m_{old}, L_{old}, o_{old}$ ($q$,$k$,$v$ are small tiles of $Q$,$K$,$V$);
+
+\begin{align*}
+    x_1 &= \text{dot}(q,k) \\
+    x_2 &= \text{max}(x_1) \\
+    x_3 &= \text{exp}(x_1 - x_2) \\
+    x_4 &= \text{sum}(x_3) \\
+    x_5 &= \text{dot}(x_3,v) \\
+    m_{new} &= \text{max}({m_{old},x_2})\ \ \ \scriptsize{\textcolor{grey}{\text{// new partial max value}}}\\
+    x_6 &= \text{exp}(m_{old} - m_{new}) \\
+    x_7 &= \text{exp}(x_2 - m_{new}) \\
+    L_{new} &= x_6 * o_{old} + x_7 * x_4 \ \ \ \scriptsize{\textcolor{grey}{\text{// new partial sum}}}\\
+    o_{new} &= \frac{o_{old} * L_{old} * x_6 + x_7 * x_3}{L_{new}} \ \ \ \scriptsize{\textcolor{grey}{\text{// new partial o}}}\\\\
+    \text{return}&\ \ {m_{new}, L_{new}, o_{new}}
+\end{align*}

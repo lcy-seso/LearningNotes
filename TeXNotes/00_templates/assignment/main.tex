@@ -1,0 +1,121 @@
+\documentclass{article}
+
+\input{structure.tex} % Include the file specifying the document structure and custom commands
+\title{My Document}
+\author{Ying Cao}
+\date{\today}
+
+\begin{document}
+\bibliographystyle{plain}
+
+\maketitle % Print the title
+\tableofcontents
+
+\noindent
+\linespread{1.2}
+\selectfont
+\setlength{\topskip}{0ex}
+\setlength{\parskip}{1ex}
+\setlength{\lineskip}{1em}
+
+%---------------------------------------------------------------
+% unnumbered section
+%---------------------------------------------------------------
+
+\section{Introduction}
+
+This is the introduction. 
+
+Paper \cite{lamport1974parallel} studies the compilation techniques for a kind of loop program transformation
+targeting multiprocessor computers.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[scale=0.4]{figures/figure1.png}
+  \caption{this is a figure demo}
+  \label{fig:label}
+\end{figure}
+
+% Math equation/formula
+\begin{equation}
+I = \int_{a}^{b} f(x) \; \text{d}x.
+\end{equation}
+
+\begin{info} % Information block
+This is an interesting piece of information, to which the reader should pay special attention.
+\end{info}
+
+\section{Section title} % Numbered section
+
+This is the numbered section.
+
+\subsection{Subsection title}
+
+This is the numbered sub section.
+
+%------------------------------------------------------------------
+% Numbered question, with subquestions in an enumerate environment
+%------------------------------------------------------------------
+\begin{question}
+    This is a question.
+
+  % Subquestions numbered with letters
+  \begin{enumerate}[(a)]
+    \item Do this.
+    \item Do that.
+    \item Do something else.
+  \end{enumerate}
+\end{question}
+
+%------------------------------------------------------------------
+% Algorithm
+%------------------------------------------------------------------
+\subsection{Algorithmic issues}
+
+
+\begin{center}
+  \begin{minipage}{0.5\linewidth} % Adjust the minipage width to accomodate for the length of algorithm lines
+    \begin{algorithm}[H]
+      \KwIn{$(a, b)$, two floating-point numbers}  % Algorithm inputs
+      \KwResult{$(c, d)$, such that $a+b = c + d$} % Algorithm outputs/results
+      \medskip
+      \If{$\vert b\vert > \vert a\vert$}{
+          exchange $a$ and $b$ \;
+      }
+      $c \leftarrow a + b$ \;
+      $z \leftarrow c - a$ \;
+      $d \leftarrow b - z$ \;
+      {\bf return} $(c,d)$ \;
+      \caption{\texttt{FastTwoSum}} % Algorithm name
+      \label{alg:fastTwoSum}   % optional label to refer to
+    \end{algorithm}
+  \end{minipage}
+\end{center}
+
+Descriptions of the algorithm.
+
+%------------------------------------------------------------------
+% Numbered question, with an optional title
+%------------------------------------------------------------------
+\begin{question}[\itshape (with optional title)]
+    Describe your question.
+\end{question}
+
+Desciptions.
+
+\section{Implementation}
+
+Describe your implementation here.
+
+% code snippets.
+\begin{lstlisting}[language=Python]
+#! /usr/bin/python
+
+import sys
+sys.stdout.write("Hello World!\n")
+\end{lstlisting}
+
+Explanations of the implementation.
+
+\bibliography{references.bib}
+\end{document}

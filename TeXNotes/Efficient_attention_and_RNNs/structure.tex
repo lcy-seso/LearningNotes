@@ -1,0 +1,105 @@
+\usepackage{ctex}
+\usepackage{csquotes}
+\usepackage{ulem}
+\usepackage{float}
+
+\usepackage{fancyhdr}
+\fancyhead{}
+% \pagestyle{empty}
+% \pagestyle{fancy}
+
+\usepackage[toc,page]{appendix}
+\usepackage{amsmath, amsfonts, stmaryrd, amssymb} % Math packages
+\usepackage{cite}
+
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
+\newcommand{\tabincell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
+
+\usepackage[rgb,dvipsnames]{xcolor}
+\usepackage{color}
+\usepackage{soul}
+
+\usepackage{enumerate}
+\usepackage{subfigure}
+\usepackage[ruled] {algorithm2e}
+
+\usepackage[colorlinks, citecolor=red]{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=blue,      
+    urlcolor=blue,
+    citecolor=blue,
+}
+\usepackage{url}
+\usepackage{booktabs}
+
+\usepackage{mathtools, nccmath}
+\usepackage{cleveref}
+
+\usepackage {listings}
+
+\definecolor{forestgreen}{RGB}{34,139,34}
+\definecolor{blue1}{RGB}{24,116,205}
+\definecolor{aliceblue}{RGB}{240,248,255}
+\definecolor{maroon}{RGB}{176,48,96}
+\definecolor {dkgreen}{RGB}{0,139,139}
+\definecolor{byzantium}{rgb}{0.44,0.16,0.39}
+\definecolor{whitesmoke}{RGB}{245,245,245}
+\definecolor{grey}{RGB}{128,128,128}
+\definecolor{tomato}{RGB}{139,26,26}
+\definecolor{commentsColor}{rgb}{0,128,128}
+\definecolor{keywordsColor}{rgb}{0.0,0.0,0.64}
+\definecolor{stringColor}{rgb}{0.558215,0.0,0.135316}
+\definecolor{snow}{RGB}{207,207,207}
+\definecolor{NavajoWhite}{RGB}{255,222,173}
+\definecolor{LightSkyBlue1}{RGB}{176,226,255}
+\definecolor{DarkSeaGreen}{RGB}{180,238,180}
+\definecolor{LightSkyBlue3}{RGB}{159,182,205}
+\definecolor{SpringGreen}{RGB}{0,139,69}
+\definecolor{MediumPurple}{RGB}{147,112,219}
+\definecolor{PaleVioletRed}{RGB}{219,112,147}
+\definecolor{keywordcolor}{rgb}{0.8,0.1,0.5}
+\definecolor{plum}{RGB}{221,160,221}
+\definecolor{thistle}{RGB}{216,191,216}
+
+\lstset{
+  backgroundcolor=\color{aliceblue},
+  basicstyle=\small,
+  breakatwhitespace=false,
+  breaklines=true,
+  captionpos=b,
+  frame=lrtb,
+  keepspaces=true,
+  numbers=left, 
+  numbersep=5pt,
+  xleftmargin=1em,
+  numberstyle=\tiny\color{grey},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  stepnumber=1,
+}
+
+\usepackage{tcolorbox}
+\usepackage{colortbl}
+\newtcolorbox{boxmine}[2][]{colbacktitle=red!10!white,
+colback=blue!10!white,coltitle=red!70!black,
+title={#2},fonttitle=\bfseries\gtfamily,#1}
+
+\usepackage{geometry}
+\geometry{
+  paper=a4paper, % Paper size, change to letterpaper for US letter size
+  top=2.5cm, % Top margin
+  bottom=3cm, % Bottom margin
+  left=2.5cm, % Left margin
+  right=2.5cm, % Right margin
+  headheight=14pt, % Header height
+  footskip=1.5cm, % Space from the bottom margin to the baseline of the footer
+  headsep=1.2cm, % Space from the top margin to the baseline of the header
+}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}

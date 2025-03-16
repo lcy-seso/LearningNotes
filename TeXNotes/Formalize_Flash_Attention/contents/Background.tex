@@ -1,0 +1,28 @@
+A \textit{list} is a linearly ordered collection of values. All the elements of a given list must have the same type.
+If the elements of a list all have the type $\alpha$, then the list itself has the type of $[\alpha]$.
+% A list is either empty, $[\ ]$, or can be thought of as having a first element, or \textbf{head}, $a$ and a remainder, or \textbf{x}, $x$. The list with head $a$ and tail $x$ is written $(a:x)$.
+% "$:$" is read as "cons" which appends an element at the start of another list.
+
+\subsection{The \textit{reduce} operator}
+
+The \textbf{\textit{reduce}} operator is a high-order list processing function where a list is \textcolor{red}{aggregated and reduced down to a single value}.
+It is defined as follows:
+
+\begin{align*}
+&\textit{reduce} :: (\alpha \rightarrow \beta \rightarrow \beta) \rightarrow \beta \rightarrow ([\alpha] \rightarrow \beta) \\
+&\textit{reduce} \ \oplus\ v \ [] = v \\
+&\textit{reduce}\ \oplus\ v\ (x:xs) = \oplus \ x\ (\textit{reduce}\ \oplus\ v\ xs)
+\end{align*}
+
+The reduce operator takes a binary operator $\oplus$ of type $\alpha \rightarrow \beta \rightarrow \beta$, an initial value $v$ of type $\beta$, and a list of values $xs$ of type $[\alpha]$ as input,
+and returns a single value of $\beta$ obtained by applying $\oplus$ to the initial value and the first element of the list,
+then to the result of that operation and the second element of the list, and so on, until all elements have been processed.
+
+\subsection{The \textit{map} operator}
+\begin{align*}
+\textit{map} &:: (\alpha \rightarrow \beta) \rightarrow ([\alpha] \rightarrow [\beta]) \\
+\textit{map}\ f \ xs &= \left[ f \ x_1 \ldots f\ x_n\right]
+\end{align*}
+
+The \textit{map} operation applies a unary function $f$ of type $\alpha \rightarrow \beta$ to each element of a list.
+Because there is no way to communicate among each evaluation of $f$, the underlying implementation of the \textit{map} operation can execute the evaluations of $f$ over list elements in any order it chooses.
