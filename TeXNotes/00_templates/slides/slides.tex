@@ -1,0 +1,47 @@
+\documentclass {beamer}
+
+\input {structure.tex}
+
+\title[] {Ying's Slides}
+\subtitle{A short story}
+\author {Ying Cao}
+\institute {}
+\date {\today}
+
+\begin {document}
+
+\AtBeginSection[]
+{
+  \begin{frame}
+    \frametitle{Table of Contents}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+
+\begin {frame}
+\titlepage
+\end {frame}
+
+\section {Section 1}
+
+\begin {frame} {Title frame 1}
+
+In this slide, some important text will be
+\alert{highlighted} because it's important.
+Please, don't abuse it.
+
+\begin {block} {Block blue}
+\begin {itemize}
+\item Item 1
+\item Item 2
+\item Item 3
+\end {itemize}
+\end {block}
+\end {frame}
+
+\section {Section 2}
+\begin {frame} {Title Frame 2}
+\[\ support(X \to Y) = p(X \cup Y) = \frac { {n(X \cup Y)}} {N}\]
+\end {frame}
+
+\end {document}

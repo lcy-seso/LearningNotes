@@ -1,0 +1,46 @@
+%!TEX program = xelatex
+\documentclass[UTF8]{ctexart}
+
+\input{structure.tex}
+\input{define_language.tex}
+
+\title{RNNs and scan}
+
+\begin{document}
+
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+\setcounter{page}{1}
+
+\bibliographystyle{plain}
+
+\noindent
+\linespread{1.2}
+\selectfont
+\setlength{\topskip}{0ex}
+\setlength{\parskip}{1ex}
+\setlength{\lineskip}{1em}
+
+\section{Transformer和线性RNN}
+\input{contents/linear_rnn.tex}
+
+\section{SSM（state-space model）}
+\input{contents/ssm.tex}
+
+\newpage
+\section{并行RNN}
+\input{contents/parallel_rnn.tex}
+
+\newpage
+\section{General non-linear recurrence 的并行计算问题}
+\input{contents/stacked_rnns.tex}
+\input{contents/loop_bounds.tex}
+
+\begin{appendices}
+\input{contents/miscellany.tex}
+\end{appendices}
+
+\newpage
+\bibliography{references.bib}
+\end{document}

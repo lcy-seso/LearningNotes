@@ -1,0 +1,41 @@
+
+The hyperplane theorem proves the existence of $\pi$. So far, there is still
+a problem left, the optimal $\pi$.
+
+$k=1$ means the outermost loop is sequential while all the inner loops are parallelable.
+Therefore, it is reasonable to minimize the number of steps in the outer \textit{\textbf{DO}}
+$J^1$ loop(\ref{loop2}). This means minimizing $\mu^1 - \lambda^1$ in loop(\ref{loop2}).
+
+Setting $M^i = \mu^i - l^i$, it is easy to see that $\mu^1 - \lambda^1$ equals:
+
+\begin{equation} \label{opt}
+M^1|a_1|+...+M^n|a_n|
+\end{equation}
+
+Thus, finding an optimal $\pi$ is reduced to the integer programming problem:
+\textit{\textbf{find integers $a_1,...,a_n$ satisfying inequalities given by (C2)
+which minimize expression \ref{opt}}}.
+
+This problem is to find solution to the linear
+{\href{https://books.google.co.jp/books?hl=zh-CN&lr=&id=QugvF7xfE-oC&oi=fnd&pg=PP1&dq=mordell+diophantine+equations&ots=KQngn0xTIB&sig=TRaDlam9XGLmO5l-PuFtZE8X0xw#v=onepage&q&f=false}{Diophantine equation}}\cite{Diophantinewiki,mordell1969diophantine}.
+For some linear Diophantine equations, it is algorithmatically solvable, but there
+are no practical method of finding a solution in the general case.
+
+\begin {info}
+Below theorem is from \cite{irigoin1988supernode}. It is referred as an important
+conclusion in \cite{wolf1991loop}. I just think
+the conclusion below further improves the \textbf{hyperplane concurrency theorem} by:
+
+\begin{enumerate}
+  \item propose the concept "fully permutable loop" which gives a more strigent
+  conditions of loop programs are able to obtain the optimal parallelism. The
+  concept "fully permutable loop" is also the foundation for tiling.
+  \item give the transformation that leads to the optimal parallelism for "fully
+  permutable loop".
+\end{enumerate}
+
+\fbox{\parbox{\textwidth}{\textsl {A nest of $n$ fully permutable loops can be
+transformed to code containing at least $n-1$ degress of parallelism. In the
+degenerate case when no dependences are carried by these $n$ loops, the degree
+of parallelism is $n$.}}}
+\end {info}

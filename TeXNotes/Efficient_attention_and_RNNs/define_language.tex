@@ -1,0 +1,92 @@
+\lstdefinelanguage{code_example}{
+  keywords={},
+  keywordstyle=\color{orchid}\bfseries,
+  keywords=[2]{for, reduce, doall},
+  keywordstyle=[2]\color{blue1}\bfseries,
+  keywords=[3]{load, store},
+  keywordstyle=[3]\color{commentsColor}\bfseries,
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{byzantium}\ttfamily,
+  stringstyle=\color{dkgreen},
+  morestring=[b]',
+  morestring=[b]",
+  escapeinside={(:}{:)}
+}
+
+\definecolor{brown}{RGB}{166,42,42}
+\definecolor{orchid}{RGB}{153,50,205}
+
+\lstdefinelanguage{cute}{
+  keywords={},
+  keywordstyle=\color{orchid}\bfseries,
+  keywords=[2]{typename, auto, for, int, using, decltype, uint128_t, half},
+  keywordstyle=[2]\color{blue1}\bfseries,
+  keywords=[3]{_1, _2, _4, _8,  _32},
+  keywordstyle=[3]\color{maroon}\bfseries,
+  keywords=[4]{make_tiled_copy},
+  keywordstyle=[4]\color{dkgreen}\bfseries,
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{byzantium}\ttfamily,
+  stringstyle=\color{dkgreen},
+  morestring=[b]',
+  morestring=[b]",
+  escapeinside={(:}{:)}
+}
+
+\definecolor{sienna}{RGB}{160,82,45}
+\lstdefinelanguage{fractaltensor-hello-world}{
+  keywords={},
+  otherkeywords={@, +, *, zeros, repeat},
+  keywordstyle=\color{orchid}\bfseries,
+  keywords=[2]{map, scan, fold, reduce},
+  keywordstyle=[2]\color{red}\bfseries,
+  keywords=[3]{xsss, xss, us, ws, bs},
+  keywordstyle=[3]\color{dkgreen}\bfseries,
+  keywords=[4]{ysss},
+  keywordstyle=[4]\color{forestgreen}\bfseries,
+  keywords=[5]{float32, FT},
+  keywordstyle=[5]\color{sienna}\ttfamily\bfseries,
+  keywords=[6]{zip},
+  keywordstyle=[6]\color{blue}\ttfamily\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{byzantium}\ttfamily,
+  stringstyle=\color{dkgreen},
+  morestring=[b]',
+  morestring=[b]",
+  escapeinside={(:}{:)}
+}
+
+\renewcommand{\ttdefault}{pcr}
+\lstdefinelanguage{cplus}{
+  keywords={class, function, union, public, for, if, else, len, elif},
+  keywordstyle=\color{forestgreen}\bfseries,
+  keywords=[2]{TensorShape, NumberType, TensorType, FractalTensorType,
+               ElemType, Collections, Number,
+               TypeBase, FractalTensor, Tensor,
+               float32, range, in, 
+               int, void, bool, size_t, string, std,
+               unique_ptr, vector, int64_t},
+  keywordstyle=[2]\color{blue}\bfseries,
+  keywords=[3]{const},
+  keywordstyle=[3]\color{tomato}\bfseries,
+  keywords=[4]{xss, yss, ysss, w, ws, L, N, D},
+  keywordstyle=[4]\color{dkgreen}\bfseries,
+  keywords=[5]{zeros, @, +},
+  keywordstyle=[5]\color{orchid}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{grey}\ttfamily,
+  stringstyle=\color{dkgreen},
+  morestring=[b]',
+  morestring=[b]",
+  escapeinside={(:}{:)}
+}

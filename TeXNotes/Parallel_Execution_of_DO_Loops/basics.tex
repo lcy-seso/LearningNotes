@@ -1,0 +1,50 @@
+The analysis in paper \cite{lamport1974parallel} is performed from the
+standpoint of a compiler for a \textit{multiprocessor computer}. It considers
+loops of the following form:
+\begin{equation}
+  \begin{aligned}
+     &\textbf{\textit{DO}}\quad I^1 = l^1, u^1 \\
+     &\qquad \qquad \vdots\\
+     &\textbf{\textit{DO}}\quad I^n = l^n, u^n \\
+     &\qquad \boxed{\text{loop body}} \\
+     &\textbf{\textit{CONTINUE}} \label{loop1}
+  \end{aligned}
+\end{equation}
+where $l^j$ and $u^j$ may be integer-valued expresions, possibly involving $I^{1},...,I^{j-1}$.
+Let $\mathbf{Z}^n$ denote the set of $n$-tuples of integers. So the index set $\zeta$
+of loop (\ref{loop1}) is the subset of $\mathbf{Z}^n$ consisting all values assumed
+by $(I^1,...,I^n)$ during execution of the loop.
+
+The loop body is executed multiple times --- once for each point $(i^1,...,i^n)$ in the
+\textit{\textbf{index set}}
+$$\zeta = \{ (i^1,...,i^n):l^1 \le i^1 \le u^1,...,l^n \le i^n \le u^n \}.$$
+Usually, one execution of the loop body is called an \textit{instance}.
+
+The goal is, \textbf{we want to speed up the computation by performing some of these
+executions concurrently}. As solutions, this paper proposed two general methods:
+\begin {itemize}
+  \item [1)]
+  \textit{hyperplane method}, applicable to:
+  \begin{enumerate}
+    \item multiple instruction stream computer
+    \item single instruction stream computer
+  \end{enumerate}
+  \item [2)]
+  \textit{coordinate method}, applicable to:
+  \begin{enumerate}
+    \item single instruction stream computer
+  \end{enumerate}
+\end {itemize}
+
+Both methods rewrite the original loop programs into the form loop (\ref{loop2}):
+\begin{equation}
+  \begin{aligned}
+    &\textbf{\textit{DO}}\quad \alpha \quad J^1 = \lambda^1, \mu^1 \\
+    &\qquad \qquad \vdots\\
+    &\textbf{\textit{DO}}\quad \alpha \quad J^k = \lambda^k, \mu^k \\
+    &\textbf{\textit{DO}}\quad \alpha \quad \textbf{\textit{CONC FOR ALL}} \\
+    &\qquad (J^{k+1},...,J^n) \in \mathcal{S}_{J^1,...,J^k} \\
+    &\qquad \qquad \boxed{\text{loop body}} \\
+    &\textbf{\textit{CONTINUE}} \label{loop2}
+  \end{aligned}
+\end{equation}

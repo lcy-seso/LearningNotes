@@ -1,0 +1,199 @@
+\usepackage {amsmath, amsfonts, stmaryrd, amssymb} % Math packages
+\usepackage {cite}
+\usepackage[rgb, dvipsnames] {xcolor}
+\usepackage{soul}
+\usepackage{color}
+
+\usepackage {enumerate} % Custom item numbers for enumerations
+\usepackage{subfigure}
+\usepackage[ruled] {algorithm2e} % Algorithms
+
+\usepackage[framemethod = tikz] {mdframed} % Allows defining custom boxed/framed environments
+\usepackage{tcolorbox}
+
+\usepackage[colorlinks, citecolor=red]{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=blue,      
+    urlcolor=blue,
+    citecolor=blue,
+}
+\usepackage{url}
+
+\usepackage{booktabs}
+
+\usepackage{mathtools, nccmath}
+\usepackage{cleveref}
+% \usepackage{showframe}
+% \renewcommand{\ShowFrameLinethickness}{0.3pt}
+%-------------------------------------------------------------------------------
+%  Code snippets.
+%-------------------------------------------------------------------------------
+\usepackage {listings} % File listings, with syntax highlighting
+\definecolor{forestgreen}{RGB}{34,139,34}
+\definecolor{blue1}{RGB}{24,116,205}
+\definecolor{aliceblue}{RGB}{240,248,255}
+\definecolor{maroon}{RGB}{176,48,96}
+\definecolor {dkgreen}{RGB}{0,139,139}
+\definecolor{byzantium}{rgb}{0.44,0.16,0.39}
+\definecolor{whitesmoke}{RGB}{245,245,245}
+\definecolor{grey}{RGB}{128,128,128}
+\definecolor{tomato}{RGB}{139,26,26}
+\definecolor{commentsColor}{rgb}{0,128,128}
+\definecolor{keywordsColor}{rgb}{0.0,0.0,0.64}
+\definecolor{stringColor}{rgb}{0.558215,0.0,0.135316}
+\definecolor{snow}{RGB}{207,207,207}
+\definecolor{NavajoWhite}{RGB}{255,222,173}
+\definecolor{LightSkyBlue1}{RGB}{176,226,255}
+\definecolor{DarkSeaGreen}{RGB}{180,238,180}
+\definecolor{LightSkyBlue3}{RGB}{159,182,205}
+
+\lstset{ %
+  backgroundcolor=\color{aliceblue},
+  basicstyle=\scriptsize,
+  breakatwhitespace=false,
+  breaklines=true,
+  captionpos=b,
+  commentstyle=\color{commentsColor}\textit,
+  deletekeywords={...},
+  escapeinside={\%*}{*)}, 
+  extendedchars=true,
+  frame=lrtb,
+  keepspaces=true,
+  keywordstyle=\color{keywordsColor}\bfseries,
+  backgroundcolor=\color{aliceblue},
+  language=Python,
+  otherkeywords={*,...},
+  numbers=left, 
+  numbersep=5pt,
+  xleftmargin=1em,
+  numberstyle=\tiny\color{grey},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  stepnumber=1,
+  stringstyle=\color{bluebell},
+  tabsize=2,
+  title=\lstname,
+  columns=fixed
+}
+
+\lstdefinelanguage{code_example}{
+  keywords={},
+  keywordstyle=\color{orchid}\bfseries,
+  keywords=[2]{foreach, in, return, zip, function},
+  keywordstyle=[2]\color{blue1}\bfseries,
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{byzantium}\ttfamily,
+  stringstyle=\color{dkgreen},
+  morestring=[b]',
+  morestring=[b]",
+  escapeinside={(:}{:)}
+}
+
+\lstdefinelanguage{code_example2}{
+  keywords={},
+  keywordstyle=\color{orchid}\bfseries,
+  keywords=[2]{for, do, endfor},
+  keywordstyle=[2]\color{blue1}\bfseries,
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{byzantium}\ttfamily,
+  stringstyle=\color{dkgreen},
+  morestring=[b]',
+  morestring=[b]",
+  escapeinside={(:}{:)}
+}
+
+
+%-------------------------------------------------------------------------------
+%  DOCUMENT MARGINS
+%-------------------------------------------------------------------------------
+\usepackage{geometry} % Required for adjusting page dimensions and margins
+
+\geometry{
+  paper=a4paper, % Paper size, change to letterpaper for US letter size
+  top=2.5cm, % Top margin
+  bottom=3cm, % Bottom margin
+  left=2.5cm, % Left margin
+  right=2.5cm, % Right margin
+  headheight=14pt, % Header height
+  footskip=1.5cm, % Space from the bottom margin to the baseline of the footer
+  headsep=1.2cm, % Space from the top margin to the baseline of the header
+  %showframe, % Uncomment to show how the type block is set on the page
+}
+
+%-------------------------------------------------------------------------------
+%  FONTS
+%------------------------------------------------------------------------------
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+
+\usepackage{XCharter} % Use the XCharter fonts
+
+%-------------------------------------------------------------------------------
+%  NUMBERED QUESTIONS ENVIRONMENT
+%-------------------------------------------------------------------------------
+
+% Usage:
+% \begin{question}[optional title]
+%  Question contents
+% \end{question}
+
+\mdfdefinestyle{question}{
+  innertopmargin=1.2\baselineskip,
+  innerbottommargin=0.8\baselineskip,
+  roundcorner=5pt,
+  nobreak,
+  singleextra={%
+    \draw(P-|O)node[xshift=1em,anchor=west,fill=white,draw,rounded corners=5pt]{%
+    Question \theQuestion\questionTitle};
+  },
+}
+
+\newcounter{Question} % Stores the current question number that gets iterated
+                      % with each new question
+
+% Define a custom environment for numbered questions
+\newenvironment{question}[1][\unskip]{
+  \bigskip
+  \stepcounter{Question}
+  \newcommand{\questionTitle}{~#1}
+  \begin{mdframed}[style=question]
+}{
+  \end{mdframed}
+  \medskip
+}
+
+%-------------------------------------------------------------------------------
+%  INFORMATION ENVIRONMENT
+%-------------------------------------------------------------------------------
+
+% Usage:
+% \begin{info}[optional title, defaults to "Info:"]
+%   contents
+% \end{info}
+
+\mdfdefinestyle{info}{%
+  topline=false, bottomline=false,
+  leftline=false, rightline=false,
+  nobreak,
+  singleextra={%
+    \fill[black](P-|O)circle[radius=0.4em];
+    \node at(P-|O){\color{white}\scriptsize\bf i};
+    \draw[very thick](P-|O)++(0,-0.8em)--(O);%--(O-|P);
+  }
+}
+
+% Define a custom environment for information
+\newenvironment{info}[1][Info:]{ % Set the default title to "Info:"
+  \medskip
+  \begin{mdframed}[style=info]
+    \noindent{\textbf{#1}}
+}{
+  \end{mdframed}
+}

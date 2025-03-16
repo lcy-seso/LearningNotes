@@ -1,0 +1,174 @@
+\section{Gradient Computation}
+
+Let $\circ$ stands for elementwise multiplication.
+
+\subsection{Flash Attention}
+
+The standard attention:
+$$\mathbf{S}=\mathbf{Q}\mathbf{K}^T \in \mathbb{R}^{N\times N},\quad \mathbf{P} = \text{softmax}(\mathbf{S}) \in \mathbb{R}^{N \times N},\quad \mathbf{O} = \mathbf{PV}\in \mathbb{R}^{N\times d}$$
+
+% Given $\mathbf{O}$, $\mathbf{Q}$, $\mathbf{K}$, $\mathbf{V}$, $\mathbf{dO}$ the backward pass propagates gradient $\mathbf{dO}$ from the output to the inputs.
+% Let's compute back propagation $\mathbf{dQ}$, $\mathbf{dK}$ and $\mathbf{dQ}$ by hands.
+
+If we have the matrices $\mathbf{O}$, $\mathbf{Q}$, $\mathbf{K}$, $\mathbf{V}$, and $\mathbf{dO}$, the backward pass propagates the gradient $\mathbf{dO}$ from the output to the inputs.
+To compute the back propagation of $\mathbf{dQ}$, $\mathbf{dK}$, and $\mathbf{dV}$ by hand, we can follow the steps of the backpropagation algorithm.
+Let's first consider a scalar loss function $\phi$ and an output gradient $\mathbf{dO}$ with dimensions $\mathbb{R}^{N\times d}$.
+
+To obtain the gradient of $\mathbf{V}$ in matrix notation, we can simply use the following formula: $\mathbf{dV} = \mathbf{P}^T\mathbf{dO}$. This means that the blockified version can be expressed as follows:
+
+\begin{equation}
+\mathbf{dV}_j = \sum_i \mathbf{P}_{ij}^T\mathbf{dO}_i = \sum_{i}\frac{\exp({\mathbf{K}_j}^T\mathbf{Q}_i)}{\mathbf{L}_i}\mathbf{dO}_i \label{eq:mha1}
+\end{equation}
+
+We can then move on to computing $\mathbf{dP}$ using the formula $\mathbf{dP} = \mathbf{dOV}^T$. In blockified form, this can be expressed as follows: 
+$$\mathbf{dP}_{ij}=\mathbf{dO}_i\mathbf{V}_j^T$$
+
+Since the Jacobian of $\bar{y} = \text{softmax}(\bar{x})$ is represented by the matrix $\mathbf{J}_{\bar{x}}=\text{diag}(\bar{y})-\bar{y}^T\bar{y}$ where $\bar{x}$ and $\bar{y}$ are row vectors, we can use this to derive the following:
+
+$$\mathbf{dS}_{i:}=(\text{diag}(\mathbf{P}_{i:})-\mathbf{P}^T_{i:}\mathbf{P}_{i:})\mathbf{dP}_{i:}=\mathbf{P}_{i:}\circ \mathbf{dP}_{i:}-\mathbf{P}_{i:}\textcolor{red}{(\mathbf{P}_{i:}^T \mathbf{dP}_{i:})}$$
+
+Define: $$\mathbf{D}_i=\mathbf{P}_{i:}^T\mathbf{dP}_{i:}=\sum_j\frac{\exp({\mathbf{K}_j\mathbf{Q}_i^T})}{\mathbf{L}_i}\mathbf{dO}_i \mathbf{V}_j^T=\mathbf{dO}_i^T\sum_j\frac{\exp({\mathbf{Q}_i^T}\mathbf{K}_j)}{\mathbf{L}_i}\mathbf{V}_j = \mathbf{dO}_i^T\mathbf{O}_i$$
+
+Then:
+$$\mathbf{dS}_{i:}=\mathbf{P}_{i:}\circ\mathbf{dP}_{i:}-\mathbf{P}_{i:}\mathbf{D}_i$$
+
+Hence:
+
+$$\mathbf{dS}_{ij}=\mathbf{P}_{ij}\circ\mathbf{dP}_{ij}-\mathbf{P}_{ij}\mathbf{D}_i=\mathbf{P}_{ij}(\mathbf{dP}_{ij}-\mathbf{D}_i)$$
+
+We can obtain $\mathbf{dQ}$ and $\mathbf{dK}$ in a blockified style by utilizing $\mathbf{dS}_{ij}$ and the following relationships: $\mathbf{dQ}=\mathbf{dS}\mathbf{K}$ and $\mathbf{dK}=\mathbf{dS}^T\mathbf{Q}$:
+
+\begin{align}
+\mathbf{dQ}_i &= \sum_{j}\mathbf{dS}_{ij}\mathbf{K}_j \notag\\
+&= \sum_{j}\mathbf{P}_{ij}(\mathbf{dP}_{ij}-\mathbf{D}_i)\mathbf{K}_j \notag\\
+&=\sum_j\frac{\exp(\mathbf{Q}_i^T\mathbf{K}_j)}{\mathbf{L}_i}(\mathbf{dO}_i\mathbf{V}_j^T-\mathbf{D}_i)\mathbf{K}_j \label{eq:mha2}\\
+\mathbf{dK}_j &= \sum_i\mathbf{dS}_{ij}^T\mathbf{Q}_i \notag\\
+&= \sum_i(\mathbf{dP}_{ij}^T-\mathbf{D}_i^T)\mathbf{P}_{ij}^T\mathbf{Q}_i \notag\\
+&= \sum_i (\mathbf{V}_{j}\mathbf{dO}_i^T -\mathbf{D}_i^T)\frac{\exp(\mathbf{K}_j\mathbf{Q}_i^T)}{\mathbf{L}_i}\mathbf{Q}_i \label{eq:mha3}
+\end{align}
+
+Equations \eqref{eq:mha1}, \eqref{eq:mha2}, and \eqref{eq:mha3} describe a blockified computational process for obtaining $\mathbf{dQ}$, $\mathbf{dK}$, and $\mathbf{dV}$.
+
+\subsection{Multi-scale Attention}
+
+The multi-scale attention computes as:
+
+$$\mathbf{S} = \mathbf{Q}\mathbf{K}^T\circ \mathbf{M} \in \mathbb{R}^{N\times N}, \quad \mathbf{P} = \frac{\mathbf{\bar{1}}}{\max(\text{rowsum}(\text{abs}(\mathbf{S})),\bar{\mathbf{1}})} \in \mathbb{R}^{N\times 1}, \quad \mathbf{O} = \mathbf{S}\mathbf{V} \circ \mathbf{P}\in \mathbb{R}^{N\times d}$$
+
+To perform the backward computation, the system must compute the derivatives of $\mathbf{Q}$, $\mathbf{K}$,
+and $\mathbf{V}$ with respect to the output $\mathbf{O}$, denoted as $\mathbf{dQ}$, $\mathbf{dK}$, and $\mathbf{dV}$, respectively.
+The computation of $\mathbf{dV}$ in matrix notation is straightforward:
+$$\mathbf{dV} = \mathbf{S}^T\mathbf{dO}\circ \mathbf{P}$$
+And the blockified version of $\mathbf{\mathbf{dV}_j}$ is:
+
+\begin{equation}
+\mathbf{dV}_j = \sum_i \mathbf{S}_{ij}^T\mathbf{dO_i}\circ\mathbf{P}_i \label{eq:msa1}
+\end{equation}
+
+By applying the chain rule, the next step in the backward computation is to compute the derivative matrix $\mathbf{dP}$:
+
+$$\mathbf{dP} = \text{rowsum}(\mathbf{dO} \circ \mathbf{SV})$$
+
+The blockified version of $\mathbf{dP}_{ij}$ is:
+
+$$\mathbf{dP}_{ij} = \text{sum}(\mathbf{dO}_i\circ\mathbf{S}_{ij}\mathbf{V}_j)$$
+
+Computing $\mathbf{dS}$ is a somewhat a bit more complicated,
+so it is best to break it down into smaller steps.
+Let's assume the following to simplify the process:
+
+\begin{align*}
+\mathbf{y}_1 &= \text{abs}(\mathbf{S}) \\
+\mathbf{y}_2 &= \text{rowsum}(\mathbf{y}_1) \\
+\mathbf{y}_3 &= \max(\mathbf{y}_2, \mathbf{1}) \\
+\mathbf{P} &= \frac{\mathbf{\bar{1}}}{\mathbf{y}_3}
+\end{align*}
+
+Then we can compute $\mathbf{dS}$ step by step:
+
+\begin{align*}
+    \frac{\mathbf{dP}}{\mathbf{dy}_3} & = -\frac{\mathbf{\bar{1}}}{\mathbf{y}_3 \circ \mathbf{y}_3}= -\mathbf{P}\circ \mathbf{P}\\
+    \frac{\mathbf{dy}_3}{\mathbf{dy}_2} &\equiv \textcolor{red}{\nabla_{\max}}= \left\{
+        \begin{aligned}
+            &1, &\mathbf{y}_2 > \mathbf{\bar{1}}\\
+            &0, &\mathbf{y}_2 \le \mathbf{\bar{1}}
+        \end{aligned}
+    \right. \\
+    \frac{\mathbf{dy}_2}{\mathbf{dy}_1} &= \mathbf{\bar{1}}_{N\times N} \\
+    \frac{\mathbf{dy}_1}{\mathbf{dS}} &\equiv \textcolor{red}{\nabla_{\text{abs}}}= \left\{
+        \begin{aligned}
+            &1, & \mathbf{S} \ge \mathbf{\bar{0}}\\
+            &-1, & \mathbf{S} < \mathbf{\bar{0}}
+        \end{aligned}
+    \right.
+\end{align*}
+
+And:
+\begin{align*}
+    \frac{\mathbf{dP}}{\mathbf{dS}} &=\frac{\mathbf{dP}}{\mathbf{dy}_3}\circ \frac{\mathbf{dy}_3}{\mathbf{dy}_2} \circ \frac{\mathbf{dy}_2}{\mathbf{dy}_1} \circ \frac{\mathbf{dy}_1}{\mathbf{dS}} \\
+    &= -\mathbf{P}\circ\mathbf{P} \circ \nabla_{\max} \circ \nabla_{\text{abs}}
+\end{align*}
+
+The blockified computation for $\frac{\mathbf{d\phi}_{ij}}{\mathbf{dS_{ij}}}=\mathbf{dS}_{ij}$ is:
+
+\begin{align*}
+\mathbf{dS}_{ij} &= - \text{sum}(\mathbf{dO}_i\circ \mathbf{S}_{ij}\mathbf{V}_i) \circ \mathbf{P}_{ij}\circ{\mathbf{P}_{ij}} \circ \textcolor{red}{\nabla_{\max}^{ij}} \circ \textcolor{red}{\nabla_{\text{abs}}^{ij}}\\
+&=-\frac{\text{sum}(\mathbf{dO}_i\circ\mathbf{O}_i)}{\mathbf{P}_{ij}}\circ \mathbf{P}_{ij}\circ{\mathbf{P}_{ij}} \circ \textcolor{red}{\nabla_{\max}^{ij}} \circ \textcolor{red}{\nabla_{\text{abs}}^{ij}} \\
+&=-\text{sum}(\mathbf{dO}_i\circ\mathbf{O}_i)\circ{\mathbf{P}_{ij}} \circ \textcolor{red}{\nabla_{\max}^{ij}} \circ \textcolor{red}{\nabla_{\text{abs}}^{ij}}
+\end{align*}
+
+where:
+
+\begin{align*}
+    \textcolor{red}{\nabla_{\max}^{ij}} &= \left\{
+        \begin{aligned}
+        &\mathbf{\bar{1}}, &\text{rowsum}(\text{abs}(\mathbf{S}_{ij})) \ge \mathbf{\bar{1}}\\
+        &\mathbf{\bar{0}}, &\text{rowsum}(\text{abs}(\mathbf{S}_{ij})) < \mathbf{\bar{1}}\\
+        \end{aligned}
+    \right. \\
+    \textcolor{red}{\nabla_{\text{abs}}^{ij}} &= \left\{
+        \begin{aligned}
+        &\mathbf{\bar{1}}, &\text{abs}(\mathbf{S}_{ij}) \ge \mathbf{\bar{0}}\\
+        &\mathbf{-\bar{1}}, &\text{abs}(\mathbf{S}_{ij}) < \mathbf{\bar{0}}\\
+        \end{aligned}
+    \right.
+\end{align*}
+
+We can obtain $\mathbf{dQ}$ and $\mathbf{dK}$ in a blockified style by utilizing $\mathbf{dS}_{ij}$ and the following relationships: $\mathbf{dQ}=\mathbf{dS}\mathbf{K}\circ \mathbf{M}$ and $\mathbf{dK}=\mathbf{dS}^T\mathbf{Q}\circ \mathbf{M}$:
+
+\begin{align}
+\mathbf{dQ}_i &= \sum_j \mathbf{dS}_{ij}\mathbf{K}_j\circ \mathbf{M}_{ij} \notag\\
+&= -\sum_{j}\text{sum}(\mathbf{dO}_i\circ\mathbf{O}_i)\circ{\mathbf{P}_{ij}} \circ \textcolor{red}{\nabla_{\max}^{ij}} \circ \textcolor{red}{\nabla_{\text{abs}}^{ij}}\mathbf{K}_j\circ \mathbf{M}_{ij}  \label{eq:msa2}\\
+\mathbf{dK}_j &= \sum_i\mathbf{dS}_{ij}^T\mathbf{Q}_i\circ \mathbf{M}_{ij} \notag\\
+&=-\sum_i\left(
+    \text{sum}(\mathbf{dO}_i\circ\mathbf{O}_i)\circ{\mathbf{P}_{ij}} \circ \textcolor{red}{\nabla_{\max}^{ij}} \circ \textcolor{red}{\nabla_{\text{abs}}^{ij}}
+    \right)^T \mathbf{Q}_i \circ \mathbf{M}_{ij} \label{eq:msa3}
+\end{align}
+
+Equations \eqref{eq:msa1}, \eqref{eq:msa2}, and \eqref{eq:msa3} describe a blockified computational process for obtaining $\mathbf{dQ}$, $\mathbf{dK}$, and $\mathbf{dV}$.
+
+
+% Simplify equations above, we obtain:
+
+% \begin{align}
+% \mathbf{dS}&=\mathbf{dP} \circ \nabla_{\max}\circ \nabla_{\text{abs}} \notag\\
+% &=-\frac{\text{rowsum}(\mathbf{O}\circ \mathbf{dO})}{\mathbf{P}}\circ \nabla_{\max} \circ \nabla_{\text{abs}}
+% \end{align}
+
+
+% Then we can compute $\mathbf{dQ}$ and $\mathbf{dK}$:
+
+% \begin{align}
+%     \mathbf{dQ} &= \mathbf{dS}\mathbf{K}^T\circ \mathbf{M} \notag \\
+%     & = - \frac{\text{rowsum}(\mathbf{O}\circ \mathbf{dO})}{\mathbf{P}} \circ \nabla_{\max} \circ \nabla_{\text{abs}} \mathbf{K}^T\circ \mathbf{M} \label{eq:msa2} \\
+%     \mathbf{dK} &= \mathbf{Q}^T\mathbf{dS}\circ \mathbf{M} \notag \\
+%     &= -\mathbf{Q}^T \frac{\text{rowsum}(\mathbf{O}\circ \mathbf{dO})}{\mathbf{P}} \circ \nabla_{\max} \circ \nabla_{\text{abs}} \circ \mathbf{M}\label{eq:msa3}
+% \end{align}
+
+% represent the gradient computations for multi-scale attention. Now, let's consider how we can blockify the entire gradient computation process.
+
+% \begin{align*}
+% \mathbf{dV}_j &= \mathbf{K}_j\sum_{i}\frac{\mathbf{Q}_i^T\mathbf{dO}_i}{\mathbf{P}_{ij}} \\
+% \mathbf{dK}_j &= -\sum_{i}\mathbf{Q}_i^T\frac{\text{rowsum}(\mathbf{O}_i^T\mathbf{dO}_i)}{\mathbf{P}_i}\circ \nabla_{\max}^i\circ \nabla_{\text{abs}}^{ij}\circ \mathbf{M}_{ij} \\
+% \mathbf{dQ}_i &= -\frac{\text{rowsum}(\mathbf{O}_i \circ \mathbf{dO}_i)}{\mathbf{P}_i}\circ \nabla_{\max}^i\sum_j \nabla_{\text{abs}}^{ij}\circ \mathbf{M}_{ij}
+% \end{align*}

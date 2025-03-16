@@ -1,0 +1,51 @@
+\documentclass{article}
+
+\input{structure.tex} % Include the file specifying the document structure and custom commands
+\title{Flash Attention}
+% \author{Ying Cao}
+% \date{\today}
+
+\begin{document}
+\bibliographystyle{plain}
+
+\maketitle % Print the title
+\tableofcontents
+
+\clearpage
+\noindent
+\linespread{1.2}
+\selectfont
+\setlength{\topskip}{0ex}
+\setlength{\parskip}{1ex}
+\setlength{\lineskip}{1em}
+
+%---------------------------------------------------------------
+% unnumbered section
+%---------------------------------------------------------------
+
+\noindent $::$ is read as "have a type of".
+
+\noindent $\rightarrow$ is read as "maps to".
+
+\section{Background: The Computational Process of Reduce and Map}\label{sec1}
+\input{contents/background.tex}
+
+\section{A Generalized \textit{Broadcast-and-then-Aggregate} Operation}
+\input{contents/map_and_then_aggreage.tex}
+
+\section{Block Execution of a Chain of \textit{Broadcast-and-then-Aggregate}}
+\input{contents/fused_chained_map_and_then_aggregate.tex}
+
+\section{The Transformer Block}
+\input{contents/beyond_flash_attention.tex}
+\clearpage
+\begin{appendices}
+\input{contents/welford_algorithm.tex}
+\input{contents/backward.tex}
+\end{appendices}
+
+\clearpage
+\bibliographystyle{abbrv}
+\bibliography{references.bib}
+
+\end{document}

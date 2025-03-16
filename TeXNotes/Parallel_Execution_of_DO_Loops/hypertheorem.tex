@@ -1,0 +1,52 @@
+C2 gives a set of constraints on the mapping $\pi: \mathbf{Z}^n \rightarrow \mathbf{Z}$,
+and the Hyperplane Theorem proves \textit{\textbf{the existence}} of a $\pi$
+satisfying those constraints. The proof can also serve as an algorithm for
+constructing a mapping $\pi$, but it is not always the optimal.
+
+\newtheorem*{theorem}{HYPERPLANE CONCURRENCY THEOREM}\label{hh}
+
+\begin{theorem}
+Assume that loop (\ref {loop1})satisfies (A1) - A(5), and that none of the
+index variables {\color{red}$I^2, ..., I^n$} are missing variable. Then it
+can be rewritten in the form of (\ref {loop2})for $k = 1$. Moreover, the mapping
+$J$ used for the rewriting can be chosen to be independent of the index set $\zeta$.
+\end{theorem}
+
+\textbf{Notations}
+\begin{itemize}
+\item The mapping $\pi$ is defined by:
+    $$\pi[(I^1, ...,I^n)] = a_1I^1 + ... + a_nI^n$$
+\item $\mathcal{\Theta} = \left\{\mathbf{X}_r\right\},r = 1,...,N$,
+$\mathbf{X}_r > \mathbf{0}$ is all the elements of $\langle f, g \rangle$
+referred to in (C2). Since $I^1$ is the only index variable that may be mising,
+$X_r = (x_r^1,...,x_r^n)$ or $X_r = (+,x_r^2,...,x_r^n)$.
+\item $\mathcal{\Theta}_j = \left\{\mathbf{X}_r: x_r^1=...=x_r^{j-1}=0,x_r^j \ne 0 \right\}$.
+$\mathcal{\Theta}_j$ is the set of all $\mathbf{X}_r$ whose $j$th
+coordinate is the left-most nonzero one. Each $\mathbf{X}_r$ is an element of some
+$\mathcal{\Theta}_j$.
+\end{itemize}
+
+\begin{proof}
+If we can always construct the mapping $\pi:\mathbf{Z}^n \rightarrow \mathbf{Z}$,
+and from $\pi$ obtrain the one-one mapping $J$, then the theorem is proved.
+
+\begin{enumerate}
+\item Construct the mapping $\pi: \mathbf{Z}^n \rightarrow \mathbf{Z}$ for each
+$\mathbf{X}_r \in \Theta$.
+
+  \begin{enumerate}
+
+  \item replace each $X_r = (+,x_r^2,...,x_r^n)$ by $(1,x_r^2,...,x_r^n)$. This is
+  because we require $\pi[(+, x_r^2,...,x_r^n)] > 0$, then it is sufficient to consider
+  replacing $x$ with the smallest positive integer 1.
+  \item for $j=n,n-1,...,1$, let $a_j$ be the smallest nonnegative integer such
+  that $a_j x_r^j + ... + a_n x_r^n > 0$ for each $X_r = (0,...,0,x_r^j,...,x_r^n) \in \Theta_j$.
+
+  \end{enumerate}
+
+\item construct $J[(I^1,...,I^n)] = (\pi[(I^1,...,I^n)],...)$. If $a_j = 1$,
+define $J$ as follows: for each $l \ge 2$, let $J^k$ equal some distinct $I^{l_k}$
+with $l_j \ne j$.
+
+\end{enumerate}
+\end{proof}

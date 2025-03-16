@@ -1,0 +1,38 @@
+从global向shared memory传输数据和从shared memory向register file传输数据总觉得有某种微妙的不同。
+
+我们首先规定\colorbox{hl}{text}“拷贝”：是将数据$D$ 从place $A$完全地移动到place $B$存储为$D'$。$D'$可以是$D$的一个permutation，也就是说$D'$中的元素和$D$中的元素一一对应，元素数目不变，而顺序可以不相同。
+
+global memory是外存，shared memory，cache和RF是片上存储，后者的capacity总是小于前者。
+
+给定一个AccessMap将其完全地翻译成实现，不是一个单纯的copy macro kernel问题。这里面涉及了（1）分数据（根据capacity决定一次空间执行的数据块的大小）；（2）拷贝；（3）时间上重复执行的执行顺序问题；
+
+非常朴素地想，计算过程涉及到数据和多线程两种要素。对于数据，我们总是提供逻辑和物理两种视角：
+\begin{enumerate}
+    \setlength{\itemsep}{-0.1cm}
+    \item high-dimensional array-like的\colorbox{hl}{逻辑视角}；能够用\textcolor{blue}{高维逻辑indices寻址}，逻辑视角能够改善可编程性，并且隔离与hardware强相关的实现选择问题
+    \item \colorbox{hl}{物理视角}
+    \item Layout是logical high-dimensional indices和物理寻址之间的映射函数
+\end{enumerate}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/shared_2_rf_with_ldmatrix.pdf}
+    \caption{使用ldmatrix指令从shared memory向regisger file加载数据。}
+\end{figure}
+
+使用ldmatrix从shared memory加载数据到每个线程thread local的寄存器，warp中的每32线程构成一个 $2 \times 2$的线程tile，每个tile内部8线程，
+\textcolor{red}{调用ldmatrix的时候每个线程都需要传入一个shared memory指针}，然后单线程读取shared memory中连续128 bits。ldmatrix一次执行最大读取 $16 \times 16$大小的半精度矩阵。
+
+在实现中，每个线程都需要正确地计算出自己要读取的shared memory位置的指针偏移。
+
+ldmatrix的一次执行32个线程能一次性读取$16 \times 16$大小的$2D$ tile，一次执行单线程数据tile大小$1 \times 8$，如果将$n$次执行ldmatrix的结果都保留在thread local的寄存器上，单线程数据块的大小是$1 \times \left( n \times 8 \right)$。
+
+所以我们将目标的layout配置成$(1, n*8)$
+
+\newpage
+
+\begin{enumerate}
+    \setlength{\itemsep}{-0.1cm}
+    \item 第一个嵌套层级：一个shared memory数据块要转化为多次$(m, n)$次对copy\_2d\_tile\_s2r在时间上的调用，要用for循环issue出去。每个处理一个小分块 $\mathcal{T}$。
+    \item 第二个嵌套层级：一个copy\_2d\_tile\_s2r
+\end{enumerate}

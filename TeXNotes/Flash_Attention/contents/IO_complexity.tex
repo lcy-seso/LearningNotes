@@ -1,0 +1,75 @@
+\subsection{self-implemented softmax}
+
+\begin{itemize}
+    \item \textcolor{red}{$\mathbf{G_{MN}}$} stands for access global memory $M\times N$ times.
+    \item \textcolor{blue}{$\mathbf{S_{MN}}$} stands for access shared memory $M\times N$ times.
+\end{itemize}
+
+\begin{tabular}{c|llcc}
+    \toprule
+    \textbf{Step No.}&\textbf{Pattern}&\textbf{Expression}&\textbf{Input}&\textbf{Output}\\\midrule
+    1 & Reduction & $t_0 = \text{max}(\mathbf{V})$ &\textcolor{red}{$\mathbf{G}_{MN}$}&\textcolor{blue}{$\mathbf{S_M}$}\\
+    2 & Broadcast & $t_1 = \text{exp}(\mathbf{V} - t_0)$&\textcolor{red}{$\mathbf{G}_{MN}$}$+$\textcolor{blue}{$S_M$}&\textcolor{red}{$\mathbf{G}_{MN}$}\\
+    3 & Reduction & $t_2 = \text{sum}(t_1)$&\textcolor{red}{$\mathbf{G}_{MN}$}&\textcolor{blue}{$S_M$}\\
+    4 & Broadcast & $\mathbf{O} = \frac{t_1}{t_2}$&\textcolor{red}{$\mathbf{G}_{MN}$}$+$\textcolor{blue}{$S_M$}&\textcolor{red}{$\mathbf{G}_{MN}$}\\\midrule
+    &&\textbf{\textcolor{byzantium}{Softmax}}&\textcolor{red}{$4\mathbf{G}_{MN}$}$+$\textcolor{blue}{$2S_M$}&\textcolor{red}{$2\mathbf{G}_{MN}$}$+$\textcolor{blue}{$2S_M$}\\
+    \bottomrule
+\end{tabular}
+
+leads to \textcolor{red}{$6\mathbf{G}_{MN}$} global memory access in total.
+
+\subsection{self-implemented online-softmax}
+
+\begin{itemize}
+    \item \textcolor{red}{$\mathbf{G_{MN}}$} stands for access global memory $M\times N$ times.
+    \item \textcolor{blue}{$\mathbf{S_{MN}}$} stands for access shared memory $M\times N$ times.
+\end{itemize}
+
+\begin{tabular}{c|llcc}
+    \toprule
+    \textbf{Step No.}&\textbf{Pattern}&\textbf{Expression}&\textbf{Input}&\textbf{Output}\\\midrule
+    1 & Reduction & compute $m$ and $do$&\textcolor{red}{$\mathbf{G}_{MN}$}&\textcolor{blue}{$2\mathbf{S}_M$}\\
+    2 & Broadcast & rescale&\textcolor{red}{$\mathbf{G}_{MN}$}$+$\textcolor{blue}{$2S_M$}&\textcolor{red}{$\mathbf{G}_{MN}$}\\\midrule
+    &&\textbf{\textcolor{byzantium}{Online-Softmax}}&\textcolor{red}{$2\mathbf{G}_{MN}$}$+$\textcolor{blue}{$2S_M$}&\textcolor{red}{$\mathbf{G}_{MN}$}$+$\textcolor{blue}{$2S_M$}\\
+    \bottomrule
+\end{tabular}
+
+leads to \textcolor{red}{$3\mathbf{G}_{MN}$} global memory access in total.
+
+\subsection{Cub softmax}
+
+\begin{itemize}
+    \item \textcolor{red}{$\mathbf{G_{MN}}$} stands for access global memory $M\times N$ times.
+    \item \textcolor{blue}{$\mathbf{S_{MN}}$} stands for access shared memory $M\times N$ times.
+\end{itemize}
+
+\begin{tabular}{c|llcc}
+    \toprule
+    \textbf{Step No.}&\textbf{Pattern}&\textbf{Expression}&\textbf{Input}&\textbf{Output}\\\midrule
+    1 & Reduction & $t_0 = \text{max}(\mathbf{V})$ &\textcolor{red}{$\mathbf{G}_{MN}$}&\textcolor{blue}{$\mathbf{S_M}$}\\
+    2 & Elementwise & $t_1 = \text{exp}(\mathbf{V} - t_0)$&\textcolor{red}{$\mathbf{G}_{MN}$}$+$\textcolor{blue}{$S_M$}&\textcolor{red}{$\mathbf{G}_{MN}$}\\
+    3 & Reduction & $t_2 = \text{sum}(t_1)$&\textcolor{red}{$\mathbf{G}_{MN}$}$+$\textcolor{blue}{$S_M$}&\textcolor{blue}{$\mathbf{S}_{M}$}\\
+    3 & Broadcast & $\mathbf{O} = \frac{\text{exp}(\mathbf{V}-t_0)}{t_2}$&\textcolor{red}{$\mathbf{G}_{MN}$}$+$\textcolor{blue}{$2S_M$}&\textcolor{red}{$\mathbf{G}_{MN}$}\\\midrule
+    &&\textbf{\textcolor{byzantium}{Softmax}}&\textcolor{red}{$4\mathbf{G}_{MN}$}$+$\textcolor{blue}{$4S_M$}&\textcolor{red}{$2\mathbf{G}_{MN}$}$+$\textcolor{blue}{$2S_M$}\\
+    \bottomrule
+\end{tabular}
+
+leads to \textcolor{red}{$6\mathbf{G}_{MN}$} global memory access in total.
+
+\subsection{Cub online softmax}
+
+\begin{itemize}
+    \item \textcolor{red}{$\mathbf{G_{MN}}$} stands for access global memory $M\times N$ times.
+    \item \textcolor{blue}{$\mathbf{S_{MN}}$} stands for access shared memory $M\times N$ times.
+\end{itemize}
+
+\begin{tabular}{c|llcc}
+    \toprule
+    \textbf{Step No.}&\textbf{Pattern}&\textbf{Expression}&\textbf{Input}&\textbf{Output}\\\midrule
+    1 & Reduction & compute $m$ and $do$&\textcolor{red}{$\mathbf{G}_{MN}$}&\textcolor{blue}{$2\mathbf{S}_M$}\\
+    2 & Broadcast & rescale&\textcolor{red}{$\mathbf{G}_{MN}$}$+$\textcolor{blue}{$2S_M$}&\textcolor{red}{$\mathbf{G}_{MN}$}\\\midrule
+    &&\textbf{\textcolor{byzantium}{Online-Softmax}}&\textcolor{red}{$2\mathbf{G}_{MN}$}$+$\textcolor{blue}{$2S_M$}&\textcolor{red}{$\mathbf{G}_{MN}$}$+$\textcolor{blue}{$2S_M$}\\
+    \bottomrule
+\end{tabular}
+
+leads to \textcolor{red}{$3\mathbf{G}_{MN}$} global memory access in total.
