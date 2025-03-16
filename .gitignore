@@ -15,3 +15,5 @@ venv/
 *.aux
 *.out
 *.toc
+
+.DS_Store
