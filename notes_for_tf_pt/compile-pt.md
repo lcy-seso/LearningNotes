@@ -119,11 +119,17 @@ Latest PyTorch requires GCC 5+.
 
 ## Test Installation
 
-```bash
->>> import torch
->>> print(torch.cuda.is_available())
->>> print(torch.backends.cudnn.is_acceptable(torch.cuda.FloatTensor(1)))
->>> print(torch.backends.cudnn.version())
+```python
+import torch
+print(torch.__version__)
+
+print(torch.cuda.is_available())
+
+print(torch.backends.cudnn.is_acceptable(torch.cuda.FloatTensor(1)))
+print(torch.backends.cudnn.version())
+
+print(torch.cuda.get_arch_list())
+print(torch.randn(1).cuda())
 ```
 
 ## Compile debug version
