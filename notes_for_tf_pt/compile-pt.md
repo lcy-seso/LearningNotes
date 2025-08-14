@@ -81,6 +81,22 @@ Latest PyTorch requires GCC 5+.
     python3 setup.py build --cmake-only
     ```
 
+    To configure CMake and disable unnecessary dependencies, you can use the following Bash script:
+
+    ```bash
+    #!/bin/bash
+
+    # Set environment variables to configure the build options
+    export LIBKINETO_NOXPUPTI=ON
+    export USE_NCCL=1
+    export USE_XPU=0
+
+    # Run CMake with the specified options and log the output
+    cmake -DLIBKINETO_NOXPUPTI=ON \
+      -DUSE_NCCL=ON \
+      -DUSE_XPU=OFF ../ 2>&1 | tee cmake.log
+    ```
+
     then:
 
     ```bash
